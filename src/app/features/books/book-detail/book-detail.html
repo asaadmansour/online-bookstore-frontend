@@ -1,0 +1,91 @@
+<div class="min-h-screen bg-bg-soft">
+  <div class="max-w-6xl mx-auto px-6 py-10">
+    @if (book()) {
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+
+        <!-- Left: Image with frame -->
+        <div class="flex justify-center">
+          <div class="relative p-3 bg-white dark:bg-surface-800 rounded-2xl shadow-2xl border border-surface-200 dark:border-surface-700 max-w-[28rem]">
+            <div class="absolute top-1 left-1 w-4 h-4 border-t-2 border-l-2 border-accent rounded-tl-lg"></div>
+            <div class="absolute top-1 right-1 w-4 h-4 border-t-2 border-r-2 border-accent rounded-tr-lg"></div>
+            <div class="absolute bottom-1 left-1 w-4 h-4 border-b-2 border-l-2 border-accent rounded-bl-lg"></div>
+            <div class="absolute bottom-1 right-1 w-4 h-4 border-b-2 border-r-2 border-accent rounded-br-lg"></div>
+            <img
+              [src]="book()!.coverUrl"
+              [alt]="book()!.name"
+              class="w-full rounded-xl object-cover aspect-[3/4]"
+            />
+          </div>
+        </div>
+
+        <!-- Right: Details -->
+        <div class="flex flex-col gap-6 py-4">
+
+
+          <!-- Title & Author -->
+          <div>
+            <h1 class="text-4xl font-bold text-surface-900 dark:text-surface-0 leading-tight">
+              {{ book()!.name }}
+            </h1>
+            <p class="mt-2 text-surface-500 text-lg">
+              by <span class="text-accent font-semibold">{{ book()!.author?.name ?? book()!.author }}</span>
+            </p>
+          </div>
+
+          <!-- Rating -->
+          <div class="flex items-center gap-2">
+            <span class="text-yellow-400 text-xl">★</span>
+            <span class="font-bold text-surface-900 dark:text-surface-0">{{ book()!.averageRating }}</span>
+            <span class="text-surface-400 text-sm">({{ book()!.averageRating }} Reviews)</span>
+          </div>
+
+          <!-- Price -->
+          <div class="flex items-center gap-3">
+            <span class="text-4xl font-bold text-accent">${{ book()!.price }}</span>
+          </div>
+
+          <hr class="border-surface-200 dark:border-surface-700" />
+
+          <!-- Description -->
+          <div>
+            <h3 class="text-xs font-bold tracking-widest text-surface-400 uppercase mb-2">Description</h3>
+            <p class="text-surface-600 dark:text-surface-300 leading-relaxed">{{ book()!.description }}</p>
+          </div>
+
+          <hr class="border-surface-200 dark:border-surface-700" />
+                    <div>
+            <h3 class="text-xs font-bold tracking-widest text-surface-400 uppercase mb-3">Categories</h3>
+            <div class="flex flex-wrap gap-2">
+              @for (category of book()!.categories; track category._id) {
+                <span class="px-4 py-2 text-sm font-semibold bg-accent/10 text-accent border border-accent/30 rounded-full">
+                  {{ category.name }}
+                </span>
+              }
+            </div>
+          </div>
+
+        <hr class="border-surface-200 dark:border-surface-700" />
+
+          <!-- Quantity + Add to Cart -->
+          <div class="flex items-center gap-4">
+            <div class="flex items-center border border-surface-300 dark:border-surface-600 rounded-xl overflow-hidden">
+              <button class="px-4 py-3 text-lg hover:bg-surface-100 dark:hover:bg-surface-700 transition">−</button>
+              <span class="px-5 py-3 font-semibold text-surface-900 dark:text-surface-0">1</span>
+              <button class="px-4 py-3 text-lg hover:bg-surface-100 dark:hover:bg-surface-700 transition">+</button>
+            </div>
+
+            <button class="flex-1 flex items-center justify-center gap-2 bg-accent hover:bg-accent/90 text-white font-semibold px-6 py-3 rounded-xl transition shadow-md">
+              <lucide-icon [img]="ShoppingCart" class="w-5 h-5" />
+              Add to Cart
+            </button>
+          </div>
+
+        </div>
+      </div>
+    } @else {
+      <div class="flex justify-center items-center h-96">
+        <p class="text-surface-400 text-lg">Loading...</p>
+      </div>
+    }
+  </div>
+</div>
