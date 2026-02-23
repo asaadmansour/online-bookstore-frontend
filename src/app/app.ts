@@ -1,12 +1,23 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
 
+import { MenuItem } from 'primeng/api';
+import { ProgressSpinner } from 'primeng/progressspinner';
+
+import { BookList } from './features/books/book-list/book-list';
+import { Navbar } from './shared/components/navbar/navbar';
+import { RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [BookList, ProgressSpinner, Navbar, RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
 export class App {
-  protected readonly title = signal('ChapterOneFrontend');
+  items: MenuItem[] = [
+    { label: 'Home', routerLink: '/' },
+    { label: 'Books', routerLink: '/books' },
+    { label: 'Cart', routerLink: '/cart' },
+    { label: 'Login', routerLink: '/auth/login' },
+  ];
 }
