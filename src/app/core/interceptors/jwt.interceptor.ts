@@ -8,7 +8,7 @@ import { AuthService } from '../services/auth.service';
 let isRefreshing = false;
 const refreshed$ = new BehaviorSubject<string | null>(null);
 
-const SKIP_URLS = ['/auth/login', '/auth/register', '/auth/refresh', '/auth/logout'];
+const SKIP_URLS = ['/auth/login', '/auth/register', '/auth/refresh', '/auth/logout', '/auth/verify-email', '/auth/resend-verification'];
 
 function shouldSkip(url: string): boolean {
     return SKIP_URLS.some((u) => url.includes(u));

@@ -38,6 +38,11 @@ export class AuthService {
         return this.token.isLoggedIn();
     }
 
+    updateCurrentUser(user: User): void {
+        this.userSubject.next(user);
+        localStorage.setItem(USER_KEY, JSON.stringify(user));
+    }
+
     register(payload: RegisterPayload): Observable<AuthResponse> {
         return this.http.post<AuthResponse>(`${this.api}/register`, payload).pipe(
             tap((res) => this.handleAuth(res))
@@ -75,9 +80,9 @@ export class AuthService {
                 });
         }
 
-        // Always clear local state and navigate to login
+        // Always clear local state and navigate to home
         this.clearAllState();
-        this.router.navigate(['/auth/login']);
+        this.router.navigate(['/']);
     }
 
     logoutWithConfirmation(): Observable<any> {
@@ -115,7 +120,7 @@ export class AuthService {
 
     forceLogout(): void {
         this.clearState();
-        this.router.navigate(['/auth/login']);
+        this.router.navigate(['/']);
     }
 
     verifyEmail(code: string): Observable<{ message: string }> {

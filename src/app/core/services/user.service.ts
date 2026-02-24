@@ -19,11 +19,11 @@ export class UserService {
     }
 
     updateProfile(data: Partial<Pick<User, 'firstName' | 'lastName' | 'dob'>>) : Observable<{message: string, user: User}>{
-        return this.http.put<{message: string, user: User}>(`${this.api}/me`, data);
+        return this.http.patch<{message: string, user: User}>(`${this.api}/me`, data);
     }
 
     changePassword(currentPassword: string, newPassword: string) : Observable<{message: string}> {
-        return this.http.put<{message: string}>(`${this.api}/me/passwords`, {currentPassword, newPassword});
+        return this.http.patch<{message: string}>(`${this.api}/me/passwords`, {currentPassword, newPassword});
     }
 
     getAllUsers(page=1, limit=10) : Observable<{users: User[], pagination: {currentPage: number, totalItems: number, totalPages: number}}>{

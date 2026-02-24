@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, RouterLink, RouterLinkActive, } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { AuthService } from './core/services/auth.service';
 import { TokenService } from './core/services/token.service';
 import { LogoutModalComponent } from './shared/components/logout-modal/logout-modal';
@@ -8,7 +8,7 @@ import { LogoutModalComponent } from './shared/components/logout-modal/logout-mo
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [ CommonModule, RouterOutlet, RouterLink, RouterLinkActive, LogoutModalComponent,],
+    imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, LogoutModalComponent],
     templateUrl: './app.html',
     styleUrl: './app.css',
 })
@@ -19,7 +19,8 @@ export class App {
 
     constructor(
         public auth: AuthService,
-        public token: TokenService
+        public token: TokenService,
+        private router: Router
     ) { }
 
     get isLoggedIn(): boolean {
@@ -61,6 +62,7 @@ export class App {
             next: () => {
                 this.logoutLoading = false;
                 this.showLogoutModal = false;
+                this.router.navigate(['/']);
             },
             error: () => {
                 this.logoutLoading = false;

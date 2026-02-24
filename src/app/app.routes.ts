@@ -12,6 +12,35 @@ export const routes: Routes = [
         loadComponent: () => import('./auth/login/login').then((m) => m.LoginComponent),
     },
     {
+        path: 'profile',
+        canActivate: [authGuard],
+        loadComponent: () =>
+            import('./features/profile/profile-layout/profile-layout').then(
+                (m) => m.ProfileLayoutComponent
+            ),
+        children: [
+            {
+                path: '',
+                redirectTo: 'info',
+                pathMatch: 'full',
+            },
+            {
+                path: 'info',
+                loadComponent: () =>
+                    import('./features/profile/view-profile/view-profile').then(
+                        (m) => m.ViewProfileComponent
+                    ),
+            },
+            {
+                path: 'password',
+                loadComponent: () =>
+                    import('./features/profile/change-password/change-password').then(
+                        (m) => m.ChangePasswordComponent
+                    ),
+            },
+        ],
+    },
+    {
         path: 'auth/register',
         canActivate: [guestGuard],
         loadComponent: () => import('./auth/register/register').then((m) => m.RegisterComponent),
