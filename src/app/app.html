@@ -1,1 +1,275 @@
-<p class="text-3xl bg-red-500 text-yellow-500">Asaad</p>
+<!-- src/app/app.html -->
+
+<!-- ══════════════════════ NAVBAR ══════════════════════ -->
+<nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- ── LEFT: Logo + Desktop Links ── -->
+      <div class="flex items-center gap-8">
+        <a routerLink="/" class="flex items-center gap-2" (click)="closeMobileMenu()">
+          <svg
+            class="h-8 w-8 text-blue-600"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
+            />
+          </svg>
+          <span class="text-xl font-bold text-gray-900">BookStore</span>
+        </a>
+
+        <!-- Desktop links -->
+        <div class="hidden md:flex items-center gap-1">
+          <a
+            routerLink="/"
+            routerLinkActive="bg-blue-50 text-blue-700"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition"
+          >
+            Home
+          </a>
+          <a
+            routerLink="/books"
+            routerLinkActive="bg-blue-50 text-blue-700"
+            class="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition"
+          >
+            Books
+          </a>
+          <a
+            routerLink="/cart"
+            routerLinkActive="bg-blue-50 text-blue-700"
+            class="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition"
+          >
+            🛒 Cart
+          </a>
+
+          @if (isLoggedIn) {
+            <a
+              routerLink="/orders"
+              routerLinkActive="bg-blue-50 text-blue-700"
+              class="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition"
+            >
+              My Orders
+            </a>
+          }
+
+          @if (isAdmin) {
+            <a
+              routerLink="/admin"
+              routerLinkActive="bg-blue-50 text-blue-700"
+              class="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition"
+            >
+              ⚙️ Admin
+            </a>
+          }
+        </div>
+      </div>
+
+      <!-- ── RIGHT: Desktop Auth ── -->
+      <div class="hidden md:flex items-center gap-3">
+        @if (isLoggedIn) {
+          <span class="text-sm text-gray-600">
+            Hi, <strong>{{ userName }}</strong>
+          </span>
+
+          <!-- ★ LOGOUT BUTTON — opens modal ★ -->
+          <button
+            (click)="openLogoutModal()"
+            class="px-4 py-2 text-sm font-medium text-red-600 border border-red-200 rounded-lg hover:bg-red-50 transition inline-flex items-center gap-2"
+          >
+            <svg
+              class="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
+              />
+            </svg>
+            Logout
+          </button>
+        } @else {
+          <a
+            routerLink="/auth/login"
+            class="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
+          >
+            Sign In
+          </a>
+          <a
+            routerLink="/auth/register"
+            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition"
+          >
+            Register
+          </a>
+        }
+      </div>
+
+      <!-- ── HAMBURGER (Mobile) ── -->
+      <button
+        (click)="toggleMobileMenu()"
+        class="md:hidden p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition"
+      >
+        @if (mobileMenuOpen) {
+          <svg
+            class="h-6 w-6"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        } @else {
+          <svg
+            class="h-6 w-6"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+            />
+          </svg>
+        }
+      </button>
+    </div>
+  </div>
+
+  <!-- ── MOBILE MENU ── -->
+  @if (mobileMenuOpen) {
+    <div class="md:hidden border-t border-gray-200 bg-white">
+      <div class="px-4 py-3 space-y-1">
+        <a
+          routerLink="/"
+          routerLinkActive="bg-blue-50 text-blue-700"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="closeMobileMenu()"
+          class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100"
+        >
+          Home
+        </a>
+        <a
+          routerLink="/books"
+          routerLinkActive="bg-blue-50 text-blue-700"
+          (click)="closeMobileMenu()"
+          class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100"
+        >
+          Books
+        </a>
+        <a
+          routerLink="/cart"
+          routerLinkActive="bg-blue-50 text-blue-700"
+          (click)="closeMobileMenu()"
+          class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100"
+        >
+          🛒 Cart
+        </a>
+
+        @if (isLoggedIn) {
+          <a
+            routerLink="/orders"
+            routerLinkActive="bg-blue-50 text-blue-700"
+            (click)="closeMobileMenu()"
+            class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100"
+          >
+            My Orders
+          </a>
+        }
+
+        @if (isAdmin) {
+          <a
+            routerLink="/admin"
+            routerLinkActive="bg-blue-50 text-blue-700"
+            (click)="closeMobileMenu()"
+            class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100"
+          >
+            ⚙️ Admin Panel
+          </a>
+        }
+
+        <div class="border-t border-gray-200 my-2"></div>
+
+        @if (isLoggedIn) {
+          <div class="px-3 py-2 text-sm text-gray-500">
+            Signed in as <strong>{{ userName }}</strong>
+          </div>
+
+          <!-- ★ MOBILE LOGOUT — opens same modal ★ -->
+          <button
+            (click)="openLogoutModal()"
+            class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 inline-flex items-center gap-2"
+          >
+            <svg
+              class="h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
+              />
+            </svg>
+            Logout
+          </button>
+        } @else {
+          <a
+            routerLink="/auth/login"
+            (click)="closeMobileMenu()"
+            class="block px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100"
+          >
+            Sign In
+          </a>
+          <a
+            routerLink="/auth/register"
+            (click)="closeMobileMenu()"
+            class="block px-3 py-2 rounded-lg text-sm font-medium text-white bg-blue-600 text-center rounded-lg hover:bg-blue-700"
+          >
+            Register
+          </a>
+        }
+      </div>
+    </div>
+  }
+</nav>
+
+<!-- ══════════════════════ MAIN CONTENT ══════════════════════ -->
+<main class="min-h-screen bg-gray-50">
+  <router-outlet />
+</main>
+
+<!-- ══════════════════════ FOOTER ══════════════════════ -->
+<footer class="bg-white border-t border-gray-200">
+  <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-sm text-gray-500">© 2025 BookStore. All rights reserved.</p>
+      <div class="flex gap-6">
+        <a routerLink="/books" class="text-sm text-gray-500 hover:text-gray-700">Books</a>
+        <a href="#" class="text-sm text-gray-500 hover:text-gray-700">About</a>
+        <a href="#" class="text-sm text-gray-500 hover:text-gray-700">Contact</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════════ LOGOUT MODAL ══════════════════════ -->
+<app-logout-modal
+  [isOpen]="showLogoutModal"
+  [loading]="logoutLoading"
+  (confirmed)="confirmLogout()"
+  (cancelled)="cancelLogout()"
+/>
