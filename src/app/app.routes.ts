@@ -3,6 +3,7 @@ import { CategoriesPageComponent } from './features/categories/categories-page/c
 import { AuthorsComponent } from './features/authors/authors';
 import { LayoutComponent} from './main/layout/layout';
 import { NotFoundComponent} from './core/not-found/not-found';
+import { BookListComponent } from './features/books/book-list/book-list';
 import { HomePageComponent } from './features/home/home-page/home-page';
 
 export const routes: Routes = [
@@ -14,6 +15,10 @@ export const routes: Routes = [
           { path: 'home', component: HomePageComponent },
           { path: 'authors', component: AuthorsComponent },
           {path: 'authors/:id', component: AuthorsComponent},
+          {path: 'categories', component: CategoriesPageComponent},
+          {path: 'categories/:id', component: CategoriesPageComponent},
+          {path: 'books', component:  BookListComponent},
+
         ]
     },
    {

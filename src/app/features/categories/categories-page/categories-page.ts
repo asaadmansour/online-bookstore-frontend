@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { Router } from '@angular/router';
 import { CategoriesService } from '../../../core/services/categories.service';
 import { Category } from '../../../shared/models/category.model';
 
@@ -13,32 +13,68 @@ import { Category } from '../../../shared/models/category.model';
 })
 export class CategoriesPageComponent implements OnInit {
   categories: Category[] = [];
+
+  // pagination
+  page = 1;
+  limit = 10;
+  totalPages = 0;
+
+  // UI state
   loading = true;
   error = '';
 
-  constructor(private categoriesService: CategoriesService) {}
+  constructor(private categoriesService: CategoriesService,
+              private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadCategories();
   }
 
-  private loadCategories() {
+  loadCategories(): void {
     this.loading = true;
     this.error = '';
 
-    this.categoriesService.getAll(1, 50).subscribe({
+    this.categoriesService.getAll(this.page, this.limit).subscribe({
       next: (res) => {
-        this.categories = res.items ?? [];
+        console.log('Categories response:', res);
+        console.log('Categories items:', res.items);
+        this.categories = res.items;      
+        this.totalPages = res.totalPages; 
         this.loading = false;
       },
-      error: () => {
-        this.error = 'Failed to load categories';
+      error: (err) => {
         this.loading = false;
+        this.error = err?.error?.message || err?.message || 'Failed to load categories';
       },
     });
   }
 
-  trackById(_: number, item: Category) {
-    return item._id;
+  nextPage(): void {
+    if (this.page < this.totalPages) {
+      this.page++;
+      this.loadCategories();
+    }
   }
+
+  prevPage(): void {
+    if (this.page > 1) {
+      this.page--;
+      this.loadCategories();
+    }
+  }
+
+  refresh(): void {
+    this.loadCategories();
+  }
+
+  trackById(index: number, item: Category): string {
+ return item._id;
+  }
+
+goToCategory(categoryId: number | string): void {
+  this.router.navigate(['/books'], {
+    queryParams: { category: categoryId }
+  });
+}
 }
