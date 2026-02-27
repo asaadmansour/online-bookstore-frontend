@@ -25,9 +25,13 @@ export class CartService {
   }
 
   updateQuantity(bookId: string, quantity: number) {
-    return this.http.patch<{ message: string; item: any }>(`${this.API}/cart/${bookId}`, { quantity }, {
-      headers: this.testHeaders,
-    });
+    return this.http.patch<{ message: string; item: any }>(
+      `${this.API}/cart/${bookId}`,
+      { quantity },
+      {
+        headers: this.testHeaders,
+      },
+    );
   }
 
   removeItem(bookId: string) {

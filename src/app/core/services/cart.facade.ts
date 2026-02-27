@@ -68,12 +68,12 @@ export class CartFacade {
     if (newQuantity < 1) return;
     this.cartService.updateQuantity(bookId, newQuantity).subscribe({
       next: () => {
-        this.cart.update(c => {
+        this.cart.update((c) => {
           if (!c) return c;
           return {
             ...c,
-            items: c.items.map(i =>
-              i.book._id === bookId ? { ...i, quantity: newQuantity } : i
+            items: c.items.map((i) =>
+              i.book._id === bookId ? { ...i, quantity: newQuantity } : i,
             ),
           };
         });
@@ -89,11 +89,15 @@ export class CartFacade {
     this.cartService.removeItem(bookId).subscribe({
       next: () => {
         // Backend returns { message, item } — remove locally
-        this.cart.update(c => {
+        this.cart.update((c) => {
           if (!c) return c;
-          return { ...c, items: c.items.filter(i => i.book._id !== bookId) };
+          return { ...c, items: c.items.filter((i) => i.book._id !== bookId) };
         });
-        this.messageService.add({ severity: 'success', summary: 'Removed', detail: 'Item removed from cart.' });
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Removed',
+          detail: 'Item removed from cart.',
+        });
       },
       error: (err) => {
         const msg = err?.error?.message || err?.error?.error || 'Could not remove item.';

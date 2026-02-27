@@ -8,6 +8,7 @@ import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/
 import { providePrimeNG } from 'primeng/config';
 import { MessageService } from 'primeng/api';
 import Aura from '@primeuix/themes/aura';
+
 import { routes } from './app.routes';
 import { API_URL } from './core/api.config';
 import { jwtInterceptor } from './core/interceptors/jwt.interceptor';
@@ -16,11 +17,9 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding(), withViewTransitions()),
-    provideHttpClient(withInterceptors([jwtInterceptor])),
+    provideHttpClient(withInterceptors([jwtInterceptor]), withFetch()),
     provideBrowserGlobalErrorListeners(),
     MessageService,
-    provideRouter(routes),
-    provideHttpClient(withFetch()),
     { provide: API_URL, useValue: 'http://localhost:5000' },
     providePrimeNG({
       theme: {

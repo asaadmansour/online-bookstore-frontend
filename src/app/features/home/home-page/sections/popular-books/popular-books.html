@@ -1,0 +1,19 @@
+<section class="popular-books center">
+  <h2>Popular Books</h2>
+
+  <div class="books-grid">
+    <div class="book-card" *ngFor="let book of popularBooks">
+    <img
+  [src]="defaultBookCover"
+  (error)="onBookImgError($event)"
+  [alt]="book.title"
+/>
+
+      <div class="book-info">
+        <h3>{{ book.title }}</h3>
+        <p>{{ book.author }}</p>
+        <span class="price">{{ book.price }} EGP</span>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,26 @@
+<section class="pa-section center">
+  <div class="pa-head">
+    <h2 class="pa-title">Popular Authors</h2>
+    <p class="pa-sub">Discover writers behind your favorite books.</p>
+  </div>
+
+  <p class="pa-loading" *ngIf="loading">Loading authors...</p>
+  <p class="pa-error" *ngIf="!loading && error">{{ error }}</p>
+
+  <div class="pa-grid" *ngIf="!loading && !error">
+    <div class="pa-card" *ngFor="let a of authors; trackBy: trackById">
+      <div class="pa-avatar">
+        <img [src]="avatar(a)" [alt]="a.name" />
+      </div>
+
+      <h3 class="pa-name">{{ a.name }}</h3>
+
+      <p class="pa-desc">
+        {{ a.bio || 'Author' }}
+      </p>
+       
+          <a class="pa-badge view-badge" [routerLink]="['/authors', a._id]">View</a>
+        
+    </div>
+  </div>
+</section>

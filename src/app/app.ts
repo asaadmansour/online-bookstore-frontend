@@ -8,6 +8,7 @@ import { ToastModule } from 'primeng/toast';
 import { inject } from '@angular/core';
 import { Button } from 'primeng/button';
 import { Navbar } from './shared/components/navbar/navbar';
+import { ThemeService } from './core/services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -79,4 +80,9 @@ export class App {
       },
     });
   }
+  //   private theme = inject(ThemeService);
+
+  //   constructor() {
+  //     this.theme.initTheme(); // Initialize on app start
+  //   }
 }

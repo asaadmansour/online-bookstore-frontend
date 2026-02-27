@@ -10,34 +10,30 @@
         </p>
       </div>
       <div class="flex flex-row gap-3 shrink-0">
-        <button 
-          cdkOverlayOrigin
-          #trigger="cdkOverlayOrigin"
-          (click)="isFilterOpen.set(!isFilterOpen())"
+        <button cdkOverlayOrigin #trigger="cdkOverlayOrigin" (click)="isFilterOpen.set(!isFilterOpen())"
           class="flex items-center gap-2 border border-text-muted px-4 py-2 bg-white rounded-md hover:bg-accent-light transition-colors text-text-main cursor-pointer text-sm">
           <lucide-icon [img]="Filter" class="w-4 h-4"></lucide-icon>
           Filter
         </button>
 
-        <ng-template
-          cdkConnectedOverlay
-          [cdkConnectedOverlayOrigin]="trigger"
-          [cdkConnectedOverlayOpen]="isFilterOpen()"
-          (overlayOutsideClick)="isFilterOpen.set(false)"
-          [cdkConnectedOverlayOffsetY]="8"
-        >
-          <div class="bg-white border text-sm border-text-muted/20 rounded-md shadow-lg p-5 min-w-[280px] z-50 flex flex-col gap-4">
+        <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger"
+          [cdkConnectedOverlayOpen]="isFilterOpen()" (overlayOutsideClick)="isFilterOpen.set(false)"
+          [cdkConnectedOverlayOffsetY]="8">
+          <div
+            class="bg-white border text-sm border-text-muted/20 rounded-md shadow-lg p-5 min-w-[280px] z-50 flex flex-col gap-4">
             <h3 class="font-semibold text-text-main mb-1">Filter Options</h3>
-            
+
             <div class="flex flex-col gap-2">
               <span class="text-xs text-text-muted font-medium">Price Range</span>
               <div class="flex gap-2 items-center">
-                <input type="number" placeholder="Min" class="w-full border rounded p-1 text-sm outline-none focus:border-accent" #minPriceInput />
+                <input type="number" placeholder="Min"
+                  class="w-full border rounded p-1 text-sm outline-none focus:border-accent" #minPriceInput />
                 <span class="text-text-muted">-</span>
-                <input type="number" placeholder="Max" class="w-full border rounded p-1 text-sm outline-none focus:border-accent" #maxPriceInput />
+                <input type="number" placeholder="Max"
+                  class="w-full border rounded p-1 text-sm outline-none focus:border-accent" #maxPriceInput />
               </div>
-              <button 
-                (click)="setPriceRange(minPriceInput.value ? +minPriceInput.value : null, maxPriceInput.value ? +maxPriceInput.value : null); isFilterOpen.set(false)" 
+              <button
+                (click)="setPriceRange(minPriceInput.value ? +minPriceInput.value : null, maxPriceInput.value ? +maxPriceInput.value : null); isFilterOpen.set(false)"
                 class="w-full mt-2 bg-text-main text-white py-1.5 rounded hover:bg-text-main/90 transition-colors">
                 Apply Price
               </button>
@@ -48,53 +44,45 @@
             <div class="flex flex-col gap-2">
               <span class="text-xs text-text-muted font-medium">Authors</span>
               <div class="flex flex-col gap-1 max-h-40 overflow-y-auto pr-1">
-                <button 
-                  (click)="selectAuthor(null); isFilterOpen.set(false)"
+                <button (click)="selectAuthor(null); isFilterOpen.set(false)"
                   [class]="selectedAuthorId() === null ? 'text-accent font-medium bg-accent/10' : 'text-text-main hover:bg-bg-soft'"
                   class="text-left py-1.5 px-2 rounded-md transition-colors text-sm">
                   All Authors
                 </button>
                 @for (author of authors(); track author._id) {
-                  <button 
-                    (click)="selectAuthor(author._id); isFilterOpen.set(false)"
-                    [class]="selectedAuthorId() === author._id ? 'text-accent font-medium bg-accent/10' : 'text-text-main hover:bg-bg-soft'"
-                    class="text-left py-1.5 px-2 rounded-md transition-colors text-sm">
-                    {{ author.name }}
-                  </button>
+                <button (click)="selectAuthor(author._id); isFilterOpen.set(false)"
+                  [class]="selectedAuthorId() === author._id ? 'text-accent font-medium bg-accent/10' : 'text-text-main hover:bg-bg-soft'"
+                  class="text-left py-1.5 px-2 rounded-md transition-colors text-sm">
+                  {{ author.name }}
+                </button>
                 }
               </div>
             </div>
 
             <hr class="border-text-muted/20" />
 
-            <button (click)="resetFilters(); isFilterOpen.set(false)" class="text-accent hover:text-accent-light text-sm text-left transition-colors">
+            <button (click)="resetFilters(); isFilterOpen.set(false)"
+              class="text-accent hover:text-accent-light text-sm text-left transition-colors">
               Reset All Filters
             </button>
           </div>
         </ng-template>
-        <button 
-          cdkOverlayOrigin
-          #sortTrigger="cdkOverlayOrigin"
-          (click)="isSortOpen.set(!isSortOpen())"
+        <button cdkOverlayOrigin #sortTrigger="cdkOverlayOrigin" (click)="isSortOpen.set(!isSortOpen())"
           class="flex items-center gap-2 border border-text-muted px-4 py-2 bg-white rounded-md hover:bg-accent-light transition-colors text-text-main text-sm">
           <lucide-icon [img]="ArrowUpDown" class="w-4 h-4"></lucide-icon>
           Sort By
         </button>
 
-        <ng-template
-          cdkConnectedOverlay
-          [cdkConnectedOverlayOrigin]="sortTrigger"
-          [cdkConnectedOverlayOpen]="isSortOpen()"
-          (overlayOutsideClick)="isSortOpen.set(false)"
-          [cdkConnectedOverlayOffsetY]="8"
-        >
-          <div class="bg-white border text-sm border-text-muted/20 rounded-md shadow-lg p-3 min-w-[200px] z-50 flex flex-col gap-1">
+        <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="sortTrigger"
+          [cdkConnectedOverlayOpen]="isSortOpen()" (overlayOutsideClick)="isSortOpen.set(false)"
+          [cdkConnectedOverlayOffsetY]="8">
+          <div
+            class="bg-white border text-sm border-text-muted/20 rounded-md shadow-lg p-3 min-w-[200px] z-50 flex flex-col gap-1">
             @for (option of sortOptions; track option.value) {
-              <button 
-                (click)="onSortChange(option.value); isSortOpen.set(false)"
-                class="text-left py-1.5 px-2 rounded-md transition-colors text-sm text-text-main hover:bg-bg-soft">
-                {{ option.label }}
-              </button>
+            <button (click)="onSortChange(option.value); isSortOpen.set(false)"
+              class="text-left py-1.5 px-2 rounded-md transition-colors text-sm text-text-main hover:bg-bg-soft">
+              {{ option.label }}
+            </button>
             }
           </div>
         </ng-template>
@@ -103,27 +91,25 @@
 
     <!-- Categories -->
     <div class="flex flex-row gap-2 mb-8 flex-wrap">
-      <button 
-        (click)="selectCategory(null)"
+      <button (click)="selectCategory(null)"
         [class]="selectedCategoryId() === null ? 'bg-accent text-white border-accent' : 'bg-transparent text-text-main border-accent hover:bg-accent-light'"
         class="border rounded-lg px-3 py-1 cursor-pointer transition-colors text-sm">
         All Collections
       </button>
 
       @for (category of categories(); track category._id) {
-        <button 
-          (click)="selectCategory(category._id)"
-          [class]="selectedCategoryId() === category._id ? 'bg-accent text-white border-accent' : 'bg-transparent text-text-main border-accent hover:bg-accent-light'"
-          class="border rounded-lg px-3 py-1 cursor-pointer transition-colors text-sm">
-          {{ category.name }}
-        </button>
+      <button (click)="selectCategory(category._id)"
+        [class]="selectedCategoryId() === category._id ? 'bg-accent text-white border-accent' : 'bg-transparent text-text-main border-accent hover:bg-accent-light'"
+        class="border rounded-lg px-3 py-1 cursor-pointer transition-colors text-sm">
+        {{ category.name }}
+      </button>
       }
     </div>
 
     <!-- Books Grid -->
     <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       @for (book of books(); track book._id) {
-        <app-book-card [book]="book" />
+      <app-book-card [book]="book" />
       }
     </div>
 

@@ -1,0 +1,24 @@
+<!-- authors.html -->
+<section class="authors-page">
+  <header class="authors-header">
+    <h1 class="authors-title">Our Authors</h1>
+    <p class="authors-subtitle">
+      Discover the brilliant minds behind your favorite stories and explore their full bibliography.
+    </p>
+  </header>
+
+  <div class="authors-grid">
+    <article class="author-card" *ngFor="let a of authors; trackBy: trackById">
+      <div class="avatar-ring">
+        <div class="avatar">
+          <img [src]="a.authorImage || defaultAvatar" [alt]="a.name" (error)="setDefaultImage($event)" />
+        </div>
+      </div>
+
+      <h3 class="author-name">{{ a.name }}</h3>
+      <p class="author-bio">{{ a.bio }}</p>
+
+      <button class="view-btn" type="button" (click)="viewBooks(a)">View Books</button>
+    </article>
+  </div>
+</section>
