@@ -1,5 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { AuthorsService } from '../../core/services/authors.service';
 import { Author } from '../../shared/models/author.model';
@@ -7,58 +9,48 @@ import { Author } from '../../shared/models/author.model';
 
 @Component({
   selector: 'app-authors',
-  imports:[CommonModule], 
+  standalone: true,
+  imports:[CommonModule,FormsModule], 
   templateUrl: './authors.html',
   styleUrls: ['./authors.css'],
 })
 export class AuthorsComponent implements OnInit {
 
-  authors: Author[] = [];
-  loading = true;
+  authors: any[] = [];
+  loading = false;
   error = '';
 
-  defaultAvatar = 'images/default-avatar.jpg';
+  defaultAvatar = 'images/default-avatar.png';
 
   constructor(private authorsService: AuthorsService,
-              private route: ActivatedRoute
+              private router: Router,
   ) {}
 
   ngOnInit(): void {
-  this.route.paramMap.subscribe((params) => {
-    const id = params.get('id');
-
     this.loading = true;
-    this.error = '';
 
-    if (id) {
-      // single author
-      this.authorsService.getById(id).subscribe({
-        next: (author) => {
-          this.authors = author ? [author] : [];
-          this.loading = false;
-        },
-        error: () => {
-          this.error = 'Failed to load author';
-          this.loading = false;
-        },
-      });
-    } else {
-      // all authors
-      this.authorsService.getAll().subscribe({
-        next: (authors) => {
-          this.authors = authors;
-          this.loading = false;
-        },
-        error: () => {
-          this.error = 'Failed to load authors';
-          this.loading = false;
-        },
-      });
-    }
-  });
-}
-
-  onImgError(event: Event) {
-    (event.target as HTMLImageElement).src = this.defaultAvatar;
+    this.authorsService.getAll().subscribe({
+      next: (res: any) => {
+        this.authors = res.items ?? res;
+        this.loading = false;
+      },
+      error: () => {
+        this.error = 'Failed to load authors';
+        this.loading = false;
+      }
+    });
   }
+
+  trackById = (_: number, item: any) => item?._id ?? item?.id ?? _;
+
+  setDefaultImage(e: Event) {
+    const img = e.target as HTMLImageElement;
+    img.src = this.defaultAvatar;
+  }
+
+  viewBooks(a: any) {
+    const authorId = a?._id ?? a?.id;
+    this.router.navigate(['/books'], { queryParams: { authorId } });
+  }
+
 }
