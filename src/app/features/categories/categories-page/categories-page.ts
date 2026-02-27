@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { CategoriesService } from '../../../core/services/categories.service';
+import { CategoriesService } from '../../core/services/categories.service';
 import { Category } from '../../../shared/models/category.model';
 
 @Component({

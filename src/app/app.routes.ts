@@ -14,6 +14,7 @@ export const routes: Routes = [
           { path: 'home', component: HomePageComponent },
           { path: 'authors', component: AuthorsComponent },
           {path: 'authors/:id', component: AuthorsComponent},
+          {path: 'categories', component: CategoriesPageComponent},
         ]
     },
    {
