@@ -1,0 +1,57 @@
+<footer class="bg-white border-t border-zinc-200 mt-14">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <!-- Brand -->
+      <div>
+        <div class="flex items-center gap-2 mb-3">
+          <div class="w-9 h-9 rounded-xl bg-green-100 flex items-center justify-center">
+            <span class="text-green-600 font-bold">B</span>
+          </div>
+          <span class="font-semibold text-zinc-900">{{ brand.name }}</span>
+        </div>
+        <p class="text-sm text-zinc-600">
+          Discover great reads and curated collections.
+        </p>
+      </div>
+
+      <!-- Shop -->
+      <div>
+        <h4 class="text-sm font-semibold text-zinc-900 mb-3">Shop</h4>
+        <div class="space-y-2 text-sm text-zinc-600">
+          <a routerLink="/books/best-sellers" class="block hover:text-zinc-900">Best Sellers</a>
+          <a routerLink="/books/new-arrivals" class="block hover:text-zinc-900">New Arrivals</a>
+          <a routerLink="/categories" class="block hover:text-zinc-900">Categories</a>
+          <a routerLink="/deals" class="block hover:text-zinc-900">Deals</a>
+        </div>
+      </div>
+
+      <!-- Support -->
+      <div>
+        <h4 class="text-sm font-semibold text-zinc-900 mb-3">Support</h4>
+        <div class="space-y-2 text-sm text-zinc-600">
+          <a routerLink="/help" class="block hover:text-zinc-900">Help Center</a>
+          <a routerLink="/returns" class="block hover:text-zinc-900">Returns</a>
+          <a routerLink="/contact" class="block hover:text-zinc-900">Contact</a>
+        </div>
+      </div>
+
+      <!-- Newsletter -->
+      <div>
+        <h4 class="text-sm font-semibold text-zinc-900 mb-3">Stay in the loop</h4>
+        <p class="text-sm text-zinc-600 mb-3">Weekly updates, no spam.</p>
+        <div class="flex gap-2">
+          <input type="email" placeholder="Your email"
+                 class="w-full h-10 px-3 rounded-xl border border-zinc-200 outline-none focus:ring-2 focus:ring-green-500" />
+          <button class="h-10 px-4 rounded-xl bg-green-600 text-white hover:bg-green-700 transition">
+            Subscribe
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-zinc-200 mt-8 pt-6 text-center text-sm text-zinc-500">
+      Made with ❤️ by Haneen Elasawy, Asad, Mohamed Nagl & Mohamed — © 2026 Bookstore. All rights reserved.
+    </div>
+  </div>
+</footer>
