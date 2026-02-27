@@ -27,4 +27,22 @@ export class BookService {
   getPopularBooks() {
     return this.http.get<BooksResponse>(`${this.API}/books/popular`);
   }
+  addBook(book: FormData) {
+    const headers = {
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTlhMjgxNThlYTgyY2YxZDQzYmFjZTAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NzIyMTk3MTEsImV4cCI6MTc3MjIyMDYxMX0.UrR1B4fqD6kgiisyWq4PrtE6gmnm5TfXTWc7pxm999M`,
+    };
+    return this.http.post<Book>(`${this.API}/books`, book, { headers });
+  }
+  deleteBook(id: string) {
+    const headers = {
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTlhMjgxNThlYTgyY2YxZDQzYmFjZTAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NzIyMjE5ODAsImV4cCI6MTc3MjIyMjg4MH0.ogDLsTMxHXTOp7rEkcPyZf_cIgQPiTQAsLAFhtRBP4k`,
+    };
+    return this.http.delete<Book>(`${this.API}/books/${id}`, { headers });
+  }
+  updateBook(id: string, updates: FormData) {
+    const headers = {
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTlhMjgxNThlYTgyY2YxZDQzYmFjZTAiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3NzIyMjE5ODAsImV4cCI6MTc3MjIyMjg4MH0.ogDLsTMxHXTOp7rEkcPyZf_cIgQPiTQAsLAFhtRBP4k`,
+    };
+    return this.http.patch<Book>(`${this.API}/books/${id}`, updates, { headers });
+  }
 }

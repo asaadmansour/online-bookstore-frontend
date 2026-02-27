@@ -26,6 +26,7 @@ export const routes: Routes = [
       { path: 'home', component: AdminPanel },
       { path: 'manage-books', component: ManageBooks },
       { path: 'manage-books-create', component: BookForm },
+      { path: 'books/edit/:id', component: BookForm },
     ],
   },
 ];

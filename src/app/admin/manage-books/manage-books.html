@@ -10,7 +10,7 @@
         class="outline-none text-sm text-text-main bg-transparent w-48" />
     </div>
     <button
-      class="bg-accent hover:bg-accent-hover text-white px-5 py-2 rounded-xl text-sm font-semibold transition-colors">
+      class="bg-accent hover:bg-accent-hover text-white px-5 py-2 rounded-xl text-sm font-semibold transition-colors" routerLink="/admin/manage-books-create">
       + Add New Book
     </button>
   </div>
@@ -89,9 +89,9 @@
         </td>
         <td class="px-6 py-4">
           <div class="flex gap-2">
-            <button
+            <button [routerLink]="['/admin/books/edit',item._id]"
               class="px-3 py-1.5 rounded-lg border border-accent text-accent text-xs hover:bg-accent hover:text-white transition-colors">Edit</button>
-            <button
+            <button (click)="confirmDelete(item._id)"
               class="px-3 py-1.5 rounded-lg border border-red-200 text-red-400 text-xs hover:bg-red-500 hover:text-white transition-colors">Delete</button>
           </div>
         </td>
@@ -117,3 +117,23 @@
     </div>
   </div>
 </div>
+
+@if(showDeleteModal()) {
+  <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+    <div class="bg-white rounded-2xl shadow-soft p-8 w-full max-w-sm flex flex-col items-center gap-4">
+      <span class="text-4xl">🗑️</span>
+      <h3 class="text-lg font-bold text-text-main">Delete Book?</h3>
+      <p class="text-text-muted text-sm text-center">This action cannot be undone. The book will be deleted from the store.</p>
+      <div class="flex gap-3 w-full mt-2">
+        <button (click)="cancelDelete()" 
+          class="flex-1 px-4 py-3 rounded-xl border border-border-light text-text-muted text-sm hover:border-accent hover:text-accent transition-colors">
+          Cancel
+        </button>
+        <button type="button" (click)="deleteBook()"
+          class="flex-1 px-4 py-3 rounded-xl bg-red-500 hover:bg-red-600 text-white text-sm font-semibold transition-colors">
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+}
