@@ -1,0 +1,31 @@
+<section class="page">
+  <header class="hero">
+    <h1>Browse Categories</h1>
+    <p>Pick a category and explore books you’ll love.</p>
+  </header>
+
+  <div *ngIf="loading" class="state">Loading categories...</div>
+
+  <div *ngIf="!loading && error" class="state error">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!loading && !error && categories.length === 0" class="state">
+    No categories found.
+  </div>
+
+  <div *ngIf="!loading && !error && categories.length > 0" class="grid">
+    <article
+      class="card"
+      *ngFor="let c of categories; trackBy: trackById"
+      title="Category"
+    >
+      <div class="badge">Category</div>
+      <h3 class="name">{{ c.name }}</h3>
+
+      <button class="chip" type="button">
+        View
+      </button>
+    </article>
+  </div>
+</section>
