@@ -50,10 +50,6 @@ export class OrderDetailComponent implements OnInit {
     });
   }
 
-  get canCancel(): boolean {
-    return this.order?.status === 'pending';
-  }
-
   openCancelModal(): void {
     this.showCancelModal = true;
     this.cancelError = '';
@@ -87,17 +83,12 @@ export class OrderDetailComponent implements OnInit {
     icon: string;
   } {
     const config: Record<OrderStatus, { color: string; bgColor: string; icon: string }> = {
-      pending: {
-        color: 'text-yellow-800',
-        bgColor: 'bg-yellow-100 border-yellow-200',
-        icon: '🕐',
-      },
       processing: {
         color: 'text-blue-800',
         bgColor: 'bg-blue-100 border-blue-200',
         icon: '⚙️',
       },
-      shipped: {
+      out_for_delivery: {
         color: 'text-purple-800',
         bgColor: 'bg-purple-100 border-purple-200',
         icon: '🚚',
@@ -106,11 +97,6 @@ export class OrderDetailComponent implements OnInit {
         color: 'text-green-800',
         bgColor: 'bg-green-100 border-green-200',
         icon: '✅',
-      },
-      cancelled: {
-        color: 'text-red-800',
-        bgColor: 'bg-red-100 border-red-200',
-        icon: '❌',
       },
     };
     return (
@@ -125,14 +111,7 @@ export class OrderDetailComponent implements OnInit {
   get timelineSteps(): { label: string; done: boolean; active: boolean }[] {
     if (!this.order) return [];
 
-    const statusOrder: OrderStatus[] = ['pending', 'processing', 'shipped', 'delivered'];
-
-    if (this.order.status === 'cancelled') {
-      return [
-        { label: 'Placed', done: true, active: false },
-        { label: 'Cancelled', done: true, active: true },
-      ];
-    }
+    const statusOrder: OrderStatus[] = ['processing', 'out_for_delivery', 'delivered'];
 
     const currentIdx = statusOrder.indexOf(this.order.status);
     return statusOrder.map((s, i) => ({

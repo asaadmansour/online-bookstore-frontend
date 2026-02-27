@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { HomeImage } from '../home-image/home-image';
+import { TrendingBooks } from '../trending-books/trending-books';
+import { HomeCategories } from '../home-categories/home-categories';
+import { PopularAuthors } from '../popular-authors/popular-authors';
 
 @Component({
-    selector: 'app-home-page',
-    standalone: true,
-    imports: [CommonModule, RouterLink],
-    templateUrl: './home-page.html',
-    styleUrl: './home-page.css'
+  selector: 'app-home-page',
+  imports: [HomeImage, TrendingBooks, HomeCategories, PopularAuthors],
+  templateUrl: './home-page.html',
+  styleUrl: './home-page.css',
 })
-export class HomePageComponent { }
+export class HomePage {}

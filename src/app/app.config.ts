@@ -4,10 +4,10 @@ import {
   provideZoneChangeDetection,
 } from '@angular/core';
 import { provideRouter, withComponentInputBinding, withViewTransitions } from '@angular/router';
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/http';
 import { providePrimeNG } from 'primeng/config';
 import { MessageService } from 'primeng/api';
-import Aura from '@primeng/themes/aura';
+import Aura from '@primeuix/themes/aura';
 import { routes } from './app.routes';
 import { API_URL } from './core/api.config';
 import { jwtInterceptor } from './core/interceptors/jwt.interceptor';
@@ -19,6 +19,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([jwtInterceptor])),
     provideBrowserGlobalErrorListeners(),
     MessageService,
+    provideRouter(routes),
+    provideHttpClient(withFetch()),
     { provide: API_URL, useValue: 'http://localhost:5000' },
     providePrimeNG({
       theme: {

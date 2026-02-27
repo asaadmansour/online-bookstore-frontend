@@ -5,119 +5,81 @@ import { adminGuard } from './core/guards/admin.guard';
 import { guestGuard } from './core/guards/guest.guard';
 import { BookDetail } from './features/books/book-detail/book-detail';
 import { BookList } from './features/books/book-list/book-list';
+import { UserLayout } from './layouts/user-layout/user-layout';
+import { AdminLayout } from './layouts/admin-layout/admin-layout';
+import { AdminPanel } from './admin/admin-panel/admin-panel';
+import { ManageBooks } from './admin/manage-books/manage-books';
+import { BookForm } from './admin/book-form/book-form';
 import { CheckoutPage } from './features/checkout/checkout-page/checkout-page';
 import { CartPage } from './features/cart/cart-page/cart-page';
 import { SearchSuggestion } from './shared/components/search-suggestion/search-suggestion';
+import { HomePage } from './features/home/home-page/home-page';
+import { AuthLayout } from './layouts/auth-layout/auth-layout';
 
 export const routes: Routes = [
-  // ═══════════════════ PUBLIC ═══════════════════
-  { path: 'books', component: BookList },
-  { path: 'books/suggestions', component: SearchSuggestion },
-  {
-    path: 'books/:id',
-    component: BookDetail,
-  },
-  { path: 'books', component: BookList },
-  { path: 'checkout', component: CheckoutPage },
-  { path: 'cart', component: CartPage },
   {
     path: '',
-    loadComponent: () =>
-      import('./features/home/home-page/home-page').then((m) => m.HomePageComponent),
-  },
-  // {
-  //   path: 'books',
-  //   loadComponent: () =>
-  //     import('./features/books/book-list/book-list').then((m) => m.BookListComponent),
-  // },
-  // {
-  //   path: 'books/:id',
-  //   loadComponent: () =>
-  //     import('./features/books/book-detail/book-detail').then((m) => m.BookDetailComponent),
-  // },
-  {
-    path: 'cart',
-    loadComponent: () => import('./features/cart/cart').then((m) => m.CartComponent),
-  },
-
-  // ═══════════════════ AUTH (guests only) ═══════════════════
-  {
-    path: 'auth/login',
-    canActivate: [guestGuard],
-    loadComponent: () => import('./auth/login/login').then((m) => m.LoginComponent),
-  },
-  {
-    path: 'auth/register',
-    canActivate: [guestGuard],
-    loadComponent: () => import('./auth/register/register').then((m) => m.RegisterComponent),
-  },
-  {
-    path: 'auth/verify-email',
-    loadComponent: () =>
-      import('./auth/verify-email/verify-email').then((m) => m.VerifyEmailComponent),
-  },
-
-  // ═══════════════════ PROTECTED ═══════════════════
-  {
-    path: 'checkout',
-    canActivate: [authGuard],
-    loadComponent: () => import('./features/checkout/checkout').then((m) => m.CheckoutComponent),
-  },
-  {
-    path: 'orders',
-    canActivate: [authGuard],
-    loadComponent: () =>
-      import('./features/order-history/order-list/order-list').then((m) => m.OrderListComponent),
-  },
-  {
-    path: 'orders/:id',
-    canActivate: [authGuard],
-    loadComponent: () =>
-      import('./features/order-history/order-detail/order-detail').then(
-        (m) => m.OrderDetailComponent,
-      ),
-  },
-
-  // ═══════════════════ PROFILE ═══════════════════
-  {
-    path: 'profile',
-    canActivate: [authGuard],
-    loadComponent: () =>
-      import('./features/profile/profile-layout/profile-layout').then(
-        (m) => m.ProfileLayoutComponent,
-      ),
+    component: UserLayout,
     children: [
-      { path: '', redirectTo: 'info', pathMatch: 'full' },
+      { path: 'home', component: HomePage },
+      { path: 'books', component: BookList },
+      { path: 'books/suggestions', component: SearchSuggestion },
+      { path: 'books/:id', component: BookDetail },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'checkout', canActivate: [authGuard], component: CheckoutPage },
+      { path: 'cart', canActivate: [authGuard], component: CartPage },
       {
-        path: 'info',
+        path: 'orders',
+        canActivate: [authGuard],
         loadComponent: () =>
-          import('./features/profile/view-profile/view-profile').then(
-            (m) => m.ViewProfileComponent,
+          import('./features/order-history/order-list/order-list').then(
+            (m) => m.OrderListComponent,
           ),
       },
       {
-        path: 'password',
+        path: 'orders/:id',
+        canActivate: [authGuard],
         loadComponent: () =>
-          import('./features/profile/change-password/change-password').then(
-            (m) => m.ChangePasswordComponent,
+          import('./features/order-history/order-detail/order-detail').then(
+            (m) => m.OrderDetailComponent,
           ),
+      },
+      {
+        path: 'profile',
+        canActivate: [authGuard],
+        loadComponent: () =>
+          import('./features/profile/profile-layout/profile-layout').then(
+            (m) => m.ProfileLayoutComponent,
+          ),
+        children: [
+          { path: '', redirectTo: 'info', pathMatch: 'full' },
+          {
+            path: 'info',
+            loadComponent: () =>
+              import('./features/profile/view-profile/view-profile').then(
+                (m) => m.ViewProfileComponent,
+              ),
+          },
+          {
+            path: 'password',
+            loadComponent: () =>
+              import('./features/profile/change-password/change-password').then(
+                (m) => m.ChangePasswordComponent,
+              ),
+          },
+        ],
       },
     ],
   },
-
-  // ═══════════════════ ADMIN ═══════════════════
   {
     path: 'admin',
     canActivate: [authGuard, adminGuard],
-    loadComponent: () =>
-      import('./admin/admin-layout/admin-layout').then((m) => m.AdminLayoutComponent),
+    component: AdminLayout,
     children: [
-      { path: '', redirectTo: 'books', pathMatch: 'full' },
-      {
-        path: 'books',
-        loadComponent: () =>
-          import('./admin/manage-books/manage-books').then((m) => m.ManageBooksComponent),
-      },
+      { path: 'home', component: AdminPanel },
+      { path: 'manage-books', component: ManageBooks },
+      { path: 'books/create', component: BookForm },
+      { path: 'books/edit/:id', component: BookForm },
       {
         path: 'authors',
         loadComponent: () =>
@@ -130,14 +92,28 @@ export const routes: Routes = [
             (m) => m.ManageCategoriesComponent,
           ),
       },
+    ],
+  },
+  {
+    path: 'auth',
+    canActivate: [guestGuard],
+    component: AuthLayout,
+    children: [
       {
-        path: 'orders',
+        path: 'login',
+        loadComponent: () => import('./auth/login/login').then((m) => m.LoginComponent),
+      },
+      {
+        path: 'register',
+        loadComponent: () => import('./auth/register/register').then((m) => m.RegisterComponent),
+      },
+      {
+        path: 'verify-email',
         loadComponent: () =>
-          import('./admin/manage-orders/manage-orders').then((m) => m.ManageOrdersComponent),
+          import('./auth/verify-email/verify-email').then((m) => m.VerifyEmailComponent),
       },
     ],
   },
-
   // ═══════════════════ 404 ═══════════════════
   {
     path: '**',

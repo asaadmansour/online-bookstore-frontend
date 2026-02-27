@@ -3,6 +3,7 @@ import { Book } from '../../../shared/models/book.model';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-book-card',
+  standalone: true,
   imports: [],
   templateUrl: './book-card.html',
   styleUrl: './book-card.css',

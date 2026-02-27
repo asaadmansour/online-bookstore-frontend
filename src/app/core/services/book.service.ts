@@ -16,15 +16,12 @@ export class BookService {
     sort?: string;
   }) {
     let params = new HttpParams();
-    const headers = {
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OTljYjI4ZmQ5YmQ5NGY4ZTRjMTNkYzkiLCJyb2xlIjoidXNlciIsImlhdCI6MTc3MjE5MjE2MSwiZXhwIjoxNzcyMTkzMDYxfQ.LlJ3h2iqCF6-_Jzj1_wSAT9COVTWy8eErGmovh9QeA4`,
-    };
     if (filters?.categoryId) params = params.append('category', filters.categoryId);
     if (filters?.authorId) params = params.append('author', filters.authorId);
     if (filters?.minPrice) params = params.append('minPrice', filters.minPrice.toString());
     if (filters?.maxPrice) params = params.append('maxPrice', filters.maxPrice.toString());
     if (filters?.sort) params = params.append('sort', filters.sort);
-    return this.http.get<BooksResponse>(`${this.API}/books`, { params, headers });
+    return this.http.get<BooksResponse>(`${this.API}/books`, { params });
   }
   getBookById(id: string) {
     return this.http.get<Book>(`${this.API}/books/${id}`);
@@ -32,13 +29,13 @@ export class BookService {
   getPopularBooks() {
     return this.http.get<BooksResponse>(`${this.API}/books/popular`);
   }
-  addBook(book: Book) {
+  addBook(book: FormData) {
     return this.http.post<Book>(`${this.API}/books`, book);
   }
   deleteBook(id: string) {
     return this.http.delete<Book>(`${this.API}/books/${id}`);
   }
-  updateBook(id: string, updates: Partial<Book>) {
+  updateBook(id: string, updates: FormData) {
     return this.http.patch(`${this.API}/books/${id}`, updates);
   }
 }

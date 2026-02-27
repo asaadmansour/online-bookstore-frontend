@@ -3,13 +3,13 @@ import { inject } from '@angular/core';
 import { TokenService } from '../services/token.service';
 
 export const guestGuard: CanActivateFn = () => {
-    const tokenService = inject(TokenService);
-    const router = inject(Router);
+  const tokenService = inject(TokenService);
+  const router = inject(Router);
 
-    if (tokenService.isLoggedIn()) {
-        router.navigate(['/']);
-        return false;
-    }
+  if (tokenService.isLoggedIn()) {
+    router.navigate(['/']);
+    return false;
+  }
 
-    return true;
+  return true;
 };
