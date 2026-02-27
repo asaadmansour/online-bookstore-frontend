@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -31,8 +31,7 @@ export class OrderListComponent implements OnInit {
     { value: 'cancelled', label: 'Cancelled' },
   ];
 
-  constructor(private orderService: OrderService) {}
-
+  private orderService = inject(OrderService);
   ngOnInit(): void {
     this.loadOrders();
   }
@@ -57,7 +56,8 @@ export class OrderListComponent implements OnInit {
           this.orders = [];
           return;
         }
-        this.error = err?.error?.message || err?.error?.error || 'Failed to load orders. Please try again.';
+        this.error =
+          err?.error?.message || err?.error?.error || 'Failed to load orders. Please try again.';
         console.error('Order load error:', err);
       },
     });
