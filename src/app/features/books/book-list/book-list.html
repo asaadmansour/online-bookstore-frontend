@@ -1,0 +1,49 @@
+<section class="mx-auto max-w-6xl px-4 py-8">
+  <!-- Header -->
+  <div class="mb-6 rounded-2xl border border-slate-800 bg-slate-950/40 p-6">
+    <h1 class="text-3xl font-bold text-slate-100">Books</h1>
+    <p class="mt-2 text-slate-300">
+      Browsing books
+      <span class="text-slate-400">•</span>
+      <span class="text-emerald-300" *ngIf="categoryId; else allBooks">
+        Filtered by Category: <span class="font-semibold">{{ categoryId }}</span>
+      </span>
+      <ng-template #allBooks>
+        <span class="text-slate-300">All categories</span>
+      </ng-template>
+    </p>
+  </div>
+
+  <!-- Placeholder Grid -->
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <div
+      class="rounded-2xl border border-slate-800 bg-slate-950/40 p-5"
+      *ngFor="let x of [1,2,3,4,5,6]"
+    >
+      <div class="h-40 rounded-xl bg-slate-800/40"></div>
+
+      <div class="mt-4">
+        <div class="h-4 w-2/3 rounded bg-slate-800/60"></div>
+        <div class="mt-2 h-3 w-1/2 rounded bg-slate-800/40"></div>
+
+        <div class="mt-4 flex items-center justify-between">
+          <span class="text-sm text-slate-400">Coming from Categories</span>
+          <span
+            class="rounded-full border border-violet-500/30 bg-violet-500/10 px-3 py-1 text-xs font-semibold text-violet-200"
+            *ngIf="categoryId"
+          >
+            category={{ categoryId }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hint -->
+  <div class="mt-8 rounded-2xl border border-slate-800 bg-slate-950/40 p-5">
+    <p class="text-sm text-slate-300">
+      ✅ This page is ready to receive <span class="font-semibold text-slate-100">?category=</span> from Categories.
+      After merge, replace this placeholder with the real books list + filter logic.
+    </p>
+  </div>
+</section>

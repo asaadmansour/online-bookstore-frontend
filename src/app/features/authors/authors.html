@@ -1,27 +1,28 @@
+<!-- authors.html -->
 <section class="authors-page">
-  <div class="authors-container">
-    <header class="authors-header">
-      <h1>Meet Our Authors</h1>
-      <p>Discover the minds behind your favorite books.</p>
-    </header>
+  <header class="authors-header">
+    <h1 class="authors-title">Our Authors</h1>
+    <p class="authors-subtitle">
+      Discover the brilliant minds behind your favorite stories and explore their full bibliography.
+    </p>
+  </header>
 
-    <div class="state" *ngIf="loading">Loading authors...</div>
-    <div class="state error" *ngIf="!loading && error">{{ error }}</div>
-
-    <div class="authors-grid" *ngIf="!loading && !error">
-      <article class="author-card" *ngFor="let a of authors">
-        <div class="avatar-wrap">
+  <div class="authors-grid">
+    <article class="author-card" *ngFor="let a of authors; trackBy: trackById">
+      <div class="avatar-ring">
+        <div class="avatar">
           <img
-            class="avatar"
-            [src]="a.imageUrl || defaultAvatar"
-            (error)="onImgError($event)"
+            [src]="a.authorImage || defaultAvatar"
             [alt]="a.name"
+            (error)="setDefaultImage($event)"
           />
         </div>
+      </div>
 
-        <h3 class="name">{{ a.name }}</h3>
-        <p class="bio">{{ a.bio || 'No biography available.' }}</p>
-      </article>
-    </div>
+      <h3 class="author-name">{{ a.name }}</h3>
+      <p class="author-bio">{{ a.bio }}</p>
+
+      <button class="view-btn" type="button" (click)="viewBooks(a)">View Books</button>
+    </article>
   </div>
 </section>
