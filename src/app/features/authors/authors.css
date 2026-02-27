@@ -1,0 +1,137 @@
+.authors-page {
+  padding: 48px 16px;
+}
+
+.authors-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.authors-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.authors-header h1 {
+  font-size: 34px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.authors-header p {
+  margin: 0;
+  opacity: 0.75;
+}
+
+.state {
+  text-align: center;
+  padding: 24px 0;
+  opacity: 0.8;
+}
+
+.state.error {
+  color: #b91c1c;
+  opacity: 1;
+}
+
+.authors-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  justify-items: center;
+}
+
+.author-card {
+  width: 100%;
+  max-width: 260px;
+  background: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 18px;
+  padding: 18px 16px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.06);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.author-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 38px rgba(2, 6, 23, 0.10);
+}
+
+.avatar-wrap {
+  width: 92px;
+  height: 92px;
+  margin: 0 auto 12px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.04);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.avatar {
+  width: 92px;
+  height: 92px;
+  object-fit: cover;
+  border-radius: 999px;
+  display: block;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 6px 0 6px;
+}
+
+.bio {
+  margin: 0 0 14px;
+  font-size: 13px;
+  opacity: 0.75;
+  min-height: 34px;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.pill {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.12);
+  color: #047857;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.link {
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+  color: #0f172a;
+  opacity: 0.85;
+}
+
+.link:hover {
+  opacity: 1;
+}
+
+@media (max-width: 1024px) {
+  .authors-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .authors-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 420px) {
+  .authors-grid {
+    grid-template-columns: 1fr;
+  }
+}
