@@ -1,0 +1,40 @@
+<aside class="w-64 bg-white border-r border-border-light flex flex-col min-h-screen">
+  <!-- Logo -->
+  <div class="px-6 py-5 border-b border-border-light">
+    <h1 class="text-xl font-bold text-text-main">Chapter<span class="text-accent">One</span></h1>
+    <p class="text-xs text-text-muted mt-1">Admin Portal</p>
+  </div>
+
+  <!-- Nav Links -->
+  <nav class="flex-1 px-4 py-6 flex flex-col gap-1">
+    <a routerLink="/admin/home" routerLinkActive="bg-accent-light text-accent" [routerLinkActiveOptions]="{exact:true}"
+      class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-muted hover:bg-accent-light hover:text-accent text-sm transition-colors font-medium">
+      📊 Dashboard
+    </a>
+    <a routerLink="/admin/books" routerLinkActive="bg-accent-light text-accent"
+      class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-muted hover:bg-accent-light hover:text-accent text-sm transition-colors">
+      📚 Books
+    </a>
+    <a routerLink="/admin/orders" routerLinkActive="bg-accent-light text-accent"
+      class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-muted hover:bg-accent-light hover:text-accent text-sm transition-colors">
+      🛒 Orders
+    </a>
+    <a routerLink="/admin/authors" routerLinkActive="bg-accent-light text-accent"
+      class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-muted hover:bg-accent-light hover:text-accent text-sm transition-colors">
+      👤 Authors
+    </a>
+    <a routerLink="/admin/categories" routerLinkActive="bg-accent-light text-accent"
+      class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-muted hover:bg-accent-light hover:text-accent text-sm transition-colors">
+      🏷️ Categories
+    </a>
+  </nav>
+
+  <!-- Admin User -->
+  <div class="px-6 py-4 border-t border-border-light flex items-center gap-3">
+    <div class="w-9 h-9 rounded-full bg-accent flex items-center justify-center text-white text-sm font-bold">A</div>
+    <div>
+      <p class="text-text-main text-sm font-medium">Admin</p>
+      <p class="text-text-muted text-xs">Administrator</p>
+    </div>
+  </div>
+</aside>

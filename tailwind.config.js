@@ -1,8 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{html,ts}",
-  ],
+  content: ['./src/**/*.{html,ts}'],
   theme: {
     extend: {
       colors: {
@@ -11,7 +9,7 @@ module.exports = {
         'border-light': '#E5E7EB',
         'text-main': '#1F2937',
         'text-muted': '#6B7280',
-        'accent': '#8FA89B',
+        accent: '#75b722',
         'accent-hover': '#7A9386',
         'accent-light': '#F0F4F2',
       },
@@ -34,4 +32,4 @@ module.exports = {
     },
   },
   plugins: [],
-}
+};

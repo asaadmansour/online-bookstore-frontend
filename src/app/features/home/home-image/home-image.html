@@ -1,28 +1,47 @@
-<section class="relative bg-[url('/image.png')] h-[500px] bg-cover bg-center mx-6 rounded-2xl overflow-hidden">
+<section class="relative bg-[url('/image.jpg')] min-h-screen bg-cover bg-center mx-6 rounded-2xl overflow-hidden my-4">
   <!-- dark overlay -->
-  <div class="absolute inset-0 bg-black/60"></div>
+  <div class="absolute inset-0 bg-black/70"></div>
 
   <!-- content -->
-  <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-6 gap-4">
+  <div class="relative z-10 flex flex-col items-center justify-center min-h-screen text-center px-6 gap-6">
 
     <!-- badge -->
-    <span class="border border-accent text-accent text-xs px-4 py-1 rounded-full tracking-widest">
-      EDITOR'S CHOICE
+    <span class="border border-accent text-accent text-xs px-4 py-1 rounded-full tracking-widest uppercase">
+      Est. 2024 · Premium Bookstore
     </span>
 
-    <h1 class="text-white text-6xl font-bold">Discover Your Next</h1>
-    <h1 class="text-accent text-6xl font-bold">Great Read</h1>
+    <!-- store name -->
+    <h1 class="text-white text-8xl font-bold tracking-tight">
+      Chapter<span class="text-accent">One</span>
+    </h1>
 
-    <p class="text-gray-300 max-w-md text-sm">
-      Explore our curated collection of bestsellers, new releases, and hidden gems handpicked just for you.
+    <p class="text-gray-300 max-w-lg text-lg leading-relaxed">
+      Where every story begins. Explore thousands of handpicked books across every genre, from timeless classics to today's bestsellers.
     </p>
 
-    <!-- search bar -->
-    <div class="flex w-full max-w-lg mt-4">
-      <input type="text" placeholder="Search by title, author, or ISBN..."
-        class="flex-1 px-4 py-3 rounded-l-full text-text-main text-sm outline-none" />
-      <button class="bg-accent hover:bg-accent-hover text-white px-6 py-3 rounded-r-full text-sm font-semibold">
-        Search
+    <!-- stats -->
+    <div class="flex gap-12 mt-4">
+      <div class="text-center">
+        <p class="text-accent text-3xl font-bold">10K+</p>
+        <p class="text-gray-400 text-sm">Books</p>
+      </div>
+      <div class="text-center">
+        <p class="text-accent text-3xl font-bold">500+</p>
+        <p class="text-gray-400 text-sm">Authors</p>
+      </div>
+      <div class="text-center">
+        <p class="text-accent text-3xl font-bold">50+</p>
+        <p class="text-gray-400 text-sm">Genres</p>
+      </div>
+    </div>
+
+    <!-- CTA buttons -->
+    <div class="flex gap-4 mt-4">
+      <button class="bg-accent hover:bg-accent-hover text-white px-8 py-3 rounded-full text-sm font-semibold transition-colors" routerLink="/books">
+        Browse Collection
+      </button>
+      <button class="border border-white text-white hover:bg-white hover:text-text-main px-8 py-3 rounded-full text-sm font-semibold transition-colors">
+        Learn More
       </button>
     </div>
 
