@@ -1,8 +1,9 @@
-import { Component } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Router, RouterLink } from "@angular/router";
-import { AuthService } from "../../core/services/auth.service";
+// src/app/auth/login/login.ts
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
     selector: 'app-login',
@@ -13,9 +14,14 @@ import { AuthService } from "../../core/services/auth.service";
 export class LoginComponent {
     form: FormGroup;
     error = '';
-    loading: boolean = false;
+    loading = false;
+    showPassword = false;
 
-    constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) {
+    constructor(
+        private fb: FormBuilder,
+        private auth: AuthService,
+        private router: Router
+    ) {
         this.form = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required, Validators.minLength(8)]],

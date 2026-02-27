@@ -1,6 +1,7 @@
+// src/app/app.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { Router, RouterOutlet, RouterLink, RouterLinkActive, } from '@angular/router';
 import { AuthService } from './core/services/auth.service';
 import { TokenService } from './core/services/token.service';
 import { LogoutModalComponent } from './shared/components/logout-modal/logout-modal';
@@ -8,14 +9,14 @@ import { LogoutModalComponent } from './shared/components/logout-modal/logout-mo
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, LogoutModalComponent],
+    imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive, LogoutModalComponent,],
     templateUrl: './app.html',
-    styleUrl: './app.css',
 })
 export class App {
     mobileMenuOpen = false;
     showLogoutModal = false;
     logoutLoading = false;
+    profileDropdownOpen = false;
 
     constructor(
         public auth: AuthService,
@@ -36,28 +37,35 @@ export class App {
         return user ? `${user.firstName} ${user.lastName}` : '';
     }
 
+    get userInitial(): string {
+        const user = this.auth.currentUser;
+        return user ? user.firstName.charAt(0).toUpperCase() : '?';
+    }
+
     toggleMobileMenu(): void {
         this.mobileMenuOpen = !this.mobileMenuOpen;
     }
 
     closeMobileMenu(): void {
         this.mobileMenuOpen = false;
+        this.profileDropdownOpen = false;
     }
 
+    toggleProfileDropdown(): void {
+        this.profileDropdownOpen = !this.profileDropdownOpen;
+    }
 
     openLogoutModal(): void {
         this.closeMobileMenu();
         this.showLogoutModal = true;
     }
 
-    /** Step 2: User cancels */
     cancelLogout(): void {
         this.showLogoutModal = false;
     }
 
     confirmLogout(): void {
         this.logoutLoading = true;
-
         this.auth.logoutWithConfirmation().subscribe({
             next: () => {
                 this.logoutLoading = false;
@@ -70,10 +78,5 @@ export class App {
                 this.auth.forceLogout();
             },
         });
-    }
-
-    quickLogout(): void {
-        this.closeMobileMenu();
-        this.auth.logout();
     }
 }

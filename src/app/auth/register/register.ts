@@ -11,21 +11,27 @@ import { AuthService } from '../../core/services/auth.service';
     imports: [CommonModule, ReactiveFormsModule, RouterLink],
     templateUrl: './register.html',
 })
-
 export class RegisterComponent {
     form: FormGroup;
     error = '';
     loading = false;
+    showPassword = false;
 
-    constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) {
-        this.form = this.fb.group({
-            firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(15), Validators.pattern(/^[A-Za-z]+$/)]],
-            lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(15), Validators.pattern(/^[A-Za-z]+$/)]],
-            email: ['', [Validators.required, Validators.email]],
-            password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(50)]],
-            confirmPassword: ['', [Validators.required]],
-            dob: [''],
-        }, { validators: this.passwordsMatch }
+    constructor(
+        private fb: FormBuilder,
+        private auth: AuthService,
+        private router: Router
+    ) {
+        this.form = this.fb.group(
+            {
+                firstName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(15), Validators.pattern(/^[A-Za-z]+$/)]],
+                lastName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(15), Validators.pattern(/^[A-Za-z]+$/)]],
+                email: ['', [Validators.required, Validators.email]],
+                password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(50)]],
+                confirmPassword: ['', [Validators.required]],
+                dob: [''],
+            },
+            { validators: this.passwordsMatch }
         );
     }
 
@@ -40,7 +46,6 @@ export class RegisterComponent {
             this.form.markAllAsTouched();
             return;
         }
-
         this.loading = true;
         this.error = '';
 

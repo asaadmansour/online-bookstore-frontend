@@ -7,6 +7,6 @@ import { ProfileLayoutComponent } from './profile-layout/profile-layout';
   standalone: true,
   imports: [CommonModule, ProfileLayoutComponent],
   templateUrl: './profile.html',
-  styleUrl: './profile.css',
+  styleUrls: ['./profile.css'],
 })
-export class Profile {}
+export class ProfileComponent {}

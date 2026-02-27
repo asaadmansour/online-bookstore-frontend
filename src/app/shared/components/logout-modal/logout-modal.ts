@@ -10,15 +10,9 @@ import { CommonModule } from '@angular/common';
 export class LogoutModalComponent {
     @Input() isOpen = false;
     @Input() loading = false;
-
     @Output() confirmed = new EventEmitter<void>();
     @Output() cancelled = new EventEmitter<void>();
 
-    onConfirm(): void {
-        this.confirmed.emit();
-    }
-
-    onCancel(): void {
-        this.cancelled.emit();
-    }
+    onConfirm(): void { this.confirmed.emit(); }
+    onCancel(): void { this.cancelled.emit(); }
 }

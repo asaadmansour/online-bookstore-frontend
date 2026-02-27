@@ -1,335 +1,152 @@
 <!-- src/app/features/order-history/order-detail/order-detail.html -->
-<div class="max-w-4xl mx-auto px-4 py-8">
-  <!-- Back link -->
-  <a
-    routerLink="/orders"
-    class="inline-flex items-center gap-1 text-sm text-blue-600 hover:underline mb-6"
-  >
-    <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <a routerLink="/orders" class="text-sm text-gray-600 inline-flex items-center gap-1 mb-3">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+      stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
     </svg>
     Back to Orders
   </a>
 
-  <!-- Loading -->
   @if (loading) {
-    <div class="space-y-6 animate-pulse">
-      <div class="h-7 bg-gray-200 rounded w-64"></div>
-      <div class="h-16 bg-gray-200 rounded-xl"></div>
-      <div class="h-48 bg-gray-200 rounded-xl"></div>
-    </div>
+  <div class="space-y-3">
+    <div class="h-8 bg-gray-200 rounded w-1/3"></div>
+    <div class="h-20 bg-gray-200 rounded w-full"></div>
+    <div class="h-48 bg-gray-200 rounded w-full"></div>
+  </div>
   }
 
-  <!-- Error -->
   @if (error && !loading) {
-    <div class="bg-white border border-gray-200 rounded-xl p-8 text-center">
-      <h3 class="text-lg font-semibold text-gray-900 mb-1">Order not found</h3>
-      <p class="text-sm text-gray-500 mb-4">{{ error }}</p>
-      <a
-        routerLink="/orders"
-        class="inline-block px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition"
-      >
-        Back to Orders
-      </a>
-    </div>
+  <div class="bg-white rounded-lg shadow-sm text-center py-8">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-red-600 mx-auto mb-3" fill="none" viewBox="0 0 24 24"
+      stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round"
+        d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+    </svg>
+    <h6 class="font-semibold">Order not found</h6>
+    <p class="text-sm text-gray-500">{{ error }}</p>
+    <a routerLink="/orders" class="inline-block mt-3 px-3 py-1 bg-green-600 text-white text-sm rounded">Back to
+      Orders</a>
+  </div>
   }
 
-  <!-- ══════════════ ORDER CONTENT ══════════════ -->
   @if (order && !loading) {
-    <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-6">
-      <div>
-        <h1 class="text-2xl font-bold text-gray-900">
-          Order #{{ order._id.slice(-8).toUpperCase() }}
-        </h1>
-        <p class="text-sm text-gray-500 mt-1">
-          Placed on {{ order.createdAt | date: 'MMMM d, y — h:mm a' }}
-        </p>
-      </div>
-      <div class="flex items-center gap-3">
-        <span
-          class="px-4 py-1.5 rounded-full text-sm font-semibold capitalize border
-                     {{ getStatusConfig(order.status).bgColor }}
-                     {{ getStatusConfig(order.status).color }}"
-        >
-          {{ getStatusConfig(order.status).icon }} {{ order.status }}
-        </span>
-        @if (canCancel) {
-          <button
-            (click)="openCancelModal()"
-            class="px-4 py-1.5 text-sm font-medium text-red-600 border border-red-200 rounded-lg hover:bg-red-50 transition"
-          >
-            Cancel Order
-          </button>
-        }
-      </div>
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row justify-between md:items-center gap-3 mb-4">
+    <div>
+      <h4 class="font-bold mb-1">Order #{{ order._id.slice(-8).toUpperCase() }}</h4>
+      <span class="text-sm text-gray-500">{{ order.createdAt | date: 'MMMM d, y — h:mm a' }}</span>
     </div>
-
-    <!-- Timeline -->
-    <div class="bg-white border border-gray-200 rounded-xl p-6 mb-6">
-      <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
-        Order Progress
-      </h2>
-      <div class="flex items-center justify-between">
-        @for (step of timelineSteps; track step.label; let i = $index; let last = $last) {
-          <div class="flex flex-col items-center gap-2 z-10">
-            <div
-              [class]="
-                step.done
-                  ? step.active
-                    ? 'w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center ring-4 ring-blue-100'
-                    : 'w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center'
-                  : 'w-10 h-10 rounded-full bg-gray-200 text-gray-400 flex items-center justify-center'
-              "
-            >
-              @if (step.done && !step.active) {
-                <svg
-                  class="h-5 w-5"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="3"
-                  viewBox="0 0 24 24"
-                >
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                </svg>
-              } @else {
-                <span class="text-sm font-bold">{{ i + 1 }}</span>
-              }
-            </div>
-            <span
-              class="text-xs font-medium"
-              [class]="step.done ? 'text-gray-900' : 'text-gray-400'"
-            >
-              {{ step.label }}
-            </span>
-          </div>
-          @if (!last) {
-            <div
-              class="flex-1 h-1 mx-2 rounded-full -mt-6"
-              [class]="step.done ? 'bg-green-500' : 'bg-gray-200'"
-            ></div>
-          }
-        }
-      </div>
+    <div class="flex items-center gap-2">
+      <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold badge-status-{{ order.status }}">{{
+        order.status | titlecase }}</span>
     </div>
+  </div>
 
-    <!-- ★ Items — handling null books + unit_price ★ -->
-    <div class="bg-white border border-gray-200 rounded-xl overflow-hidden mb-6">
-      <div class="px-6 py-4 bg-gray-50 border-b">
-        <h2 class="font-semibold text-gray-900">Items ({{ totalQuantity }})</h2>
-      </div>
-
-      @if (order.items.length === 0) {
-        <div class="px-6 py-8 text-center text-gray-400">
-          <p>No items in this order</p>
-        </div>
-      }
-
-      @for (item of order.items; track trackByItemId($index, item)) {
-        <div class="flex items-center gap-4 px-6 py-4 border-b last:border-b-0">
-          <!-- ★ Cover — book might be null ★ -->
-          @if (item.book?.coverUrl) {
-            <img
-              [src]="item.book?.coverUrl"
-              [alt]="item.book?.title || 'Book'"
-              class="w-16 h-20 object-cover rounded-lg shadow-sm shrink-0"
-            />
+  <!-- Timeline -->
+  <div class="bg-white rounded-lg shadow-sm mb-4 p-4">
+    <div class="flex justify-between items-center">
+      @for (step of timelineSteps; track step.label; let i = $index; let last = $last) {
+      <div class="text-center" style="z-index:1">
+        <div class="mx-auto mb-2 flex items-center justify-center rounded-full" style="width:40px;height:40px"
+          [class]="step.done ? (step.active ? 'bg-blue-600 text-white' : 'bg-green-600 text-white') : 'bg-gray-100 text-gray-400 border'">
+          @if (step.done && !step.active) {
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+          </svg>
           } @else {
-            <div class="w-16 h-20 bg-gray-100 rounded-lg flex items-center justify-center shrink-0">
-              <svg
-                class="h-8 w-8 text-gray-300"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.5"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25
-                     A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966
-                     8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018
-                     18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"
-                />
-              </svg>
-            </div>
+          <span class="font-semibold text-sm">{{ i + 1 }}</span>
           }
-
-          <!-- ★ Book info — handle null book ★ -->
-          <div class="flex-1 min-w-0">
-            @if (item.book) {
-              <h3 class="font-medium text-gray-900 truncate">{{ item.book.title }}</h3>
-              @if (item.book.author?.name) {
-                <p class="text-sm text-gray-500">by {{ item.book.author?.name }}</p>
-              }
-            } @else {
-              <h3 class="font-medium text-gray-400 italic">Book no longer available</h3>
-            }
-            <!-- ★ unit_price NOT price ★ -->
-            <p class="text-sm text-gray-500 mt-1">
-              {{ item.unit_price | currency }} × {{ item.quantity }}
-            </p>
-          </div>
-
-          <!-- ★ Line total using unit_price ★ -->
-          <div class="text-right shrink-0">
-            <p class="font-semibold text-gray-900">
-              {{ item.unit_price * item.quantity | currency }}
-            </p>
-          </div>
         </div>
+        <small [class]="step.done ? 'font-semibold text-sm' : 'text-sm text-gray-500'">{{ step.label }}</small>
+      </div>
       }
     </div>
+  </div>
 
-    <!-- Bottom grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- ★ Shipping — use shipping_address.zip NOT zipCode ★ -->
-      <div class="bg-white border border-gray-200 rounded-xl p-6">
-        <h2 class="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-          <svg
-            class="h-5 w-5 text-gray-400"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
-            />
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
-            />
-          </svg>
-          Shipping Address
-        </h2>
-        <div class="text-sm text-gray-600 space-y-1">
-          <p>{{ order.shipping_address.street }}</p>
-          <p>
-            {{ order.shipping_address.city }},
-            {{ order.shipping_address.state }}
-            {{ order.shipping_address.zip }}
-          </p>
-          <p>{{ order.shipping_address.country }}</p>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <!-- Items -->
+    <div class="lg:col-span-2">
+      <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+        <div class="px-4 py-3 border-b">
+          <h6 class="font-semibold mb-0">Items ({{ totalQuantity }})</h6>
         </div>
 
-        <!-- ★ payment_method NOT paymentMethod ★ -->
-        <div class="mt-6 pt-4 border-t border-gray-100">
-          <h3 class="text-sm font-semibold text-gray-900 mb-2">Payment</h3>
-          <div class="flex items-center gap-2 text-sm text-gray-600">
-            <span class="capitalize">{{ order.payment_method }}</span>
-            <span>·</span>
-            <span
-              class="px-2 py-0.5 rounded-full text-xs"
-              [class]="
-                order.payment_status === 'paid'
-                  ? 'bg-green-100 text-green-700'
-                  : 'bg-yellow-100 text-yellow-700'
-              "
-            >
-              {{ order.payment_status }}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <!-- ★ Summary — use total_price ★ -->
-      <div class="bg-white border border-gray-200 rounded-xl p-6">
-        <h2 class="font-semibold text-gray-900 mb-4">Order Summary</h2>
-        <div class="space-y-3 text-sm">
-          <div class="flex justify-between text-gray-600">
-            <span>Subtotal ({{ totalQuantity }} items)</span>
-            <span>{{ subtotal | currency }}</span>
-          </div>
-          <div class="flex justify-between text-gray-600">
-            <span>Shipping</span>
-            <span class="text-green-600 font-medium">Free</span>
-          </div>
-          @if (order.total_price !== subtotal) {
-            <div class="flex justify-between text-gray-600">
-              <span>Tax / Fees</span>
-              <span>{{ order.total_price - subtotal | currency }}</span>
-            </div>
-          }
-          <div class="border-t border-gray-200 pt-3 flex justify-between">
-            <span class="text-base font-bold text-gray-900">Total</span>
-            <span class="text-base font-bold text-gray-900">
-              {{ order.total_price | currency }}
-            </span>
-          </div>
-        </div>
-
-        <div class="mt-6 pt-4 border-t border-gray-100 space-y-2 text-xs text-gray-400">
-          <div class="flex justify-between">
-            <span>Order placed</span>
-            <span>{{ order.createdAt | date: 'MMM d, y' }}</span>
-          </div>
-          <div class="flex justify-between">
-            <span>Last updated</span>
-            <span>{{ order.updatedAt | date: 'MMM d, y' }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  }
-
-  <!-- Cancel Modal -->
-  @if (showCancelModal) {
-    <div
-      class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
-      (click)="closeCancelModal()"
-    >
-      <div
-        class="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6"
-        (click)="$event.stopPropagation()"
-      >
-        <div
-          class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-red-100"
-        >
-          <svg
-            class="h-7 w-7 text-red-600"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73
-                 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898
-                 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
-            />
-          </svg>
-        </div>
-        <h3 class="text-lg font-bold text-gray-900 text-center mb-2">Cancel Order?</h3>
-        <p class="text-sm text-gray-500 text-center mb-6">This action cannot be undone.</p>
-        @if (cancelError) {
-          <div
-            class="mb-4 rounded-lg bg-red-50 border border-red-200 text-red-700 px-3 py-2 text-sm"
-          >
-            {{ cancelError }}
-          </div>
+        @if (order.items.length === 0) {
+        <div class="p-6 text-center text-gray-500">No items</div>
         }
-        <div class="flex gap-3">
-          <button
-            (click)="closeCancelModal()"
-            class="flex-1 px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition"
-          >
-            Keep Order
-          </button>
-          <button
-            (click)="confirmCancel()"
-            [disabled]="cancelLoading"
-            class="flex-1 px-4 py-2.5 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 disabled:bg-red-400 transition"
-          >
-            {{ cancelLoading ? 'Cancelling…' : 'Yes, Cancel' }}
-          </button>
+
+        @for (item of order.items; track trackByItemId($index, item)) {
+        <div class="flex items-center gap-3 px-4 py-4 border-b">
+          @if (item.book?.coverUrl) {
+          <img [src]="item.book?.coverUrl" [alt]="item.book?.title" class="rounded"
+            style="width:60px;height:75px;object-fit:cover" />
+          } @else {
+          <div class="bg-gray-100 rounded flex items-center justify-center" style="width:60px;height:75px">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+            </svg>
+          </div>
+          }
+          <div class="flex-1">
+            @if (item.book) {
+            <h6 class="mb-0 font-semibold">{{ item.book.title }}</h6>
+            @if (item.book.author?.name) {
+            <small class="text-sm text-gray-500">by {{ item.book.author?.name }}</small>
+            }
+            } @else {
+            <h6 class="mb-0 text-gray-500 italic">Book unavailable</h6>
+            }
+            <small class="text-sm text-gray-500 block mt-1">Qty: {{ item.quantity }} · {{ item.unit_price | currency
+              }}</small>
+          </div>
+          <div class="font-semibold">{{ item.unit_price * item.quantity | currency }}</div>
+        </div>
+        }
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div>
+      <!-- Summary -->
+      <div class="bg-white rounded-lg shadow-sm mb-4 p-4">
+        <h6 class="font-semibold mb-3">Order Summary</h6>
+        <div class="flex justify-between text-sm text-gray-500 mb-2"><span>Subtotal</span><span>{{ subtotal | currency
+            }}</span></div>
+        <div class="flex justify-between text-sm text-gray-500 mb-2"><span>Shipping</span><span
+            class="text-green-600 font-medium">Free</span></div>
+        @if (order.total_price !== subtotal) {
+        <div class="flex justify-between text-sm text-gray-500 mb-2"><span>Tax</span><span>{{ order.total_price -
+            subtotal | currency }}</span></div>
+        }
+        <div class="border-t mt-3 pt-3 flex justify-between"><span class="font-semibold">Total</span><span
+            class="font-semibold text-lg">{{ order.total_price | currency }}</span></div>
+      </div>
+
+      <!-- Shipping -->
+      <div class="bg-white rounded-lg shadow-sm p-4">
+        <h6 class="font-semibold mb-2 inline-flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+          </svg>
+          Shipping
+        </h6>
+        <div class="text-sm text-gray-500">
+          <p class="mb-1">{{ order.shipping_address.street }}</p>
+          <p class="mb-1">{{ order.shipping_address.city }}, {{ order.shipping_address.state }} {{
+            order.shipping_address.zip }}</p>
+          <p class="mb-3">{{ order.shipping_address.country }}</p>
+          <div class="border-t pt-3 flex justify-between items-center"><span>Payment</span><span
+              class="uppercase font-medium">{{ order.payment_method }}</span></div>
         </div>
       </div>
     </div>
+  </div>
   }
 </div>

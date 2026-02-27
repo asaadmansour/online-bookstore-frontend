@@ -1,3 +1,4 @@
+// src/app/features/profile/profile-layout/profile-layout.ts
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
@@ -10,7 +11,7 @@ import { AuthService } from '../../../core/services/auth.service';
   templateUrl: './profile-layout.html',
 })
 export class ProfileLayoutComponent {
-  constructor(public auth: AuthService) {}
+  constructor(public auth: AuthService) { }
 
   get userInitial(): string {
     const user = this.auth.currentUser;

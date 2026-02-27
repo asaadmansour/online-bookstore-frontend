@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { readonly } from "@angular/forms/signals";
 
 @Injectable({ providedIn: 'root' })
 export class TokenService {
@@ -41,19 +40,19 @@ export class TokenService {
         return decoded['exp'] * 1000 <= Date.now() + 30_000;
     }
 
-    isLoggedIn() : boolean {
+    isLoggedIn(): boolean {
         return !this.isTokenExpired(this.getRefreshToken());
     }
 
-    getUserRole() : 'user' | 'admin' | null {
+    getUserRole(): 'user' | 'admin' | null {
         const token = this.getAccessToken();
-        if(!token) return null;
+        if (!token) return null;
         return this.decodeToken(token)?.['role'] ?? null;
     }
 
-    getUserId() : string | null {
+    getUserId(): string | null {
         const token = this.getAccessToken();
-        if(!token) return null;
+        if (!token) return null;
         return this.decodeToken(token)?.['userId'] ?? null;
     }
 }
