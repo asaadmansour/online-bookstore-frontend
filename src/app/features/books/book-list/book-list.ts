@@ -1,8 +1,6 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { BookCard } from '../book-card/book-card';
 import { LucideAngularModule, Filter, ArrowUpDown } from 'lucide-angular';
-import { ProgressSpinner } from 'primeng/progressspinner';
-import { Navbar } from '../../../shared/components/navbar/navbar';
 import { BookService } from '../../../core/services/book.service';
 import { Book } from '../../../shared/models/book.model';
 import { CategoryService } from '../../../core/services/category.service';
@@ -13,7 +11,7 @@ import { Author } from '../../../shared/models/author.model';
 
 @Component({
   selector: 'app-book-list',
-  imports: [BookCard, LucideAngularModule, ProgressSpinner, Navbar, OverlayModule],
+  imports: [BookCard, LucideAngularModule, OverlayModule],
   templateUrl: './book-list.html',
   styleUrl: './book-list.css',
 })

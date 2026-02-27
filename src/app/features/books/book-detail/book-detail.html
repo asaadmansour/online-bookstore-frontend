@@ -28,7 +28,7 @@
               {{ book()!.name }}
             </h1>
             <p class="mt-2 text-surface-500 text-lg">
-              by <span class="text-accent font-semibold">{{ book()!.author?.name ?? book()!.author }}</span>
+              by <span class="text-accent font-semibold">{{ book()!.author.name }}</span>
             </p>
           </div>
 
@@ -131,7 +131,7 @@
                       <div>
                         <p class="text-sm font-semibold uppercase tracking-wide text-accent">Similar Pick</p>
                         <h3 class="text-lg font-bold text-surface-900 dark:text-surface-0 truncate">{{ suggested.name }}</h3>
-                        <p class="text-sm text-surface-500">{{ suggested.author?.name ?? suggested.author }}</p>
+                        <p class="text-sm text-surface-500">{{ suggested.author.name }}</p>
                       </div>
                       <div class="flex items-center justify-between">
                         <span class="text-xl font-bold text-accent">${{ suggested.price }}</span>

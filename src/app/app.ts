@@ -1,24 +1,85 @@
+// src/app/app.ts
 import { Component } from '@angular/core';
-
-import { MenuItem } from 'primeng/api';
-import { ProgressSpinner } from 'primeng/progressspinner';
+import { CommonModule } from '@angular/common';
+import { Router, RouterOutlet } from '@angular/router';
+import { AuthService } from './core/services/auth.service';
+import { TokenService } from './core/services/token.service';
 import { ToastModule } from 'primeng/toast';
-
-import { BookList } from './features/books/book-list/book-list';
+import { inject } from '@angular/core';
 import { Navbar } from './shared/components/navbar/navbar';
-import { RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [BookList, ProgressSpinner, Navbar, RouterOutlet, ToastModule],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    Navbar,
+    ToastModule,
+  ],
   templateUrl: './app.html',
-  styleUrl: './app.css',
 })
 export class App {
-  items: MenuItem[] = [
-    { label: 'Home', routerLink: '/' },
-    { label: 'Books', routerLink: '/books' },
-    { label: 'Cart', routerLink: '/cart' },
-    { label: 'Login', routerLink: '/auth/login' },
-  ];
+  mobileMenuOpen = false;
+  showLogoutModal = false;
+  logoutLoading = false;
+  profileDropdownOpen = false;
+  private auth = inject(AuthService);
+  private token = inject(TokenService);
+  private router = inject(Router);
+
+  get isLoggedIn(): boolean {
+    return this.token.isLoggedIn();
+  }
+
+  get isAdmin(): boolean {
+    return this.token.getUserRole() === 'admin';
+  }
+
+  get userName(): string {
+    const user = this.auth.currentUser;
+    return user ? `${user.firstName} ${user.lastName}` : '';
+  }
+
+  get userInitial(): string {
+    const user = this.auth.currentUser;
+    return user ? user.firstName.charAt(0).toUpperCase() : '?';
+  }
+
+  toggleMobileMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
+  closeMobileMenu(): void {
+    this.mobileMenuOpen = false;
+    this.profileDropdownOpen = false;
+  }
+
+  toggleProfileDropdown(): void {
+    this.profileDropdownOpen = !this.profileDropdownOpen;
+  }
+
+  openLogoutModal(): void {
+    this.closeMobileMenu();
+    this.showLogoutModal = true;
+  }
+
+  cancelLogout(): void {
+    this.showLogoutModal = false;
+  }
+
+  confirmLogout(): void {
+    this.logoutLoading = true;
+    this.auth.logoutWithConfirmation().subscribe({
+      next: () => {
+        this.logoutLoading = false;
+        this.showLogoutModal = false;
+        this.router.navigate(['/']);
+      },
+      error: () => {
+        this.logoutLoading = false;
+        this.showLogoutModal = false;
+        this.auth.forceLogout();
+      },
+    });
+  }
 }
