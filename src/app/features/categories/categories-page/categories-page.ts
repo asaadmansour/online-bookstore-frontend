@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { CategoriesService } from '../../../core/services/categories.service';
 import { Category } from '../../../shared/models/category.model';
 
@@ -13,14 +14,18 @@ import { Category } from '../../../shared/models/category.model';
 export class CategoriesPageComponent implements OnInit {
   categories: Category[] = [];
 
-  // Pagination state
+  // pagination
   page = 1;
   limit = 10;
+  totalPages = 0;
 
+  // UI state
   loading = true;
   error = '';
 
-  constructor(private categoriesService: CategoriesService) {}
+  constructor(private categoriesService: CategoriesService,
+              private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadCategories();
@@ -31,8 +36,11 @@ export class CategoriesPageComponent implements OnInit {
     this.error = '';
 
     this.categoriesService.getAll(this.page, this.limit).subscribe({
-      next: (cats) => {
-        this.categories = cats;
+      next: (res) => {
+        console.log('Categories response:', res);
+        console.log('Categories items:', res.items);
+        this.categories = res.items;      
+        this.totalPages = res.totalPages; 
         this.loading = false;
       },
       error: (err) => {
@@ -42,10 +50,11 @@ export class CategoriesPageComponent implements OnInit {
     });
   }
 
- // Pagination controls
   nextPage(): void {
-    this.page++;
-    this.loadCategories();
+    if (this.page < this.totalPages) {
+      this.page++;
+      this.loadCategories();
+    }
   }
 
   prevPage(): void {
@@ -55,8 +64,17 @@ export class CategoriesPageComponent implements OnInit {
     }
   }
 
-// Refresh the list (e.g. after creating/updating/deleting a category)
   refresh(): void {
     this.loadCategories();
   }
+
+  trackById(index: number, item: Category): string {
+ return item._id;
+  }
+
+goToCategory(categoryId: number | string): void {
+  this.router.navigate(['/books'], {
+    queryParams: { category: categoryId }
+  });
+}
 }

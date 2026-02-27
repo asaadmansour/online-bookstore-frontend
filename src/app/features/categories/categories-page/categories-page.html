@@ -1,0 +1,61 @@
+<section class="cat-page">
+  <div class="cat-container">
+    <!-- Header -->
+    <header class="cat-header">
+      <h1>Browse by <span>Category</span></h1>
+      <p>
+        Discover your next favorite read through our curated collections, ranging from timeless classics to modern
+        scientific breakthroughs.
+      </p>
+
+      <!-- Top actions -->
+      <div class="cat-topbar">
+        <button class="btn-outline" type="button" (click)="refresh()" [disabled]="loading">
+          <span class="dot" aria-hidden="true"></span>
+          Refresh
+        </button>
+
+        <div class="pager" *ngIf="!loading && !error">
+          <button class="pager-btn" type="button" (click)="prevPage()" [disabled]="page <= 1">Prev</button>
+          <span class="pager-text">Page <b>{{ page }}</b> of <b>{{ totalPages }}</b></span>
+          <button class="pager-btn" type="button" (click)="nextPage()" [disabled]="page >= totalPages">Next</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- States -->
+    <div class="state state-loading" *ngIf="loading">Loading categories...</div>
+    <div class="state state-error" *ngIf="!loading && error">{{ error }}</div>
+
+    <!-- Grid -->
+    <div class="cat-grid" *ngIf="!loading && !error && categories.length > 0">
+      <article class="cat-card" *ngFor="let c of categories; trackBy: trackById">
+        <div class="cat-img">
+        
+          <img
+            src="images/category-placeholder.jpg"
+            alt="Category image"
+            loading="lazy"
+          />
+        </div>
+
+        <div class="cat-body">
+          <h3 class="cat-title">{{ c.name }}</h3>
+
+          <p class="cat-desc">
+            Explore books in <b>{{ c.name }}</b> and discover your next favorite read.
+          </p>
+
+          <button class="btn-primary" type="button" (click)="goToCategory(c._id)">
+            Explore Category <span class="arrow" aria-hidden="true">→</span>
+          </button>
+        </div>
+      </article>
+    </div>
+
+    <!-- Empty -->
+    <div class="state state-empty" *ngIf="!loading && !error && categories.length === 0">
+      No categories yet.
+    </div>
+  </div>
+</section>

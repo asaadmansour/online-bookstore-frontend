@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { Category } from '../../shared/models/category.model';
 
 interface PageResponse<T> {
+  _id: string;
   page: number;
   limit: number;
   total: number;
@@ -20,10 +21,10 @@ export class CategoriesService {
 
   constructor(private http: HttpClient) {}
 
-  getAll(page = 1, limit = 10): Observable<Category[]> {
+  getAll(page = 1, limit = 10): Observable<PageResponse<Category>> {
     return this.http
-      .get<PageResponse<Category>>(`${this.baseUrl}?page=${page}&limit=${limit}`)
-      .pipe(map((res) => res.items ?? []));
+      .get<PageResponse<Category>>(`${this.baseUrl}?page=${page}&limit=${limit}`);
+      
   }
 
   // GET /categories/:id
