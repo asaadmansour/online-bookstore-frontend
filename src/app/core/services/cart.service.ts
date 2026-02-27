@@ -23,6 +23,18 @@ export class CartService {
       headers: this.testHeaders,
     });
   }
+
+  updateQuantity(bookId: string, quantity: number) {
+    return this.http.patch<{ message: string; item: any }>(`${this.API}/cart/${bookId}`, { quantity }, {
+      headers: this.testHeaders,
+    });
+  }
+
+  removeItem(bookId: string) {
+    return this.http.delete<{ message: string; item: any }>(`${this.API}/cart/${bookId}`, {
+      headers: this.testHeaders,
+    });
+  }
 }
 
 export interface AddToCartPayload {

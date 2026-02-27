@@ -52,7 +52,12 @@ export class OrderListComponent implements OnInit {
       },
       error: (err) => {
         this.loading = false;
-        this.error = err?.error?.error || err?.message || 'Failed to load orders';
+        // 404 = no orders yet for this user, treat as empty list
+        if (err?.status === 404) {
+          this.orders = [];
+          return;
+        }
+        this.error = err?.error?.message || err?.error?.error || 'Failed to load orders. Please try again.';
         console.error('Order load error:', err);
       },
     });

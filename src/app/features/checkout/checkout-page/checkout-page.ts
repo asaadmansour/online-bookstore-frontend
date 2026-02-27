@@ -1,12 +1,13 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { Order, ShippingAddress } from '../../../shared/models/order.model';
 import { OrderService } from '../../../core/services/order.service';
 import { CartFacade } from '../../../core/services/cart.facade';
 
 @Component({
   selector: 'app-checkout-page',
-  imports: [FormsModule],
+  imports: [FormsModule, RouterLink],
   templateUrl: './checkout-page.html',
   styleUrl: './checkout-page.css',
 })

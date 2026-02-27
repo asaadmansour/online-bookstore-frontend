@@ -6,107 +6,161 @@
       <div>
         <h1 class="mt-3 text-4xl font-extrabold text-slate-900">Shopping Cart</h1>
       </div>
-      <div class="flex items-center gap-3 rounded-full bg-slate-900 px-5 py-2 text-xs font-semibold uppercase tracking-wide text-white">
-        <p class="text-sm font-medium text-white">{{ totalItems() }} items in your cart</p>
-      </div>
+      @if (!loading() && cart() && totalItems() > 0) {
+        <div class="flex items-center gap-3 rounded-full bg-slate-900 px-5 py-2 text-xs font-semibold uppercase tracking-wide text-white">
+          <p class="text-sm font-medium text-white">{{ totalItems() }} items in your cart</p>
+        </div>
+      }
     </div>
 
-    <div class="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
-      <div class="flex flex-col gap-6">
-        @if (cart(); as currentCart) {
-          @for (item of currentCart.items; track item._id) {
+    <!-- Loading State -->
+    @if (loading()) {
+      <div class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-white/70 p-16 text-center">
+        <p-progressSpinner strokeWidth="4" styleClass="w-12 h-12 text-accent"></p-progressSpinner>
+        <p class="mt-4 text-sm font-medium text-gray-500">Loading your cart...</p>
+      </div>
+    }
+
+    <!-- Error State -->
+    @else if (error()) {
+      <div class="flex flex-col items-center justify-center rounded-2xl border border-red-200 bg-red-50 p-16 text-center gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
+        </svg>
+        <p class="text-sm font-semibold text-red-600">{{ error() }}</p>
+        <button (click)="cartFacade.loadCart()" class="mt-1 px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+          Try Again
+        </button>
+      </div>
+    }
+
+    <!-- Empty Cart State -->
+    @else if (!cart() || cart()!.items.length === 0) {
+      <div class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-white/70 p-16 text-center gap-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
+          <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+        </svg>
+        <div>
+          <p class="text-xl font-bold text-slate-800">Your cart is empty</p>
+          <p class="mt-1 text-sm text-gray-400">Looks like you haven't added any books yet.</p>
+        </div>
+        <a routerLink="/books" class="mt-2 px-6 py-2.5 bg-accent text-white text-sm font-semibold rounded-xl hover:bg-accent/90 transition-colors no-underline">
+          Browse Books
+        </a>
+      </div>
+    }
+
+    <!-- Cart with items -->
+    @else {
+      <div class="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
+        <div class="flex flex-col gap-4">
+          @for (item of cart()!.items; track item.book._id) {
             <div
-              class="flex w-full justify-center px-4"
+              class="flex w-full items-center gap-6 rounded-3xl border border-gray-200 bg-white px-6 py-5 shadow-[0_10px_30px_rgba(15,23,42,0.05)]"
             >
+              <!-- Book Cover -->
               <div
-                class="flex w-full max-w-5xl items-center gap-8 rounded-3xl border border-gray-200 bg-white px-8 py-6 shadow-[0_10px_30px_rgba(15,23,42,0.05)]"
+                class="relative flex h-32 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-gray-100 bg-gradient-to-b from-gray-50 to-gray-100 shadow-inner"
               >
-                <div
-                  class="relative flex h-36 w-28 items-center justify-center overflow-hidden rounded-2xl border border-gray-100 bg-gradient-to-b from-gray-50 to-gray-100 shadow-inner"
-                >
-                  <img
-                    [src]="item.book.coverUrl"
-                    [alt]="item.book.name"
-                    class="h-full w-full object-cover"
-                  />
+                <img
+                  [src]="item.book.coverUrl"
+                  [alt]="item.book.name"
+                  class="h-full w-full object-cover"
+                />
+              </div>
+
+              <!-- Info -->
+              <div class="flex flex-1 flex-col gap-3 min-w-0">
+                <!-- Top row: title + unit price -->
+                <div class="flex items-start justify-between gap-4">
+                  <div class="min-w-0">
+                    <p class="text-base font-semibold text-gray-900 truncate">{{ item.book.name }}</p>
+                    <p class="text-sm text-gray-500">{{ item.book.author.name }}</p>
+                  </div>
+                  <span class="shrink-0 text-sm font-medium text-gray-400">${{ item.book.price.toFixed(2) }}</span>
                 </div>
 
-                <div class="flex flex-1 flex-col gap-2">
-                  <div>
-                    <p class="text-lg font-semibold text-gray-900">{{ item.book.name }}</p>
-                    <p class="text-sm font-medium text-gray-500">{{ item.book.author.name }}</p>
+                <!-- Bottom row: qty controls + line total + remove -->
+                <div class="flex items-center justify-between gap-4">
+                  <!-- Quantity stepper -->
+                  <div class="flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-3 py-1">
+                    <button
+                      type="button"
+                      (click)="updateQuantity(item.book._id, item.quantity, -1)"
+                      [disabled]="item.quantity <= 1"
+                      class="flex h-7 w-7 items-center justify-center rounded-full border border-gray-300 bg-white text-lg font-semibold text-gray-600 transition hover:border-gray-400 disabled:opacity-40 disabled:cursor-not-allowed"
+                    >−</button>
+                    <span class="min-w-[2ch] text-center text-sm font-semibold text-gray-900">{{ item.quantity }}</span>
+                    <button
+                      type="button"
+                      (click)="updateQuantity(item.book._id, item.quantity, +1)"
+                      class="flex h-7 w-7 items-center justify-center rounded-full border border-gray-300 bg-white text-lg font-semibold text-gray-600 transition hover:border-gray-400"
+                    >+</button>
                   </div>
 
-                  <div class="mt-4 flex items-center justify-between">
-                    <div class="flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-3 py-1">
-                      <button
-                        type="button"
-                        class="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 bg-white text-lg font-semibold text-gray-600 transition hover:border-gray-400"
-                      >
-                        −
-                      </button>
-                      <span class="min-w-[2ch] text-center text-sm font-semibold text-gray-900">{{ item.quantity }}</span>
-                      <button
-                        type="button"
-                        class="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 bg-white text-lg font-semibold text-gray-600 transition hover:border-gray-400"
-                      >
-                        +
-                      </button>
-                    </div>
-                    <span class="text-xl font-extrabold text-gray-900">${{ item.book.price }}</span>
+                  <!-- Line total + remove -->
+                  <div class="flex items-center gap-4">
+                    <span class="text-lg font-extrabold text-gray-900">
+                      ${{ (item.book.price * item.quantity).toFixed(2) }}
+                    </span>
+                    <button
+                      type="button"
+                      (click)="removeItem(item.book._id)"
+                      class="flex h-8 w-8 items-center justify-center rounded-full text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+                      title="Remove item"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                      </svg>
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           }
-        } @else {
-          <div
-            class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-white/70 p-10 text-center text-gray-500"
-          >
-            <p-progressSpinner strokeWidth="4" styleClass="w-12 h-12 text-accent"></p-progressSpinner>
-            <p class="mt-4 text-sm font-medium text-gray-500">Loading cart items...</p>
-          </div>
-        }
-      </div>
-
-      <aside
-        class="sticky top-24 self-start rounded-3xl border border-white/60 bg-white px-8 py-7 shadow-[0_20px_45px_rgba(15,23,42,0.08)]"
-      >
-        <h2 class="text-lg font-bold text-slate-900">Order Summary</h2>
-        <div class="mt-6 space-y-4 text-sm font-medium text-slate-500">
-          <div class="flex items-center justify-between">
-            <span>Subtotal</span>
-            <span class="text-slate-900">${{ subtotal().toFixed(2) }}</span>
-          </div>
-          <div class="flex items-center justify-between">
-            <span>Estimated Shipping</span>
-            <span class="text-accent">Calculated at next step</span>
-          </div>
         </div>
 
-        <div class="mt-6 border-t border-slate-100 pt-6">
-          <div class="flex items-center justify-between text-xl font-extrabold text-slate-900">
-            <span>Total</span>
-            <span>${{ subtotal().toFixed(2) }}</span>
-          </div>
-          <p class="mt-1 text-xs uppercase tracking-[0.2em] text-slate-400">Before delivery</p>
-        </div>
-
-        <button
-          type="button"
-          routerLink="/checkout"
-          class="mt-8 flex w-full items-center justify-center gap-2 rounded-2xl bg-accent py-4 text-sm font-semibold uppercase tracking-[0.2em] text-white shadow-lg shadow-slate-900/20 transition hover:bg-slate-800"
+        <aside
+          class="sticky top-24 self-start rounded-3xl border border-white/60 bg-white px-8 py-7 shadow-[0_20px_45px_rgba(15,23,42,0.08)]"
         >
-          Proceed to Checkout
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 12h14m-6-7 7 7-7 7" />
-          </svg>
-        </button>
+          <h2 class="text-lg font-bold text-slate-900">Order Summary</h2>
+          <div class="mt-6 space-y-4 text-sm font-medium text-slate-500">
+            <div class="flex items-center justify-between">
+              <span>Subtotal</span>
+              <span class="text-slate-900">${{ subtotal().toFixed(2) }}</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>Estimated Shipping</span>
+              <span class="text-accent">Calculated at next step</span>
+            </div>
+          </div>
 
-        <p class="mt-4 text-center text-xs font-medium text-slate-400">
-          Need help? <a class="text-slate-900 underline underline-offset-4" href="#">Contact support</a>
-        </p>
-      </aside>
-    </div>
+          <div class="mt-6 border-t border-slate-100 pt-6">
+            <div class="flex items-center justify-between text-xl font-extrabold text-slate-900">
+              <span>Total</span>
+              <span>${{ subtotal().toFixed(2) }}</span>
+            </div>
+            <p class="mt-1 text-xs uppercase tracking-[0.2em] text-slate-400">Before delivery</p>
+          </div>
+
+          <button
+            type="button"
+            routerLink="/checkout"
+            class="mt-8 flex w-full items-center justify-center gap-2 rounded-2xl bg-accent py-4 text-sm font-semibold uppercase tracking-[0.2em] text-white shadow-lg shadow-slate-900/20 transition hover:bg-slate-800"
+          >
+            Proceed to Checkout
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 12h14m-6-7 7 7-7 7" />
+            </svg>
+          </button>
+
+          <p class="mt-4 text-center text-xs font-medium text-slate-400">
+            Need help? <a class="text-slate-900 underline underline-offset-4" href="#">Contact support</a>
+          </p>
+        </aside>
+      </div>
+    }
+
   </div>
 </div>
