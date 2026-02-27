@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CategoriesService } from '../../core/services/categories.service';
+import { CategoriesService } from '../../../core/services/categories.service';
 import { Category } from '../../../shared/models/category.model';
 
 @Component({
@@ -12,6 +12,11 @@ import { Category } from '../../../shared/models/category.model';
 })
 export class CategoriesPageComponent implements OnInit {
   categories: Category[] = [];
+
+  // Pagination state
+  page = 1;
+  limit = 10;
+
   loading = true;
   error = '';
 
@@ -21,23 +26,37 @@ export class CategoriesPageComponent implements OnInit {
     this.loadCategories();
   }
 
-  private loadCategories() {
+  loadCategories(): void {
     this.loading = true;
     this.error = '';
 
-    this.categoriesService.getAll(1, 50).subscribe({
-      next: (res) => {
-        this.categories = res.items ?? [];
+    this.categoriesService.getAll(this.page, this.limit).subscribe({
+      next: (cats) => {
+        this.categories = cats;
         this.loading = false;
       },
-      error: () => {
-        this.error = 'Failed to load categories';
+      error: (err) => {
         this.loading = false;
+        this.error = err?.error?.message || err?.message || 'Failed to load categories';
       },
     });
   }
 
-  trackById(_: number, item: Category) {
-    return item._id;
+ // Pagination controls
+  nextPage(): void {
+    this.page++;
+    this.loadCategories();
+  }
+
+  prevPage(): void {
+    if (this.page > 1) {
+      this.page--;
+      this.loadCategories();
+    }
+  }
+
+// Refresh the list (e.g. after creating/updating/deleting a category)
+  refresh(): void {
+    this.loadCategories();
   }
 }

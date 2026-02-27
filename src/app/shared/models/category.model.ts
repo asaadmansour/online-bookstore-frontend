@@ -3,4 +3,5 @@ export type Category = {
   name: string;
   createdAt: string;
   updatedAt: string;
+  deletedAt?: string;
 };
