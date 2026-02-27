@@ -1,29 +1,74 @@
 <nav class="bg-white border-b border-border-light sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-1">
-    <div class="flex items-center justify-between h-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center gap-4 h-16">
 
-      <div class="flex items-center gap-2 cursor-pointer">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8FA89B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <!-- Logo -->
+      <a routerLink="/" class="flex items-center gap-2 shrink-0 cursor-pointer no-underline">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+          stroke="#3de048" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 7v14"/>
           <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>
         </svg>
         <span class="font-bold text-text-main text-lg">ChapterOne</span>
+      </a>
+
+      <!-- Search Bar -->
+      <div class="flex-1 max-w-xl mx-auto">
+        <div class="relative">
+          <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none"
+            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input
+          (input)="onSearch($event)"
+            type="text"
+            placeholder="Search books, authors..."
+            class="w-full pl-9 pr-4 py-2 text-sm bg-bg-soft border border-slate-300 rounded-full
+                   text-text-main placeholder-text-muted outline-none
+                   focus:border-accent focus:bg-white transition-all"
+          />
+          <app-search-suggestion [query]="searchQuery()"/>
+        </div>
       </div>
 
-      <ul class="hidden md:flex items-center gap-6">
-        <li (click)="onClick()"(keyup.enter)="onClick()"
-          role="button"
-          tabindex="0" class="text-sm text-text-muted hover:text-text-main cursor-pointer transition-colors">Books</li>
-        <li class="text-sm text-text-muted hover:text-text-main cursor-pointer transition-colors">Best Sellers</li>
-        <li class="text-sm text-text-muted hover:text-text-main cursor-pointer transition-colors">New Arrivals</li>
-        <li class="text-sm text-text-muted hover:text-text-main cursor-pointer transition-colors">Deals</li>
+      <!-- Nav Links -->
+      <ul class="hidden md:flex items-center gap-1 shrink-0">
+        <li>
+          <a routerLink="/books" routerLinkActive="text-text-main bg-accent/10 font-medium"
+            class="text-sm text-text-muted hover:text-text-main hover:bg-accent/10 px-3 py-1.5 rounded-md cursor-pointer transition-colors block">
+            Books
+          </a>
+        </li>
+        <li>
+          <a routerLink="/authors" routerLinkActive="text-text-main bg-accent/10 font-medium"
+            class="text-sm text-text-muted hover:text-text-main hover:bg-accent/10 px-3 py-1.5 rounded-md cursor-pointer transition-colors block">
+            Authors
+          </a>
+        </li>
+        <li>
+          <a routerLink="/categories" routerLinkActive="text-text-main bg-accent/10 font-medium"
+            class="text-sm text-text-muted hover:text-text-main hover:bg-accent/10 px-3 py-1.5 rounded-md cursor-pointer transition-colors block">
+            Categories
+          </a>
+        </li>
       </ul>
 
-      <div class="flex items-center gap-2">
-        <button class="flex items-center gap-2 text-sm text-text-muted hover:text-text-main px-3 py-2 rounded-md hover:bg-accent-light transition-colors">
+      <!-- Divider -->
+      <div class="hidden md:block h-5 w-px bg-border-light shrink-0"></div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-2 shrink-0">
+        <button class="text-sm text-text-muted hover:text-text-main px-3 py-1.5 rounded-md hover:bg-accent/10 transition-colors cursor-pointer">
           Profile
         </button>
-        <button class="flex items-center gap-2 text-sm bg-accent hover:bg-accent-hover text-white px-4 py-2 rounded-md transition-colors">
+        <button routerLink="/cart"
+          class="flex items-center gap-1.5 text-sm bg-accent hover:bg-accent-hover text-white px-4 py-1.5 rounded-md transition-colors cursor-pointer font-medium">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
+            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+          </svg>
           Cart
         </button>
       </div>

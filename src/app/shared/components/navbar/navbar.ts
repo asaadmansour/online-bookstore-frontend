@@ -1,16 +1,17 @@
-import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, signal } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { SearchSuggestion } from '../search-suggestion/search-suggestion';
 
 @Component({
   selector: 'app-navbar',
-  imports: [],
+  imports: [RouterLink, RouterLinkActive,SearchSuggestion],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
 export class Navbar {
-  private router = inject(Router);
+  searchQuery = signal<string>('');
 
-  onClick() {
-    this.router.navigate(['/books']);
+  onSearch(event: Event) {
+    this.searchQuery.set((event.target as HTMLInputElement).value);
   }
 }

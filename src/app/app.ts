@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { MenuItem } from 'primeng/api';
 import { ProgressSpinner } from 'primeng/progressspinner';
+import { ToastModule } from 'primeng/toast';
 
 import { BookList } from './features/books/book-list/book-list';
 import { Navbar } from './shared/components/navbar/navbar';
@@ -9,7 +10,7 @@ import { RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [BookList, ProgressSpinner, Navbar, RouterOutlet],
+  imports: [BookList, ProgressSpinner, Navbar, RouterOutlet, ToastModule],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

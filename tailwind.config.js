@@ -9,7 +9,7 @@ module.exports = {
         'border-light': '#E5E7EB',
         'text-main': '#1F2937',
         'text-muted': '#6B7280',
-        accent: '#75b722',
+        accent: '#3de048',
         'accent-hover': '#7A9386',
         'accent-light': '#F0F4F2',
       },

@@ -7,9 +7,13 @@ import { BookService } from '../../../core/services/book.service';
 import { Book } from '../../../shared/models/book.model';
 import { CategoryService } from '../../../core/services/category.service';
 import { Category } from '../../../shared/models/category.model';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { AuthorService } from '../../../core/services/author.service';
+import { Author } from '../../../shared/models/author.model';
+
 @Component({
   selector: 'app-book-list',
-  imports: [BookCard, LucideAngularModule, ProgressSpinner, Navbar],
+  imports: [BookCard, LucideAngularModule, ProgressSpinner, Navbar, OverlayModule],
   templateUrl: './book-list.html',
   styleUrl: './book-list.css',
 })
@@ -18,16 +22,27 @@ export class BookList implements OnInit {
   readonly ArrowUpDown = ArrowUpDown;
   private bookService = inject(BookService);
   private categoryService = inject(CategoryService);
-
+  private authorService = inject(AuthorService);
+  sortOptions = [
+    { label: 'Newest', value: '-createdAt' },
+    { label: 'Price: Low to High', value: 'price' },
+    { label: 'Price: High to Low', value: '-price' },
+    { label: 'Top Rated', value: '-averageRating' },
+  ];
   books = signal<Book[]>([]);
+  authors = signal<Author[]>([]);
   categories = signal<Category[]>([]);
   selectedCategoryId = signal<string | null>(null);
   selectedAuthorId = signal<string | null>(null);
   minPrice = signal<number | null>(null);
   maxPrice = signal<number | null>(null);
+  selectedSort = signal<string | null>(null);
+  isFilterOpen = signal<boolean>(false);
+  isSortOpen = signal<boolean>(false);
 
   ngOnInit() {
     this.loadBooks();
+    this.loadAuthors();
     this.categoryService.getCategories().subscribe((data) => {
       this.categories.set(data.items);
     });
@@ -39,12 +54,21 @@ export class BookList implements OnInit {
         authorId: this.selectedAuthorId() ?? undefined,
         minPrice: this.minPrice() ?? undefined,
         maxPrice: this.maxPrice() ?? undefined,
+        sort: this.selectedSort() ?? undefined,
       })
       .subscribe((data) => {
         this.books.set(data.books);
       });
   }
-
+  loadAuthors() {
+    this.authorService.getAuthors().subscribe((data) => {
+      this.authors.set(data.items);
+    });
+  }
+  onSortChange(selected: string) {
+    this.selectedSort.set(selected);
+    this.loadBooks();
+  }
   selectCategory(id: string | null) {
     this.selectedCategoryId.set(id);
     this.loadBooks();
@@ -66,6 +90,7 @@ export class BookList implements OnInit {
     this.selectedAuthorId.set(null);
     this.minPrice.set(null);
     this.maxPrice.set(null);
+    this.selectedSort.set(null);
     this.loadBooks();
   }
 }
