@@ -1,54 +1,39 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { AuthorsService } from '../../../../../core/services/authors.service';
-import { Author } from '../../../../../shared/models/author.model';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { ButtonModule } from 'primeng/button';
+import { CarouselModule } from 'primeng/carousel';
+import { TagModule } from 'primeng/tag';
 import { RouterLink } from '@angular/router';
-
-type PagedResponse<T> = {
-  page: number;
-  limit: number;
-  total: number;
-  totalPages: number;
-  items: T[];
-};
+import { AuthorService } from '../../../../../core/services/author.service';
+import { Author } from '../../../../../shared/models/author.model';
 
 @Component({
-  selector: 'app-popular-authors',
-  standalone: true,
-  imports: [CommonModule,RouterLink],
+  selector: 'app-trending-authors',
   templateUrl: './popular-authors.html',
-  styleUrl: './popular-authors.css',
+  standalone: true,
+  imports: [ButtonModule, CarouselModule, TagModule, RouterLink],
 })
+export class TrendingAuthors implements OnInit {
+  private authorService = inject(AuthorService);
 
-export class PopularAuthorsComponent implements OnInit {
-  authors: Author[] = [];
-  loading = true;
-  error = '';
+  authors = signal<Author[]>([]);
+  responsiveOptions = [
+    { breakpoint: '1920px', numVisible: 4, numScroll: 1 },
+    { breakpoint: '1200px', numVisible: 3, numScroll: 1 },
+    { breakpoint: '768px',  numVisible: 2, numScroll: 1 },
+    { breakpoint: '576px',  numVisible: 1, numScroll: 1 },
+  ];
 
-  constructor(private authorsService: AuthorsService) {}
-
- ngOnInit(): void {
-  this.loading = true;
-  this.error = '';
-
-  this.authorsService.getPopular().subscribe({
-    next: (authors: Author[]) => {
-      this.authors = authors;  
-      this.loading = false;
-    },
-    error: (err: any) => {
-      this.error = err?.message || 'Failed to load authors';
-      this.loading = false;
-    }
-  });
-}
-
-  trackById(index: number, a: any) {
-    return a?._id ?? a?.id ?? index;
+  ngOnInit() {
+    this.authorService.getAuthors().subscribe((data) => {
+      this.authors.set(data.items.slice(0, 9));
+    });
   }
 
-  avatar(a: any) {
-    return a?.photo || a?.imageUrl || 'images/default-avatar.jpg';
+  avatar(a: Author): string {
+    return (a as any)?.photo || (a as any)?.imageUrl || 'images/default-avatar.jpg';
   }
 
+  onImgError(e: Event) {
+    (e.target as HTMLImageElement).src = 'images/default-avatar.jpg';
+  }
 }

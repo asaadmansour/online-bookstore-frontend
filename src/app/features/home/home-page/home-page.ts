@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PopularAuthorsComponent } from './sections/popular-authors/popular-authors';
+import { TrendingAuthors } from './sections/popular-authors/popular-authors';
 import { AuthorsService } from '../../../core/services/authors.service';
 import { HomeImage } from '../home-image/home-image';
 import { TrendingBooks } from '../trending-books/trending-books';
@@ -8,13 +8,7 @@ import { HomeCategories } from '../home-categories/home-categories';
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [
-    CommonModule,
-    PopularAuthorsComponent,
-    HomeImage,
-    TrendingBooks,
-    HomeCategories,
-  ],
+  imports: [CommonModule, TrendingAuthors, HomeImage, TrendingBooks, HomeCategories],
   templateUrl: './home-page.html',
   styleUrl: './home-page.css',
 })

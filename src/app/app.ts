@@ -8,12 +8,12 @@ import { ToastModule } from 'primeng/toast';
 import { inject } from '@angular/core';
 import { Button } from 'primeng/button';
 import { Navbar } from './shared/components/navbar/navbar';
-import { ThemeService } from './core/services/theme.service';
+import { FooterComponent } from './shared/footer/footer';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, ToastModule, Navbar, RouterOutlet, Button, Navbar],
+  imports: [CommonModule, ToastModule, Navbar, RouterOutlet, Button, Navbar, FooterComponent],
   templateUrl: './app.html',
 })
 export class App {

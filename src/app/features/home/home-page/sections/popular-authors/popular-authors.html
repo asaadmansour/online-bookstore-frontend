@@ -1,26 +1,54 @@
-<section class="pa-section center">
-  <div class="pa-head">
-    <h2 class="pa-title">Popular Authors</h2>
-    <p class="pa-sub">Discover writers behind your favorite books.</p>
-  </div>
+<div class="w-full bg-bg-soft px-6">
+  <div class="max-w-screen-xl mx-auto">
 
-  <p class="pa-loading" *ngIf="loading">Loading authors...</p>
-  <p class="pa-error" *ngIf="!loading && error">{{ error }}</p>
-
-  <div class="pa-grid" *ngIf="!loading && !error">
-    <div class="pa-card" *ngFor="let a of authors; trackBy: trackById">
-      <div class="pa-avatar">
-        <img [src]="avatar(a)" [alt]="a.name" />
+    <!-- Section Header -->
+    <div class="flex items-end justify-between mb-10">
+      <div>
+        <p class="text-accent text-sm font-semibold tracking-widest uppercase mb-1">Meet the Minds</p>
+        <h2 class="text-4xl font-bold text-text-main">Popular Authors</h2>
       </div>
-
-      <h3 class="pa-name">{{ a.name }}</h3>
-
-      <p class="pa-desc">
-        {{ a.bio || 'Author' }}
-      </p>
-       
-          <a class="pa-badge view-badge" [routerLink]="['/authors', a._id]">View</a>
-        
+      <a routerLink="/authors" class="text-accent hover:text-accent-hover text-sm font-medium flex items-center gap-1 transition-colors no-underline">
+        View all <span>→</span>
+      </a>
     </div>
+
+    <!-- Carousel -->
+    <p-carousel
+      [value]="authors()"
+      [numVisible]="4"
+      [numScroll]="1"
+      [responsiveOptions]="responsiveOptions"
+      [showIndicators]="false"
+      [showNavigators]="true"
+      [autoplayInterval]="6000"
+      [circular]="true"
+    >
+      <ng-template #item let-author>
+        <div class="px-3 py-4">
+          <a
+            [routerLink]="['/authors', author._id]"
+            class="group flex flex-col rounded-lg overflow-hidden bg-white hover:shadow-md transition-shadow cursor-pointer no-underline"
+          >
+            <!-- Avatar — same 5:7 aspect ratio as book cards -->
+            <div class="w-full aspect-[5/7] overflow-hidden bg-bg-soft">
+              <img
+                [src]="avatar(author)"
+                [alt]="author.name"
+                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                (error)="onImgError($event)"
+              />
+            </div>
+
+            <!-- Info — same padding & font sizes as BookCard -->
+            <div class="p-3 bg-bg-soft flex flex-col gap-1">
+              <p class="font-semibold text-sm truncate text-surface-900">{{ author.name }}</p>
+              <p class="text-xs text-text-muted line-clamp-2 leading-relaxed">{{ author.bio || 'Author' }}</p>
+              <span class="text-accent font-bold text-sm mt-1">View profile →</span>
+            </div>
+          </a>
+        </div>
+      </ng-template>
+    </p-carousel>
+
   </div>
-</section>
+</div>

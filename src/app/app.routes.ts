@@ -15,6 +15,7 @@ import { CartPage } from './features/cart/cart-page/cart-page';
 import { SearchSuggestion } from './shared/components/search-suggestion/search-suggestion';
 import { HomePage } from './features/home/home-page/home-page';
 import { AuthLayout } from './layouts/auth-layout/auth-layout';
+import { CategoriesPageComponent } from './features/categories/categories-page/categories-page';
 import { AuthorsComponent } from './features/authors/authors';
 
 export const routes: Routes = [
@@ -26,6 +27,8 @@ export const routes: Routes = [
       { path: 'books', component: BookList },
       { path: 'books/suggestions', component: SearchSuggestion },
       { path: 'books/:id', component: BookDetail },
+      { path: 'categories', component: CategoriesPageComponent },
+      { path: 'categories/:id', component: CategoriesPageComponent },
       { path: 'authors', component: AuthorsComponent },
       { path: 'authors/:id', component: AuthorsComponent },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
