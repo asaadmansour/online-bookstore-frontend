@@ -1,0 +1,52 @@
+.popular-books {
+  margin-top: 40px;
+}
+
+.popular-books h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.book-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  transition: 0.3s;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+}
+
+.book-card img {
+  width: 100%;
+  border-radius: 8px;
+  height: 200px;
+  object-fit: cover;
+}
+
+.book-info {
+  margin-top: 10px;
+}
+
+.book-info h3 {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.book-info p {
+  font-size: 14px;
+  color: gray;
+}
+
+.price {
+  font-weight: bold;
+  color: #2e7d32;
+}

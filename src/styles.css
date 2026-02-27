@@ -17,13 +17,13 @@ body {
 
 /* Light theme (default) */
 :root {
-  --bg: #f6f6f2;            /* page background */
-  --surface: #ffffff;       /* cards / navbar / footer */
-  --text: #111827;          /* main text */
-  --muted: #6b7280;         /* secondary text */
-  --border: #e5e7eb;        /* borders */
-  --primary: #22c55e;       /* green accent */
-  --primaryText: #ffffff;   /* text on primary */
+  --bg: #f6f6f2;           
+  --surface: #ffffff;       
+  --text: #111827;          
+  --muted: #6b7280;        
+  --border: #e5e7eb;        
+  --primary: #22c55e;      
+  --primaryText: #ffffff;   
 }
 
 /* Dark theme overrides (applied when .data-theme="dark" on <html>) */
@@ -37,9 +37,7 @@ body {
   --primaryText: #0b0f14;
 }
 
-/* =========================
-   Global base styles
-   ========================= */
+/*Global base styles*/
 
 html,
 body {
@@ -63,9 +61,7 @@ a {
   box-sizing: border-box;
 }
 
-/* =========================
-   Helpful layout helpers
-   ========================= */
+/*Helpful layout helpers*/
 
 .container {
   max-width: 1120px;
@@ -80,9 +76,7 @@ a {
   background: var(--bg);
 }
 
-/* =========================
-   Common UI blocks
-   ========================= */
+/* Common UI blocks*/
 
 .navbar {
   background: var(--surface);
