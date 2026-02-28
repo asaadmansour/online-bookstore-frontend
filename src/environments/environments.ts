@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:5000',
+  apiUrl: 'https://online-bookstore-backend-production-4861.up.railway.app',
 };
