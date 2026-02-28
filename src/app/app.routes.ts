@@ -17,6 +17,16 @@ import { HomePage } from './features/home/home-page/home-page';
 import { AuthLayout } from './layouts/auth-layout/auth-layout';
 import { CategoriesPageComponent } from './features/categories/categories-page/categories-page';
 import { AuthorsComponent } from './features/authors/authors';
+/* import { LayoutComponent } from './main/layout/layout';
+import { NotFoundComponent } from './core/not-found/not-found';
+import { AdminLayoutComponent } from './admin/admin-layout/admin-layout';
+import { ManageAuthorsComponent } from './admin/manage-authors/manage-authors';
+import { ManageCategoriesComponent } from './admin/manage-categories/manage-categories';
+import { AuthorListComponent } from './admin/manage-authors/author-list/author-list';
+import { AuthorFormComponent } from './admin/manage-authors/author-form/author-form';
+import { CategoryListComponent } from './admin/manage-categories/category-list/category-list';
+import { CategoryFormComponent } from './admin/manage-categories/category-form/category-form'; */
+
 import { ManageOrders } from './admin/manage-orders/manage-orders';
 
 export const routes: Routes = [
@@ -92,6 +102,29 @@ export const routes: Routes = [
         path: 'authors',
         loadComponent: () =>
           import('./admin/manage-authors/manage-authors').then((m) => m.ManageAuthorsComponent),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./admin/manage-authors/author-list/author-list').then(
+                (m) => m.AuthorListComponent,
+              ),
+          },
+          {
+            path: 'new',
+            loadComponent: () =>
+              import('./admin/manage-authors/author-form/author-form').then(
+                (m) => m.AuthorFormComponent,
+              ),
+          },
+          {
+            path: ':id/edit',
+            loadComponent: () =>
+              import('./admin/manage-authors/author-form/author-form').then(
+                (m) => m.AuthorFormComponent,
+              ),
+          },
+        ],
       },
       {
         path: 'categories',
@@ -99,7 +132,31 @@ export const routes: Routes = [
           import('./admin/manage-categories/manage-categories').then(
             (m) => m.ManageCategoriesComponent,
           ),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./admin/manage-categories/category-list/category-list').then(
+                (m) => m.CategoryListComponent,
+              ),
+          },
+          {
+            path: 'new',
+            loadComponent: () =>
+              import('./admin/manage-categories/category-form/category-form').then(
+                (m) => m.CategoryFormComponent,
+              ),
+          },
+          {
+            path: ':id/edit',
+            loadComponent: () =>
+              import('./admin/manage-categories/category-form/category-form').then(
+                (m) => m.CategoryFormComponent,
+              ),
+          },
+        ],
       },
+
       { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],
   },

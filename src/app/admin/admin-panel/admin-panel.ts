@@ -4,7 +4,7 @@ import { DatePipe, TitleCasePipe } from '@angular/common';
 
 import { OrderResponse } from '../../shared/models/orderResponse';
 import { UserService } from '../../core/services/user.service';
-import { AuthorService } from '../../core/services/author.service';
+import { AuthorsService } from '../../core/services/authors.service';
 import { AuthorResponse } from '../../shared/models/authorResponse';
 import { CategoriesService } from '../../core/services/categories.service';
 import { Category } from '../../shared/models/category.model';
@@ -21,7 +21,7 @@ import { User } from '../../shared/models/user.model';
 export class AdminPanel implements OnInit {
   private orderService = inject(OrderService);
   private userService = inject(UserService);
-  private authorService = inject(AuthorService);
+  private authorService = inject(AuthorsService);
   private categoryService = inject(CategoriesService);
   private authService = inject(AuthService);
   currentUser = signal<User | null>(this.authService.currentUser);

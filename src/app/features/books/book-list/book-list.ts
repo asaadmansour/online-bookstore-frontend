@@ -3,10 +3,10 @@ import { BookCard } from '../book-card/book-card';
 import { LucideAngularModule, Filter, ArrowUpDown } from 'lucide-angular';
 import { BookService } from '../../../core/services/book.service';
 import { Book } from '../../../shared/models/book.model';
-import { CategoryService } from '../../../core/services/category.service';
+import { CategoriesService } from '../../../core/services/categories.service';
 import { Category } from '../../../shared/models/category.model';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { AuthorService } from '../../../core/services/author.service';
+import { AuthorsService } from '../../../core/services/authors.service';
 import { Author } from '../../../shared/models/author.model';
 
 @Component({
@@ -19,8 +19,8 @@ export class BookList implements OnInit {
   readonly Filter = Filter;
   readonly ArrowUpDown = ArrowUpDown;
   private bookService = inject(BookService);
-  private categoryService = inject(CategoryService);
-  private authorService = inject(AuthorService);
+  private categoryService = inject(CategoriesService);
+  private authorService = inject(AuthorsService);
   sortOptions = [
     { label: 'Newest', value: '-createdAt' },
     { label: 'Price: Low to High', value: 'price' },

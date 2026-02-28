@@ -1,8 +1,8 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { BookService } from '../../core/services/book.service';
-import { AuthorService } from '../../core/services/author.service';
+import { AuthorsService } from '../../core/services/authors.service';
 import { Author } from '../../shared/models/author.model';
-import { CategoryService } from '../../core/services/category.service';
+import { CategoriesService } from '../../core/services/categories.service';
 import { Category } from '../../shared/models/category.model';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -24,8 +24,8 @@ export class BookForm implements OnInit {
     categories: [[] as string[], Validators.required],
   });
   private bookService = inject(BookService);
-  private authorService = inject(AuthorService);
-  private categoryService = inject(CategoryService);
+  private authorService = inject(AuthorsService);
+  private categoryService = inject(CategoriesService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   bookId = signal<string | null>(null);
@@ -95,12 +95,6 @@ export class BookForm implements OnInit {
 
   submit(formbody: FormGroup) {
     if (!formbody.valid || (this.selectedFile() === null && this.bookId() === null)) {
-      console.log('form valid:', formbody.valid);
-      console.log('form errors:', formbody.errors);
-      console.log('form values:', formbody.value);
-      Object.keys(formbody.controls).forEach((key) => {
-        console.log(key, formbody.get(key)?.errors);
-      });
       formbody.markAllAsTouched();
       return;
     } else {

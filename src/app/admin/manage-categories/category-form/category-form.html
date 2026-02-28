@@ -1,0 +1,40 @@
+<div class="form-page">
+    <!-- Loading existing category -->
+    <div *ngIf="loading" class="loader-row">
+        <div class="spinner"></div>
+        <span>Loading category…</span>
+    </div>
+
+    <div *ngIf="!loading" class="form-card">
+        <div class="form-header">
+            <h3 class="form-title">{{ pageTitle }}</h3>
+            <p class="form-sub">{{ isEdit ? 'Update the category details below.' : 'Fill in the details for the new
+                category.' }}</p>
+        </div>
+
+        <div class="error-msg" *ngIf="error">⚠ {{ error }}</div>
+
+        <div class="fields">
+            <div class="field">
+                <label class="label" for="cat-name">Name <span class="req">*</span></label>
+                <input id="cat-name" class="input" type="text" [(ngModel)]="name" placeholder="e.g. Science Fiction" />
+            </div>
+
+            <div class="field">
+                <label class="label" for="cat-desc">Description</label>
+                <textarea id="cat-desc" class="input textarea" [(ngModel)]="description" rows="4"
+                    placeholder="Brief description of this category…"></textarea>
+            </div>
+            <div class="field">
+                <label class="label">Category Image <span class="req" *ngIf="!isEdit">*</span></label>
+                <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+                <small *ngIf="selectedFile">{{ selectedFile.name }}</small>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button class="btn-save" [disabled]="saving" (click)="save()">{{ submitLabel }}</button>
+            <button class="btn-cancel" [disabled]="saving" (click)="cancel()">Cancel</button>
+        </div>
+    </div>
+</div>
