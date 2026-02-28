@@ -1,0 +1,53 @@
+<!-- Loading -->
+<div *ngIf="loading" class="state-box">
+  <div class="spinner"></div>
+  <span>Loading authors…</span>
+</div>
+
+<!-- Error -->
+<div *ngIf="!loading && error" class="state-box error-box">
+  <span>⚠ {{ error }}</span>
+  <button class="btn-retry" (click)="load()">Retry</button>
+</div>
+
+<!-- Empty -->
+<div *ngIf="!loading && !error && authors.length === 0" class="state-box">
+  <span>No authors yet. Add your first one!</span>
+</div>
+
+<!-- Table -->
+<table *ngIf="!loading && !error && authors.length > 0" class="tbl">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Bio</th>
+      <th class="col-actions">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let a of authors">
+      <td class="col-name">{{ a.name }}</td>
+      <td class="col-bio">{{ a.bio || '—' }}</td>
+      <td class="col-actions">
+        <a class="btn-edit" [routerLink]="[getId(a), 'edit']">Edit</a>
+        <button class="btn-delete" (click)="openDelete(a)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Delete Confirm Modal -->
+<div class="modal-backdrop" *ngIf="pendingDeleteId" (click)="cancelDelete()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-icon">🗑</div>
+    <h3 class="modal-title">Delete Author</h3>
+    <p class="modal-msg">Are you sure you want to delete <strong>{{ pendingDeleteName }}</strong>? This action cannot be
+      undone.</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" [disabled]="deleting" (click)="cancelDelete()">Cancel</button>
+      <button class="btn-confirm-delete" [disabled]="deleting" (click)="confirmDelete()">
+        {{ deleting ? 'Deleting…' : 'Yes, Delete' }}
+      </button>
+    </div>
+  </div>
+</div>
