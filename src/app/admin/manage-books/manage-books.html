@@ -10,33 +10,31 @@
         class="outline-none text-sm text-text-main bg-transparent w-48" />
     </div>
     <button
-      class="bg-accent hover:bg-accent-hover text-white px-5 py-2 rounded-xl text-sm font-semibold transition-colors" routerLink="/admin/books/create">
+      class="bg-accent hover:bg-accent-hover text-white px-5 py-2 rounded-xl text-sm font-semibold transition-colors"
+      routerLink="/admin/books/create">
       + Add New Book
     </button>
   </div>
 </div>
 
-<!-- Stats Row -->
-<div class="grid grid-cols-4 gap-4 mb-8">
+<!-- Stats -->
+<div class="grid grid-cols-3 gap-4 mb-8">
   <div class="bg-white rounded-2xl p-5 shadow-soft">
     <p class="text-text-muted text-xs uppercase tracking-widest mb-1">Total Books</p>
     <p class="text-2xl font-bold text-text-main">{{books()?.total}}</p>
-    <p class="text-accent text-xs mt-1">↑ 4 added this week</p>
+    <p class="text-text-muted text-xs mt-1">In the store</p>
   </div>
+
   <div class="bg-white rounded-2xl p-5 shadow-soft">
-    <p class="text-text-muted text-xs uppercase tracking-widest mb-1">Active</p>
-    <p class="text-2xl font-bold text-green-500">318</p>
-    <p class="text-text-muted text-xs mt-1">In store</p>
+    <p class="text-text-muted text-xs uppercase tracking-widest mb-1">Current Page</p>
+    <p class="text-2xl font-bold text-accent">{{currentPage()}}</p>
+    <p class="text-text-muted text-xs mt-1">of {{totalPages()}} pages</p>
   </div>
+
   <div class="bg-white rounded-2xl p-5 shadow-soft">
-    <p class="text-text-muted text-xs uppercase tracking-widest mb-1">Out of Stock</p>
-    <p class="text-2xl font-bold text-yellow-500">12</p>
-    <p class="text-yellow-500 text-xs mt-1">⚠ Needs restock</p>
-  </div>
-  <div class="bg-white rounded-2xl p-5 shadow-soft">
-    <p class="text-text-muted text-xs uppercase tracking-widest mb-1">Deleted</p>
-    <p class="text-2xl font-bold text-red-400">12</p>
-    <p class="text-text-muted text-xs mt-1">Soft deleted</p>
+    <p class="text-text-muted text-xs uppercase tracking-widest mb-1">Showing</p>
+    <p class="text-2xl font-bold text-green-500">{{books()?.books?.length}}</p>
+    <p class="text-text-muted text-xs mt-1">Books on this page</p>
   </div>
 </div>
 
@@ -54,83 +52,132 @@
         <th class="text-left px-6 py-4">Actions</th>
       </tr>
     </thead>
+
     <tbody class="divide-y divide-border-light">
-      @for(item of books()?.books ; track $index){
+      @for(item of books()?.books ; track item._id){
       <tr class="hover:bg-bg-soft transition-colors">
         <td class="px-6 py-4">
           <div class="flex items-center gap-3">
-            <img [src]="item.coverUrl" class="w-10 h-14 object-cover rounded-lg shadow-sm" alt="cover" />
+            <img [src]="item.coverUrl"
+                 class="w-10 h-14 object-cover rounded-lg shadow-sm"
+                 alt="cover" />
             <p class="font-medium text-text-main">{{item.name}}</p>
           </div>
         </td>
-        <td class="px-6 py-4">
-          <div class="flex items-center gap-2">
-            <span class="text-text-muted">{{item.author.name}}</span>
-          </div>
+
+        <td class="px-6 py-4 text-text-muted">
+          {{item.author.name}}
         </td>
+
         <td class="px-6 py-4">
           @for(cat of item.categories; track cat._id) {
-          <span class="bg-accent-light text-accent px-2 py-0.5 rounded-full text-xs">{{cat.name}}</span>
+            <span class="bg-accent-light text-accent px-2 py-0.5 rounded-full text-xs mr-1">
+              {{cat.name}}
+            </span>
           }
         </td>
-        <td class="px-6 py-4 font-medium text-text-main">{{item.price}}</td>
+
+        <td class="px-6 py-4 font-medium text-text-main">
+          {{item.price}}
+        </td>
+
         <td class="px-6 py-4">
           <div class="flex items-center gap-2">
             <div class="w-16 h-1.5 bg-border-light rounded-full overflow-hidden">
-              <div class="h-full bg-accent rounded-full" [style.width.%]="item.stock > 100 ? 100 : item.stock"></div>
+              <div class="h-full bg-accent rounded-full"
+                   [style.width.%]="item.stock > 100 ? 100 : item.stock">
+              </div>
             </div>
             <span class="text-text-muted text-xs">{{item.stock}}</span>
           </div>
         </td>
+
         <td class="px-6 py-4">
           <span class="flex items-center gap-1 text-xs text-green-600">
-            <span class="w-1.5 h-1.5 rounded-full bg-green-500 inline-block"></span> Active
+            <span class="w-1.5 h-1.5 rounded-full bg-green-500 inline-block"></span>
+            Active
           </span>
         </td>
+
         <td class="px-6 py-4">
           <div class="flex gap-2">
-            <button [routerLink]="['/admin/books/edit',item._id]"
-              class="px-3 py-1.5 rounded-lg border border-accent text-accent text-xs hover:bg-accent hover:text-white transition-colors">Edit</button>
-            <button (click)="confirmDelete(item._id)"
-              class="px-3 py-1.5 rounded-lg border border-red-200 text-red-400 text-xs hover:bg-red-500 hover:text-white transition-colors">Delete</button>
+            <button
+              [routerLink]="['/admin/books/edit', item._id]"
+              class="px-3 py-1.5 rounded-lg border border-accent text-accent text-xs hover:bg-accent hover:text-white transition-colors">
+              Edit
+            </button>
+
+            <button
+              (click)="confirmDelete(item._id)"
+              class="px-3 py-1.5 rounded-lg border border-red-200 text-red-400 text-xs hover:bg-red-500 hover:text-white transition-colors">
+              Delete
+            </button>
           </div>
         </td>
       </tr>
       }
-
     </tbody>
   </table>
 
   <!-- Pagination -->
   <div class="flex items-center justify-between px-6 py-4 border-t border-border-light">
-    <p class="text-text-muted text-xs">Showing page {{currentPage()}} of {{totalPages()}} · {{books()?.total}} books total</p>
+    <p class="text-text-muted text-xs">
+      Showing page {{currentPage()}} of {{totalPages()}} · {{books()?.total}} books total
+    </p>
+
     <div class="flex gap-1">
+
+      <!-- Previous -->
       <button
-        class="w-8 h-8 rounded-lg border border-border-light text-text-muted text-xs hover:border-accent hover:text-accent transition-colors">←</button>
-      <button class="w-8 h-8 rounded-lg bg-accent text-white text-xs">1</button>
+        (click)="changePage(currentPage() - 1)"
+        [disabled]="currentPage() === 1"
+        class="w-8 h-8 rounded-lg border border-border-light text-xs transition-colors"
+        [class.opacity-50]="currentPage() === 1">
+        ←
+      </button>
+
+      <!-- Page Numbers -->
+      @for (page of pages(); track page) {
+        <button
+          (click)="changePage(page)"
+          class="w-8 h-8 rounded-lg text-xs transition-colors"
+          [class.bg-accent]="page === currentPage()"
+          [class.text-white]="page === currentPage()"
+          [class.border]="page !== currentPage()"
+          [class.border-border-light]="page !== currentPage()">
+          {{page}}
+        </button>
+      }
+
+      <!-- Next -->
       <button
-        class="w-8 h-8 rounded-lg border border-border-light text-text-muted text-xs hover:border-accent hover:text-accent transition-colors">2</button>
-      <button
-        class="w-8 h-8 rounded-lg border border-border-light text-text-muted text-xs hover:border-accent hover:text-accent transition-colors">3</button>
-      <button
-        class="w-8 h-8 rounded-lg border border-border-light text-text-muted text-xs hover:border-accent hover:text-accent transition-colors">→</button>
+        (click)="changePage(currentPage() + 1)"
+        [disabled]="currentPage() === totalPages()"
+        class="w-8 h-8 rounded-lg border border-border-light text-xs transition-colors"
+        [class.opacity-50]="currentPage() === totalPages()">
+        →
+      </button>
+
     </div>
   </div>
 </div>
 
+<!-- Delete Modal -->
 @if(showDeleteModal()) {
   <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
     <div class="bg-white rounded-2xl shadow-soft p-8 w-full max-w-sm flex flex-col items-center gap-4">
       <span class="text-4xl">🗑️</span>
       <h3 class="text-lg font-bold text-text-main">Delete Book?</h3>
-      <p class="text-text-muted text-sm text-center">This action cannot be undone. The book will be deleted from the store.</p>
+      <p class="text-text-muted text-sm text-center">
+        This action cannot be undone.
+      </p>
       <div class="flex gap-3 w-full mt-2">
-        <button (click)="cancelDelete()" 
-          class="flex-1 px-4 py-3 rounded-xl border border-border-light text-text-muted text-sm hover:border-accent hover:text-accent transition-colors">
+        <button (click)="cancelDelete()"
+          class="flex-1 px-4 py-3 rounded-xl border border-border-light text-text-muted text-sm">
           Cancel
         </button>
-        <button type="button" (click)="deleteBook()"
-          class="flex-1 px-4 py-3 rounded-xl bg-red-500 hover:bg-red-600 text-white text-sm font-semibold transition-colors">
+        <button (click)="deleteBook()"
+          class="flex-1 px-4 py-3 rounded-xl bg-red-500 text-white text-sm font-semibold">
           Delete
         </button>
       </div>

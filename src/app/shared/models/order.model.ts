@@ -7,7 +7,7 @@ export type PaymentStatus = 'pending' | 'success';
 export interface OrderItem {
   book: Book | null;
   quantity: number;
-  unitPrice: number;
+  unit_price: number;
 }
 export interface ShippingAddress {
   street: string;

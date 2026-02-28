@@ -5,7 +5,7 @@ import { Author } from '../../shared/models/author.model';
 import { CategoriesService } from '../../core/services/categories.service';
 import { Category } from '../../shared/models/category.model';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-book-form',
@@ -17,7 +17,7 @@ export class BookForm implements OnInit {
   private fb = inject(FormBuilder);
   newBook: FormGroup = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
-    description: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+    description: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(500)]],
     author: ['', Validators.required],
     price: [null, [Validators.required, Validators.min(0)]],
     stock: [null, [Validators.required, Validators.min(0)]],
@@ -27,6 +27,7 @@ export class BookForm implements OnInit {
   private authorService = inject(AuthorsService);
   private categoryService = inject(CategoriesService);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   bookId = signal<string | null>(null);
   authors = signal<Author[]>([]);
   categories = signal<Category[]>([]);
@@ -87,14 +88,17 @@ export class BookForm implements OnInit {
           stock: data.stock,
           categories: data.categories.map((c) => c._id),
         });
+        this.previewUrl.set(data.coverUrl);
       });
     }
   }
 
   submit(formbody: FormGroup) {
-    if (!formbody.valid && this.selectedFile() === null) {
+    if (!formbody.valid || (this.selectedFile() === null && this.bookId() === null)) {
       formbody.markAllAsTouched();
+      return;
     } else {
+      console.log(formbody.value);
       const formData = new FormData();
       // text fields
       formData.append('name', formbody.value.name);
@@ -103,23 +107,38 @@ export class BookForm implements OnInit {
       formData.append('price', formbody.value.price);
       formData.append('stock', formbody.value.stock);
       // Send categories as array of values
-      formbody.value.categories.forEach((cat: string) => {
+      const categories = Array.isArray(formbody.value.categories)
+        ? formbody.value.categories
+        : [formbody.value.categories];
+
+      categories.forEach((cat: string) => formData.append('categories', cat));
+      /* formbody.value.categories.forEach((cat: string) => {
         formData.append('categories', cat);
-      });
+      }); */
       // file
-      formData.append('coverImage', this.selectedFile()!);
+      if (this.selectedFile()) {
+        formData.append('coverImage', this.selectedFile()!);
+      }
       formData.forEach((value, key) => {
         console.log(key, value);
       });
       if (this.bookId()) {
-        this.bookService.updateBook(this.bookId()!, formData).subscribe((data) => {
-          console.log(data);
-        });
+        this.bookService.updateBook(this.bookId()!, formData).subscribe(
+          (response) => {
+            console.log('Book updated successfully:', response);
+            this.router.navigate(['/admin/manage-books']);
+          },
+          (error) => {
+            console.error('Error updating book:', error.error);
+          },
+        );
       } else {
         this.bookService.addBook(formData).subscribe(
           (response) => {
             console.log('Book added successfully:', response);
             formbody.reset();
+            this.clearCover();
+            this.router.navigate(['/admin/manage-books']);
             this.clearCover();
           },
           (error) => {

@@ -35,7 +35,8 @@
       </svg>
       <h6 class="font-semibold text-text-main">Something went wrong</h6>
       <p class="text-sm text-text-muted mb-3">{{ error }}</p>
-      <button class="px-3 py-1 bg-accent hover:bg-accent-hover text-white text-sm rounded transition-colors" (click)="loadOrders()">Try Again</button>
+      <button class="px-3 py-1 bg-accent hover:bg-accent-hover text-white text-sm rounded transition-colors"
+        (click)="loadOrders()">Try Again</button>
     </div>
   </div>
   }
@@ -44,14 +45,16 @@
   @if (!loading && !error && orders.length === 0) {
   <div class="bg-white rounded-lg shadow-sm border border-border-light text-center py-8">
     <div class="px-6">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-text-muted mx-auto mb-3" fill="none" viewBox="0 0 24 24"
-        stroke="currentColor" stroke-width="2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-text-muted mx-auto mb-3" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round"
           d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
       </svg>
       <h6 class="font-semibold text-text-main">No orders yet</h6>
       <p class="text-sm text-text-muted mb-3">Start browsing and place your first order!</p>
-      <a routerLink="/books" class="inline-block px-3 py-1 bg-accent hover:bg-accent-hover text-white text-sm rounded transition-colors">Browse Books</a>
+      <a routerLink="/books"
+        class="inline-block px-3 py-1 bg-accent hover:bg-accent-hover text-white text-sm rounded transition-colors">Browse
+        Books</a>
     </div>
   </div>
   }
@@ -74,14 +77,16 @@
         </thead>
         <tbody>
           @for (order of orders; track trackByOrderId($index, order)) {
-          <tr class="hover:bg-bg-soft transition-colors cursor-pointer border-b border-border-light last:border-0" [routerLink]="['/orders', order._id]">
+          <tr class="hover:bg-bg-soft transition-colors cursor-pointer border-b border-border-light last:border-0"
+            [routerLink]="['/orders', order._id]">
             <td class="px-4 py-3">
               <span class="font-semibold text-text-main">#{{ order._id.slice(-8).toUpperCase() }}</span>
             </td>
             <td class="px-4 py-3"><span class="text-sm text-text-muted">{{ order.createdAt | date: 'MMM d, y' }}</span>
             </td>
             <td class="px-4 py-3"><span class="text-sm text-text-muted">{{ getItemsSummary(order) }}</span></td>
-            <td class="px-4 py-3"><span class="font-semibold text-text-main">{{ order.total_price | currency }}</span></td>
+            <td class="px-4 py-3"><span class="font-semibold text-text-main">{{ order.total_price | currency }}</span>
+            </td>
             <td class="px-4 py-3">
               <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold badge-status-{{ order.status }}">{{
                 order.status | titlecase }}</span>
@@ -106,8 +111,9 @@
       <nav>
         <ul class="inline-flex items-center space-x-2">
           <li>
-            <button class="px-2 py-1 rounded border border-border-light text-sm text-text-muted hover:border-accent hover:text-accent transition-colors" [disabled]="currentPage === 1"
-              (click)="goToPage(currentPage - 1)">Previous</button>
+            <button
+              class="px-2 py-1 rounded border border-border-light text-sm text-text-muted hover:border-accent hover:text-accent transition-colors"
+              [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">Previous</button>
           </li>
           @for (p of pageNumbers; track $index) {
           @if (p === '...') {
@@ -115,13 +121,15 @@
           } @else {
           <li>
             <button class="px-3 py-1 rounded text-sm transition-colors" [class.bg-accent]="p === currentPage"
-              [class.text-white]="p === currentPage" [class.text-text-muted]="p !== currentPage" (click)="goToPage(+p)">{{ p }}</button>
+              [class.text-white]="p === currentPage" [class.text-text-muted]="p !== currentPage"
+              (click)="goToPage(+p)">{{ p }}</button>
           </li>
           }
           }
           <li>
-            <button class="px-2 py-1 rounded border border-border-light text-sm text-text-muted hover:border-accent hover:text-accent transition-colors" [disabled]="currentPage === totalPages"
-              (click)="goToPage(currentPage + 1)">Next</button>
+            <button
+              class="px-2 py-1 rounded border border-border-light text-sm text-text-muted hover:border-accent hover:text-accent transition-colors"
+              [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">Next</button>
           </li>
         </ul>
       </nav>

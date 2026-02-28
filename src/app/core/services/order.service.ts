@@ -12,7 +12,9 @@ import { OrderResponse } from '../../shared/models/orderResponse';
 @Injectable({ providedIn: 'root' })
 export class OrderService {
   private baseUrl = inject(API_URL);
-  private get API() { return `${this.baseUrl}/orders`; }
+  private get API() {
+    return `${this.baseUrl}`;
+  }
   private http = inject(HttpClient);
   private _httpClient = inject(HttpClient);
   getOrders(page = 1, limit = 10, status?: string): Observable<OrderListResponse> {
@@ -22,17 +24,17 @@ export class OrderService {
       params = params.set('status', status);
     }
 
-    return this.http.get<OrderListResponse>(this.API, { params });
+    return this.http.get<OrderListResponse>(`${this.API}/orders`, { params });
   }
 
   getOrderById(orderId: string): Observable<OrderDetailResponse> {
-    return this.http.get<OrderDetailResponse>(`${this.API}/${orderId}`);
+    return this.http.get<OrderDetailResponse>(`${this.API}/orders/${orderId}`);
   }
 
   createOrder(shippingAddress: ShippingAddress, paymentMethod: PaymentMethod): Observable<Order> {
     const body = {
-      shippingAddress: shippingAddress,
-      paymentMethod: paymentMethod,
+      shipping_address: shippingAddress,
+      payment_method: paymentMethod,
     };
     return this._httpClient.post<Order>(this.API, body);
   }
@@ -47,15 +49,15 @@ export class OrderService {
   }
   // update order status
   updateOrderStatus(id: string, status: string): Observable<Order> {
-    return this._httpClient.patch<Order>(`${this.API}/${id}/status`, {
+    return this._httpClient.patch<Order>(`${this.API}/orders/${id}/status`, {
       status,
     });
   }
 
   // update order payment
   updatePaymentStatus(id: string, payment: string): Observable<Order> {
-    return this._httpClient.patch<Order>(`${this.API}/${id}/payment`, {
-      payment,
+    return this._httpClient.patch<Order>(`${this.API}/orders/${id}/payment`, {
+      payment_status: payment,
     });
   }
 }

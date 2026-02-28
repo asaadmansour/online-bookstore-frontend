@@ -24,21 +24,15 @@
         <textarea id="author-bio" class="input textarea" [(ngModel)]="bio" rows="4"
           placeholder="Short biography…"></textarea>
       </div>
-        <div class="field">
-          <label class="label" for="author-image">
-            Author Image <span class="req">*</span>
-          </label>
-          <input
-            id="author-image"
-            class="input"
-            type="file"
-            accept="image/*"
-            (change)="onFileSelected($event)"
-          />
-          <small *ngif="isEdit" class="hint">
-            (optional) Upload a new image only if you want to change it.
-          </small>
-       </div>
+      <div class="field">
+        <label class="label" for="author-image">
+          Author Image <span class="req">*</span>
+        </label>
+        <input id="author-image" class="input" type="file" accept="image/*" (change)="onFileSelected($event)" />
+        <small *ngif="isEdit" class="hint">
+          (optional) Upload a new image only if you want to change it.
+        </small>
+      </div>
     </div>
     <div class="form-actions">
       <button class="btn-save" [disabled]="saving" (click)="save()">{{ submitLabel }}</button>

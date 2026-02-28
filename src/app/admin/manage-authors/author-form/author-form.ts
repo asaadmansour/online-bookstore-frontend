@@ -18,25 +18,29 @@ export class AuthorFormComponent implements OnInit {
   selectedFile: File | null = null;
 
   editId: string | null = null;
-  loading = false;   
+  loading = false;
   saving = false;
   error = '';
 
-  get isEdit(): boolean { return !!this.editId; }
-  get pageTitle(): string { return this.isEdit ? 'Edit Author' : 'New Author'; }
+  get isEdit(): boolean {
+    return !!this.editId;
+  }
+  get pageTitle(): string {
+    return this.isEdit ? 'Edit Author' : 'New Author';
+  }
   get submitLabel(): string {
     if (this.saving) return this.isEdit ? 'Saving…' : 'Creating…';
     return this.isEdit ? 'Save Changes' : 'Create Author';
   }
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    this.selectedFile = input.files && input.files.length? input.files[0] : null;
+    this.selectedFile = input.files && input.files.length ? input.files[0] : null;
   }
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private authorsService: AuthorsService,
-  ) { }
+  ) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -48,29 +52,35 @@ export class AuthorFormComponent implements OnInit {
           this.name = author.name ?? '';
           this.bio = author.bio ?? '';
           this.authorImage = author.authorImage ?? '';
-           this.loading = false;
+          this.loading = false;
         },
         error: () => {
           this.error = 'Could not load author data.';
           this.loading = false;
-        }
+        },
       });
     }
   }
 
   save() {
-    if (!this.name.trim()) { this.error = 'Name is required.'; return; }
-    if (!this.isEdit && !this.selectedFile) { this.error = 'Author Image is required.'; return; }
+    if (!this.name.trim()) {
+      this.error = 'Name is required.';
+      return;
+    }
+    if (!this.isEdit && !this.selectedFile) {
+      this.error = 'Author Image is required.';
+      return;
+    }
 
-          this.error = '';
-          this.saving = true;
+    this.error = '';
+    this.saving = true;
 
-        const formData = new FormData();
-        formData.append('name', this.name.trim());
-        formData.append('bio', this.bio.trim());
-        if (this.selectedFile) {
-        formData.append('authorImage', this.selectedFile);
-        }
+    const formData = new FormData();
+    formData.append('name', this.name.trim());
+    formData.append('bio', this.bio.trim());
+    if (this.selectedFile) {
+      formData.append('authorImage', this.selectedFile);
+    }
     const req$ = this.isEdit
       ? this.authorsService.updateWithImage(this.editId!, formData)
       : this.authorsService.createWithImage(formData);
@@ -80,7 +90,7 @@ export class AuthorFormComponent implements OnInit {
       error: () => {
         this.error = 'Failed to save. Please try again.';
         this.saving = false;
-      }
+      },
     });
   }
 

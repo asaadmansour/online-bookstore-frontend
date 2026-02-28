@@ -116,6 +116,11 @@ export const routes: Routes = [
         loadComponent: () => import('./admin/admin-panel/admin-panel').then((m) => m.AdminPanel),
       },
       {
+        path: 'manage-orders',
+        loadComponent: () =>
+          import('./admin/manage-orders/manage-orders').then((m) => m.ManageOrders),
+      },
+      {
         path: 'manage-books',
         loadComponent: () => import('./admin/manage-books/manage-books').then((m) => m.ManageBooks),
       },

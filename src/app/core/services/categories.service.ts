@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { API_URL } from '../api.config';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Category } from '../../shared/models/category.model';
 
 interface PageResponse<T> {
@@ -25,19 +24,19 @@ export class CategoriesService {
   }
 
   getAll(page = 1, limit = 10): Observable<PageResponse<Category>> {
-    return this.http
-      .get<PageResponse<Category>>(`${this.API}/categories?page=${page}&limit=${limit}`);
-
+    return this.http.get<PageResponse<Category>>(
+      `${this.API}/categories?page=${page}&limit=${limit}`,
+    );
   }
 
   getById(id: string): Observable<Category> {
     return this.http.get<Category>(`${this.API}/categories/${id}`);
   }
   createWithImage(category: FormData): Observable<Category> {
-  return this.http.post<Category>(`${this.API}/categories`, category);
+    return this.http.post<Category>(`${this.API}/categories`, category);
   }
   updateWithImage(id: string, category: FormData): Observable<Category> {
-  return this.http.patch<Category>(`${this.API}/categories/${id}`, category);
+    return this.http.patch<Category>(`${this.API}/categories/${id}`, category);
   }
 
   delete(id: string): Observable<void> {

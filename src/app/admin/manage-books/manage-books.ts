@@ -1,52 +1,47 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { BookService } from '../../core/services/book.service';
 import { BooksResponse } from '../../shared/models/booksResponse';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-manage-books',
+  standalone: true,
   imports: [RouterLink],
   templateUrl: './manage-books.html',
   styleUrl: './manage-books.css',
 })
 export class ManageBooks implements OnInit {
   private bookService = inject(BookService);
+
   books = signal<BooksResponse | null>(null);
   totalPages = signal<number>(1);
   currentPage = signal<number>(1);
+
   showDeleteModal = signal<boolean>(false);
   bookToDelete = signal<string | null>(null);
+
   ngOnInit() {
-    this.bookService.getBooks().subscribe((data) => {
-      this.books.set(data);
-      this.currentPage.set(data.page);
-      this.totalPages.set(data.totalPages);
+    this.loadBooks(1);
+  }
+
+  loadBooks(page: number) {
+    this.bookService.getBooks({ page }).subscribe({
+      next: (data) => {
+        this.books.set(data);
+        this.currentPage.set(data.page);
+        this.totalPages.set(data.totalPages);
+      },
+      error: (err) => console.error(err),
     });
   }
-  deleteBook() {
-    const id = this.bookToDelete();
-    if (!id) return;
-    console.log('Deleting book with ID:', id);
-    this.bookService.deleteBook(id).subscribe(
-      (data) => {
-        console.log('Book deleted successfully:', data);
-        // Close modal and reset
-        this.showDeleteModal.set(false);
-        this.bookToDelete.set(null);
-        // Remove deleted book from the signal directly
-        const currentBooks = this.books();
-        if (currentBooks) {
-          this.books.set({
-            ...currentBooks,
-            books: currentBooks.books.filter((book) => book._id !== id),
-            total: currentBooks.total - 1,
-          });
-        }
-      },
-      (error) => {
-        console.error('Error deleting book:', error);
-      },
-    );
+
+  changePage(page: number) {
+    if (page < 1 || page > this.totalPages()) return;
+    this.loadBooks(page);
+  }
+
+  pages(): number[] {
+    return Array.from({ length: this.totalPages() }, (_, i) => i + 1);
   }
 
   confirmDelete(id: string) {
@@ -57,5 +52,21 @@ export class ManageBooks implements OnInit {
   cancelDelete() {
     this.showDeleteModal.set(false);
     this.bookToDelete.set(null);
+  }
+
+  deleteBook() {
+    const id = this.bookToDelete();
+    if (!id) return;
+
+    this.bookService.deleteBook(id).subscribe({
+      next: () => {
+        this.showDeleteModal.set(false);
+        this.bookToDelete.set(null);
+
+        // reload current page
+        this.loadBooks(this.currentPage());
+      },
+      error: (err) => console.error(err),
+    });
   }
 }

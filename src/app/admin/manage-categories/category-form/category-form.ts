@@ -19,7 +19,7 @@ export class CategoryFormComponent implements OnInit {
   selectedFile: File | null = null;
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    this.selectedFile = input.files && input.files.length? input.files[0] : null;
+    this.selectedFile = input.files && input.files.length ? input.files[0] : null;
   }
 
   // State
@@ -28,8 +28,12 @@ export class CategoryFormComponent implements OnInit {
   saving = false;
   error = '';
 
-  get isEdit(): boolean { return !!this.editId; }
-  get pageTitle(): string { return this.isEdit ? 'Edit Category' : 'New Category'; }
+  get isEdit(): boolean {
+    return !!this.editId;
+  }
+  get pageTitle(): string {
+    return this.isEdit ? 'Edit Category' : 'New Category';
+  }
   get submitLabel(): string {
     if (this.saving) return this.isEdit ? 'Saving…' : 'Creating…';
     return this.isEdit ? 'Save Changes' : 'Create Category';
@@ -39,7 +43,7 @@ export class CategoryFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private categoriesService: CategoriesService,
-  ) { }
+  ) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -56,14 +60,20 @@ export class CategoryFormComponent implements OnInit {
         error: () => {
           this.error = 'Could not load category data.';
           this.loading = false;
-        }
+        },
       });
     }
   }
 
   save() {
-    if (!this.name.trim()) { this.error = 'Name is required.'; return; }
-    if (!this.isEdit && !this.selectedFile) { this.error = 'Image is required.'; return; }
+    if (!this.name.trim()) {
+      this.error = 'Name is required.';
+      return;
+    }
+    if (!this.isEdit && !this.selectedFile) {
+      this.error = 'Image is required.';
+      return;
+    }
     this.error = '';
     this.saving = true;
     const formData = new FormData();
@@ -82,7 +92,7 @@ export class CategoryFormComponent implements OnInit {
       error: () => {
         this.error = 'Failed to save. Please try again.';
         this.saving = false;
-      }
+      },
     });
   }
 
