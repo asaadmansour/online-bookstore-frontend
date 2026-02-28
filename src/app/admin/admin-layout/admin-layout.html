@@ -1,0 +1,32 @@
+
+<div class="admin-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">C</div>
+      <div class="brand-text">
+        <div class="title">ChapterOne</div>
+        <div class="sub">Admin Portal</div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a routerLink="/admin/home" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/admin/books" routerLinkActive="active">Books</a>
+      <a routerLink="/admin/orders" routerLinkActive="active">Orders</a>
+      <a routerLink="/admin/authors" routerLinkActive="active">Authors</a>
+      <a routerLink="/admin/categories" routerLinkActive="active">Categories</a>
+    </nav>
+
+    <div class="profile">
+      <img class="avatar" src="assets/admin-avatar.svg" alt="Admin Avatar" />
+      <div class="ptext">
+        <div class="name">Admin</div>
+        <div class="role">Administrator</div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

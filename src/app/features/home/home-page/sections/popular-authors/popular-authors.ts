@@ -4,7 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { CarouselModule } from 'primeng/carousel';
 import { TagModule } from 'primeng/tag';
 import { RouterLink } from '@angular/router';
-import { AuthorService } from '../../../../../core/services/author.service';
+import { AuthorsService } from '../../../../../core/services/authors.service';
 import { Author } from '../../../../../shared/models/author.model';
 
 @Component({
@@ -14,14 +14,14 @@ import { Author } from '../../../../../shared/models/author.model';
   imports: [ButtonModule, CarouselModule, TagModule, RouterLink, NgOptimizedImage],
 })
 export class TrendingAuthors implements OnInit {
-  private authorService = inject(AuthorService);
+  private authorService = inject(AuthorsService);
 
   authors = signal<Author[]>([]);
   responsiveOptions = [
     { breakpoint: '1920px', numVisible: 4, numScroll: 1 },
     { breakpoint: '1200px', numVisible: 3, numScroll: 1 },
-    { breakpoint: '768px',  numVisible: 2, numScroll: 1 },
-    { breakpoint: '576px',  numVisible: 1, numScroll: 1 },
+    { breakpoint: '768px', numVisible: 2, numScroll: 1 },
+    { breakpoint: '576px', numVisible: 1, numScroll: 1 },
   ];
 
   ngOnInit() {
