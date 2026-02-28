@@ -1,0 +1,9 @@
+<div class="w-full py-6 md:py-8 px-4 md:px-6">
+  <div class="max-w-screen-xl mx-auto flex gap-2 md:gap-3 flex-wrap justify-center md:justify-start">
+    @for (item of categories(); track $index) {
+    <button class="flex items-center gap-2 px-5 py-2 rounded-full border border-border-light bg-white text-text-main text-sm font-medium hover:bg-accent hover:text-white hover:border-accent transition-colors">
+      {{ item.name }}
+    </button>  
+    }
+  </div>
+</div>

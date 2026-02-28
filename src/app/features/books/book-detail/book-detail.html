@@ -1,0 +1,156 @@
+<div class="min-h-screen bg-bg-soft">
+  <div class="max-w-6xl mx-auto px-6 py-10">
+    @if (book()) {
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+
+        <!-- Left: Image with frame -->
+        <div class="flex justify-center w-full">
+          <div class="relative w-full max-w-[28rem] p-3 bg-white rounded-2xl shadow-2xl border border-border-light">
+            <div class="absolute top-1 left-1 w-4 h-4 border-t-2 border-l-2 border-accent rounded-tl-lg"></div>
+            <div class="absolute top-1 right-1 w-4 h-4 border-t-2 border-r-2 border-accent rounded-tr-lg"></div>
+            <div class="absolute bottom-1 left-1 w-4 h-4 border-b-2 border-l-2 border-accent rounded-bl-lg"></div>
+            <div class="absolute bottom-1 right-1 w-4 h-4 border-b-2 border-r-2 border-accent rounded-br-lg"></div>
+            <div class="relative w-full aspect-[3/4] rounded-xl overflow-hidden">
+              <img
+                [ngSrc]="book()!.coverUrl"
+                fill
+                priority
+                [alt]="book()!.name"
+                class="object-cover"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Details -->
+        <div class="flex flex-col gap-6 py-4">
+
+
+          <!-- Title & Author -->
+          <div>
+            <h1 class="text-4xl font-bold text-text-main leading-tight">
+              {{ book()!.name }}
+            </h1>
+            <p class="mt-2 text-text-muted text-lg">
+              by <span class="text-accent font-semibold">{{ book()!.author.name }}</span>
+            </p>
+          </div>
+
+          <!-- Rating -->
+          <div class="flex items-center gap-2">
+            <span class="text-yellow-400 text-xl">★</span>
+            <span class="font-bold text-text-main">{{ book()!.averageRating }}</span>
+            <span class="text-text-muted text-sm">({{ book()!.averageRating }} Reviews)</span>
+          </div>
+
+          <!-- Price -->
+          <div class="flex items-center gap-3">
+            <span class="text-4xl font-bold text-accent">${{ book()!.price }}</span>
+          </div>
+
+          <hr class="border-border-light" />
+
+          <!-- Description -->
+          <div>
+            <h3 class="text-xs font-bold tracking-widest text-text-muted uppercase mb-2">Description</h3>
+            <p class="text-text-muted leading-relaxed">{{ book()!.description }}</p>
+          </div>
+
+          <hr class="border-border-light" />
+                    <div>
+            <h3 class="text-xs font-bold tracking-widest text-text-muted uppercase mb-3">Categories</h3>
+            <div class="flex flex-wrap gap-2">
+              @for (category of book()!.categories; track category._id) {
+                <span class="px-4 py-2 text-sm font-semibold bg-accent/10 text-accent border border-accent/30 rounded-full">
+                  {{ category.name }}
+                </span>
+              }
+            </div>
+          </div>
+
+        <hr class="border-border-light" />
+
+          <!-- Quantity + Add to Cart -->
+          <div class="flex items-center gap-4">
+            <div class="flex items-center border border-border-light rounded-xl overflow-hidden">
+              <button
+                type="button"
+                class="px-4 py-3 text-lg hover:bg-bg-soft transition text-text-main"
+                (click)="decreaseQuantity()"
+              >
+                −
+              </button>
+              <span class="px-5 py-3 font-semibold text-text-main">{{ quantity() }}</span>
+              <button
+                type="button"
+                class="px-4 py-3 text-lg hover:bg-bg-soft transition text-text-main"
+                (click)="increaseQuantity()"
+              >
+                +
+              </button>
+            </div>
+
+            <button
+              type="button"
+              class="flex-1 flex items-center justify-center gap-2 bg-accent hover:bg-accent-hover text-white font-semibold px-6 py-3 rounded-xl transition shadow-md"
+              (click)="addCurrentBookToCart()"
+            >
+              <lucide-icon [img]="ShoppingCart" class="w-5 h-5" />
+              Add to Cart
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <section class="mt-16 space-y-6">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="h-6 w-1 bg-accent rounded-full"></div>
+          <h2 class="text-2xl font-bold text-text-main">Similar Books</h2>
+        </div>
+
+        @if (loadingSuggestions()) {
+          <div class="flex h-40 items-center justify-center rounded-2xl border border-border-light bg-white">
+            <p-progressSpinner strokeWidth="4" styleClass="w-10 h-10 text-accent"></p-progressSpinner>
+          </div>
+        } @else {
+          @if (suggestedBooks().length) {
+            <div class="-mx-6 overflow-x-auto px-6 pb-4">
+              <div class="flex gap-5 snap-x snap-mandatory">
+                @for (suggested of suggestedBooks(); track suggested._id) {
+                  <div
+                    (click)="goToBook(suggested._id)"
+                    class="snap-start shrink-0 w-52 bg-white rounded-xl border border-border-light shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden group"
+                  >
+                    <div class="relative h-64 overflow-hidden">
+                      <img
+                        [ngSrc]="suggested.coverUrl"
+                        fill
+                        [alt]="suggested.name"
+                        class="object-cover transition duration-300 group-hover:scale-105"
+                      />
+                    </div>
+                    <div class="p-4 space-y-1">
+                      <h3 class="text-sm font-bold text-text-main truncate">{{ suggested.name }}</h3>
+                      <p class="text-xs text-text-muted truncate">{{ suggested.author.name }}</p>
+                      <p class="text-sm font-bold text-accent pt-1">${{ suggested.price }}</p>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          } @else {
+            <div class="rounded-2xl border border-dashed border-border-light bg-white p-6 text-center text-text-muted text-sm">
+              No similar books found in this category yet.
+            </div>
+          }
+        }
+      </section>
+    } @else {
+      <div class="flex h-96 flex-col items-center justify-center gap-4">
+        <p-progressSpinner strokeWidth="4" styleClass="w-12 h-12 text-accent"></p-progressSpinner>
+        <p class="text-text-muted text-lg">Loading book details...</p>
+      </div>
+    }
+  </div>
+</div>

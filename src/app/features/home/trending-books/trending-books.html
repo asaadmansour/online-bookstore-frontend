@@ -1,0 +1,33 @@
+<div class="w-full bg-bg-soft px-4 md:px-6 py-10 md:py-16 min-h-[70vh] flex flex-col justify-center">
+  <div class="max-w-screen-xl mx-auto w-full">
+    
+    <!-- Section Header -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 md:mb-10 gap-3">
+      <div>
+        <p class="text-accent text-xs md:text-sm font-semibold tracking-widest uppercase mb-1">What's Hot</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-text-main">Trending Now</h2>
+      </div>
+      <a [routerLink]="['/books']" class="text-accent hover:text-accent-hover text-sm font-medium flex items-center gap-1 transition-colors">
+        View all <span>→</span>
+      </a>
+    </div>
+
+    <!-- Carousel -->
+    <p-carousel 
+      [value]="products()" 
+      [numVisible]="4" 
+      [numScroll]="1" 
+      [responsiveOptions]="responsiveOptions"
+      [showIndicators]="true"
+      [showNavigators]="true"
+      [autoplayInterval]="3000"
+      [circular]="true">
+      <ng-template #item let-product>
+        <div class="px-3 py-4">
+          <app-book-card [book]="product" />
+        </div>
+      </ng-template>
+    </p-carousel>
+
+  </div>
+</div>

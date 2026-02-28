@@ -1,0 +1,158 @@
+<div class="min-h-screen bg-bg-soft">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- Header -->
+    <div class="flex flex-col gap-4 mb-8 md:flex-row md:justify-between md:items-start">
+      <div class="flex flex-col gap-2">
+        <p class="text-3xl md:text-5xl font-bold text-text-main">
+          {{ search() ? 'Search Results' : 'All Books' }}
+        </p>
+        <p class="text-base text-text-muted max-w-lg">
+          Discover our curated collection of literature and art focused publications for modern and creative minds
+        </p>
+      </div>
+      <div class="flex flex-row gap-3 shrink-0">
+        <button cdkOverlayOrigin #trigger="cdkOverlayOrigin" (click)="isFilterOpen.set(!isFilterOpen())"
+          class="flex items-center gap-2 border border-text-muted px-4 py-2 bg-white rounded-md hover:bg-accent-light transition-colors text-text-main cursor-pointer text-sm">
+          <lucide-icon [img]="Filter" class="w-4 h-4"></lucide-icon>
+          Filter
+        </button>
+
+        <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger"
+          [cdkConnectedOverlayOpen]="isFilterOpen()" (overlayOutsideClick)="isFilterOpen.set(false)"
+          [cdkConnectedOverlayOffsetY]="8">
+          <div
+            class="bg-white border text-sm border-text-muted/20 rounded-md shadow-lg p-5 min-w-[280px] z-50 flex flex-col gap-4">
+            <h3 class="font-semibold text-text-main mb-1">Filter Options</h3>
+
+            <div class="flex flex-col gap-2">
+              <span class="text-xs text-text-muted font-medium">Price Range</span>
+              <div class="flex gap-2 items-center">
+                <input type="number" placeholder="Min"
+                  class="w-full border rounded p-1 text-sm outline-none focus:border-accent" #minPriceInput />
+                <span class="text-text-muted">-</span>
+                <input type="number" placeholder="Max"
+                  class="w-full border rounded p-1 text-sm outline-none focus:border-accent" #maxPriceInput />
+              </div>
+              <button
+                (click)="setPriceRange(minPriceInput.value ? +minPriceInput.value : null, maxPriceInput.value ? +maxPriceInput.value : null); isFilterOpen.set(false)"
+                class="w-full mt-2 bg-text-main text-white py-1.5 rounded hover:bg-text-main/90 transition-colors">
+                Apply Price
+              </button>
+            </div>
+
+            <hr class="border-text-muted/20" />
+
+            <div class="flex flex-col gap-2">
+              <span class="text-xs text-text-muted font-medium">Authors</span>
+              <div class="flex flex-col gap-1 max-h-40 overflow-y-auto pr-1">
+                <button (click)="selectAuthor(null); isFilterOpen.set(false)"
+                  [class]="selectedAuthorId() === null ? 'text-accent font-medium bg-accent/10' : 'text-text-main hover:bg-bg-soft'"
+                  class="text-left py-1.5 px-2 rounded-md transition-colors text-sm">
+                  All Authors
+                </button>
+                @for (author of authors(); track author._id) {
+                <button (click)="selectAuthor(author._id); isFilterOpen.set(false)"
+                  [class]="selectedAuthorId() === author._id ? 'text-accent font-medium bg-accent/10' : 'text-text-main hover:bg-bg-soft'"
+                  class="text-left py-1.5 px-2 rounded-md transition-colors text-sm">
+                  {{ author.name }}
+                </button>
+                }
+              </div>
+            </div>
+
+            <hr class="border-text-muted/20" />
+
+            <button (click)="resetFilters(); isFilterOpen.set(false)"
+              class="text-accent hover:text-accent-light text-sm text-left transition-colors">
+              Reset All Filters
+            </button>
+          </div>
+        </ng-template>
+        <button cdkOverlayOrigin #sortTrigger="cdkOverlayOrigin" (click)="isSortOpen.set(!isSortOpen())"
+          class="flex items-center gap-2 border border-text-muted px-4 py-2 bg-white rounded-md hover:bg-accent-light transition-colors text-text-main text-sm">
+          <lucide-icon [img]="ArrowUpDown" class="w-4 h-4"></lucide-icon>
+          Sort By
+        </button>
+
+        <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="sortTrigger"
+          [cdkConnectedOverlayOpen]="isSortOpen()" (overlayOutsideClick)="isSortOpen.set(false)"
+          [cdkConnectedOverlayOffsetY]="8">
+          <div
+            class="bg-white border text-sm border-text-muted/20 rounded-md shadow-lg p-3 min-w-[200px] z-50 flex flex-col gap-1">
+            @for (option of sortOptions; track option.value) {
+            <button (click)="onSortChange(option.value); isSortOpen.set(false)"
+              class="text-left py-1.5 px-2 rounded-md transition-colors text-sm text-text-main hover:bg-bg-soft">
+              {{ option.label }}
+            </button>
+            }
+          </div>
+        </ng-template>
+      </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="flex flex-row gap-2 mb-8 flex-wrap">
+      <button (click)="selectCategory(null)"
+        [class]="selectedCategoryId() === null ? 'bg-accent text-white border-accent' : 'bg-transparent text-text-main border-accent hover:bg-accent-light'"
+        class="border rounded-lg px-3 py-1 cursor-pointer transition-colors text-sm">
+        All Collections
+      </button>
+
+      @for (category of categories(); track category._id) {
+      <button (click)="selectCategory(category._id)"
+        [class]="selectedCategoryId() === category._id ? 'bg-accent text-white border-accent' : 'bg-transparent text-text-main border-accent hover:bg-accent-light'"
+        class="border rounded-lg px-3 py-1 cursor-pointer transition-colors text-sm">
+        {{ category.name }}
+      </button>
+      }
+    </div>
+
+    <!-- Active search pill -->
+    @if (search()) {
+      <div class="flex items-center gap-2 mb-4">
+        <span class="inline-flex items-center gap-2 bg-accent/10 border border-accent/30 text-accent text-sm font-medium px-3 py-1 rounded-full">
+          Results for "<strong>{{ search() }}</strong>"
+          <button (click)="clearSearch()" class="hover:text-accent-hover transition-colors" aria-label="Clear search">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        </span>
+      </div>
+    }
+
+    <!-- Books Grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      @for (book of books(); track book._id) {
+      <app-book-card [book]="book" />
+      }
+    </div>
+
+    <!-- @if (isLoading) {
+      <div class="flex justify-center mt-12">
+        <p-progress-spinner />
+      </div>
+    } -->
+
+    <!-- Pagination -->
+    @if (totalPages() > 1) {
+      <div class="flex flex-row justify-center items-center mt-12 gap-4">
+        <button
+          (click)="goToPage(currentPage() - 1)"
+          [disabled]="currentPage() === 1"
+          class="px-4 py-2 rounded-lg border border-border-light text-sm font-medium text-text-main hover:bg-bg-soft transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+          ← Prev
+        </button>
+        <span class="text-sm text-text-muted">
+          Page <strong>{{ currentPage() }}</strong> of <strong>{{ totalPages() }}</strong>
+        </span>
+        <button
+          (click)="goToPage(currentPage() + 1)"
+          [disabled]="currentPage() === totalPages()"
+          class="px-4 py-2 rounded-lg border border-border-light text-sm font-medium text-text-main hover:bg-bg-soft transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+          Next →
+        </button>
+      </div>
+    }
+
+  </div>
+</div>

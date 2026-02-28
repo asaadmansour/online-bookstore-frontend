@@ -1,0 +1,165 @@
+<!-- Header -->
+<div class="flex items-center justify-between mb-8">
+  <div>
+    <h2 class="text-2xl font-bold text-text-main">Manage Orders</h2>
+    <p class="text-text-muted text-sm mt-1">View and update order statuses</p>
+  </div>
+  <div class="flex items-center gap-4">
+    <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-xl border border-border-light">
+      <span class="text-text-muted text-sm">🔍</span>
+      <input (keyup.enter)="setSearchId($event)" type="text" placeholder="Search by order ID..."
+        class="outline-none text-sm text-text-main bg-transparent w-48" />
+    </div>
+    <select (change)="filterByStatus($event)" class="px-4 py-2 rounded-xl border border-border-light bg-white text-sm text-text-muted outline-none focus:border-accent transition-colors">
+      <option value="">All Statuses</option>
+      <option value="processing">Processing</option>
+      <option value="out_for_delivery">Out for Delivery</option>
+      <option value="delivered">Delivered</option>
+    </select>
+  </div>
+</div>
+
+<!-- Stats Row -->
+<div class="grid grid-cols-4 gap-4 mb-8">
+  <div class="bg-white rounded-2xl p-5 shadow-soft">
+    <p class="text-text-muted text-xs uppercase tracking-widest mb-1">Total Orders</p>
+    <p class="text-2xl font-bold text-text-main">{{orders()?.total}}</p>
+    <p class="text-text-muted text-xs mt-1">All time</p>
+  </div>
+  <div class="bg-white rounded-2xl p-5 shadow-soft">
+    <p class="text-text-muted text-xs uppercase tracking-widest mb-1">Processing</p>
+    <p class="text-2xl font-bold text-yellow-500">{{processingOrders()?.total}}</p>
+    <p class="text-yellow-500 text-xs mt-1">⚠ Needs attention</p>
+  </div>
+  <div class="bg-white rounded-2xl p-5 shadow-soft">
+    <p class="text-text-muted text-xs uppercase tracking-widest mb-1">Out for Delivery</p>
+    <p class="text-2xl font-bold text-blue-500">{{outForDeliveryOrders()?.total}}</p>
+    <p class="text-text-muted text-xs mt-1">In transit</p>
+  </div>
+  <div class="bg-white rounded-2xl p-5 shadow-soft">
+    <p class="text-text-muted text-xs uppercase tracking-widest mb-1">Delivered</p>
+    <p class="text-2xl font-bold text-green-500">{{deliveredOrders()?.total}}</p>
+    <p class="text-accent text-xs mt-1">↑ Successfully delivered</p>
+  </div>
+</div>
+
+<!-- Orders Table -->
+<div class="bg-white rounded-2xl shadow-soft overflow-hidden">
+  <table class="w-full text-sm">
+    <thead>
+      <tr class="text-text-muted text-xs uppercase tracking-widest border-b border-border-light bg-bg-soft">
+        <th class="text-left px-6 py-4">Order ID</th>
+        <th class="text-left px-6 py-4">Customer</th>
+        <th class="text-left px-6 py-4">Books</th>
+        <th class="text-left px-6 py-4">Total</th>
+        <th class="text-left px-6 py-4">Payment</th>
+        <th class="text-left px-6 py-4">Status</th>
+        <th class="text-left px-6 py-4">Date</th>
+        <th class="text-left px-6 py-4">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-border-light">
+      @for(item of orders()?.orders; track item._id){
+        <tr class="hover:bg-bg-soft transition-colors">
+          <td class="px-6 py-4 text-text-muted text-xs">{{item._id}}</td>
+          <td class="px-6 py-4">
+            <div class="flex items-center gap-2">
+              <div class="w-7 h-7 rounded-full bg-accent-light flex items-center justify-center text-accent text-xs font-bold">
+                {{$any(item.user)?.firstName?.charAt(0)}}
+              </div>
+              <div>
+                <p class="text-text-main font-medium">{{$any(item.user)?.firstName}} {{$any(item.user)?.lastName}}</p>
+                <p class="text-text-muted text-xs">{{$any(item.user)?.email}}</p>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-4">
+            @for(book of item.items; track book.book?._id){
+              <div class="flex flex-col gap-1">
+                <span class="text-text-main text-xs">{{book.book?.name}} × {{book.quantity}}</span>
+              </div>
+            }
+          </td>
+          <td class="px-6 py-4 font-medium text-text-main">${{ item.total_price }}</td>
+          <td class="px-6 py-4">
+            <span class="px-3 py-1 rounded-full text-xs"
+              [class.bg-orange-100]="item.payment_status === 'pending'"
+              [class.text-orange-600]="item.payment_status === 'pending'"
+              [class.bg-green-100]="item.payment_status === 'success'"
+              [class.text-green-600]="item.payment_status === 'success'">
+              {{ item.payment_status }}
+            </span>
+          </td>
+          <td class="px-6 py-4">
+            <span class="flex items-center gap-1 text-xs font-medium"
+              [class.text-yellow-600]="item.status === 'processing'"
+              [class.text-blue-600]="item.status === 'out_for_delivery'"
+              [class.text-green-600]="item.status === 'delivered'">
+              <span class="w-1.5 h-1.5 rounded-full inline-block"
+                [class.bg-yellow-500]="item.status === 'processing'"
+                [class.bg-blue-500]="item.status === 'out_for_delivery'"
+                [class.bg-green-500]="item.status === 'delivered'">
+              </span>
+              {{ item.status }}
+            </span>
+          </td>
+          <td class="px-6 py-4 text-text-muted text-xs">{{ item.createdAt | date:'MMM d, y' }}</td>
+          <td class="px-6 py-4">
+            <div class="flex flex-col gap-2">
+
+              <!-- Payment Status -->
+              @if(item.payment_status === 'pending') {
+                <button (click)="updatePayment(item._id, 'success')"
+                  class="px-3 py-1.5 rounded-lg bg-orange-50 border border-orange-200 text-orange-600 text-xs hover:bg-orange-500 hover:text-white transition-colors">
+                  → Mark Paid
+                </button>
+              } @else {
+                <span class="text-green-600 text-xs font-medium">✓ Paid</span>
+              }
+
+              <!-- Order Status -->
+              @if(item.payment_status !== 'success') {
+                <span class="text-orange-500 text-xs">⚠ Pay first</span>
+              } @else if(item.status === 'processing') {
+                <button (click)="updateStatus(item._id, 'out_for_delivery')"
+                  class="px-3 py-1.5 rounded-lg bg-blue-50 border border-blue-200 text-blue-600 text-xs hover:bg-blue-500 hover:text-white transition-colors">
+                  → Out for Delivery
+                </button>
+              } @else if(item.status === 'out_for_delivery') {
+                <button (click)="updateStatus(item._id, 'delivered')"
+                  class="px-3 py-1.5 rounded-lg bg-green-50 border border-green-200 text-green-600 text-xs hover:bg-green-500 hover:text-white transition-colors">
+                  → Delivered
+                </button>
+              } @else {
+                <span class="text-green-600 text-xs font-medium">✓ Completed</span>
+              }
+
+            </div>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <!-- Pagination -->
+  <div class="flex items-center justify-between px-6 py-4 border-t border-border-light">
+    <p class="text-text-muted text-xs">Showing page {{ currentPage() }} of {{ orders()?.pages }} · {{ orders()?.total }} orders total</p>
+    <div class="flex gap-1">
+      <button (click)="changePage(currentPage() - 1)" [disabled]="currentPage() === 1"
+        class="w-8 h-8 rounded-lg border border-border-light text-text-muted text-xs hover:border-accent hover:text-accent transition-colors disabled:opacity-40">←</button>
+      @for(page of getPages(); track page) {
+        <button (click)="changePage(page)"
+          class="w-8 h-8 rounded-lg text-xs transition-colors"
+          [class.bg-accent]="page === currentPage()"
+          [class.text-white]="page === currentPage()"
+          [class.border]="page !== currentPage()"
+          [class.border-border-light]="page !== currentPage()"
+          [class.text-text-muted]="page !== currentPage()">
+          {{ page }}
+        </button>
+      }
+      <button (click)="changePage(currentPage() + 1)" [disabled]="currentPage() === orders()?.pages"
+        class="w-8 h-8 rounded-lg border border-border-light text-text-muted text-xs hover:border-accent hover:text-accent transition-colors disabled:opacity-40">→</button>
+    </div>
+  </div>
+</div>

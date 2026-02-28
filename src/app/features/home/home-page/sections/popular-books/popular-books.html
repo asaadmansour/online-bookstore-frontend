@@ -1,0 +1,23 @@
+<section class="popular-books center min-h-screen">
+  <h2 class="">Popular Books</h2>
+
+  <div class="books-grid">
+    <div class="book-card" *ngFor="let book of popularBooks">
+      <div class="relative w-full aspect-[5/7]">
+        <img
+          [ngSrc]="defaultBookCover"
+          fill
+          class="object-cover"
+          (error)="onBookImgError($event)"
+          [alt]="book.title"
+        />
+      </div>
+
+      <div class="book-info">
+        <h3>{{ book.title }}</h3>
+        <p>{{ book.author }}</p>
+        <span class="price">{{ book.price }} EGP</span>
+      </div>
+    </div>
+  </div>
+</section>

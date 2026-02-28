@@ -1,0 +1,141 @@
+<nav class="bg-white border-b border-border-light sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center gap-4 h-16">
+
+      <!-- Logo -->
+      <a routerLink="/" class="flex items-center gap-2 shrink-0 cursor-pointer no-underline">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+          stroke="#3de048" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
+          <path d="M12 7v14"/>
+          <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>
+        </svg>
+        <span class="hidden sm:block font-bold text-text-main text-lg">ChapterOne</span>
+      </a>
+
+      <!-- Search Bar -->
+      <div class="flex-1 max-w-xl mx-auto px-2 sm:px-0">
+        <div class="relative">
+          <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none"
+            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input
+            (input)="onSearch($event)"
+            (keydown.enter)="onEnterSearch()"
+            [value]="searchQuery()"
+            type="text"
+            placeholder="Search books, authors..."
+            class="w-full pl-9 pr-4 py-2 text-sm bg-bg-soft border border-slate-300 rounded-full
+                   text-text-main placeholder-text-muted outline-none
+                   focus:border-accent focus:bg-white transition-all"
+          />
+          <app-search-suggestion [query]="searchQuery()"/>
+        </div>
+      </div>
+
+      <!-- Nav Links -->
+      <ul class="hidden md:flex items-center gap-1 shrink-0">
+        <li>
+          <a
+            routerLink="/books"
+            [queryParams]="{ page: 1 }"
+            routerLinkActive="text-text-main bg-accent/10 font-medium"
+            [routerLinkActiveOptions]="{exact: false}"
+            class="text-sm text-text-muted hover:text-text-main hover:bg-accent/10 px-3 py-1.5 rounded-md cursor-pointer transition-colors block">
+            Books
+          </a>
+        </li>
+        <li>
+          <a routerLink="/authors" routerLinkActive="text-text-main bg-accent/10 font-medium"
+            class="text-sm text-text-muted hover:text-text-main hover:bg-accent/10 px-3 py-1.5 rounded-md cursor-pointer transition-colors block">
+            Authors
+          </a>
+        </li>
+        <li>
+          <a routerLink="/categories" routerLinkActive="text-text-main bg-accent/10 font-medium"
+            class="text-sm text-text-muted hover:text-text-main hover:bg-accent/10 px-3 py-1.5 rounded-md cursor-pointer transition-colors block">
+            Categories
+          </a>
+        </li>
+      </ul>
+
+      <!-- Divider -->
+      <div class="hidden md:block h-5 w-px bg-border-light shrink-0"></div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-2 shrink-0">
+
+        @if (isLoggedIn()) {
+          <!-- Cart -->
+          <button routerLink="/cart"
+            class="flex items-center gap-1.5 text-sm text-text-muted hover:text-text-main hover:bg-accent/10 px-3 py-1.5 rounded-md transition-colors cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
+              <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+            </svg>
+            Cart
+          </button>
+
+          <!-- User Avatar + Dropdown -->
+          <div class="relative">
+            <button
+              (click)="toggleDropdown()"
+              class="w-8 h-8 rounded-full bg-accent text-white text-sm font-semibold flex items-center justify-center cursor-pointer hover:bg-accent-hover transition-colors shrink-0"
+              [attr.aria-label]="userName()">
+              {{ userInitial() }}
+            </button>
+
+            @if (dropdownOpen()) {
+            <div class="absolute right-0 top-full mt-1 w-44 bg-white border border-border-light rounded-lg shadow-lg py-1 z-50">
+              <div class="px-3 py-2 border-b border-border-light">
+                <p class="text-xs font-semibold text-text-main truncate">{{ userName() }}</p>
+              </div>
+              <a routerLink="/profile"
+                (click)="closeDropdown()"
+                class="flex items-center gap-2 px-3 py-2 text-sm text-text-muted hover:text-text-main hover:bg-accent/10 transition-colors cursor-pointer no-underline">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+                </svg>
+                Profile
+              </a>
+              <a routerLink="/orders"
+                (click)="closeDropdown()"
+                class="flex items-center gap-2 px-3 py-2 text-sm text-text-muted hover:text-text-main hover:bg-accent/10 transition-colors cursor-pointer no-underline">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15"/>
+                </svg>
+                My Orders
+              </a>
+              <div class="border-t border-border-light mt-1 pt-1">
+                <button
+                  (click)="logout()"
+                  class="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-500 hover:text-red-600 hover:bg-red-50 transition-colors cursor-pointer text-left">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"/>
+                  </svg>
+                  Log out
+                </button>
+              </div>
+            </div>
+            }
+          </div>
+
+        } @else {
+          <!-- Guest: Login + Register -->
+          <a routerLink="/auth/login"
+            class="text-sm text-text-muted hover:text-text-main px-3 py-1.5 rounded-md hover:bg-accent/10 transition-colors cursor-pointer no-underline">
+            Log in
+          </a>
+          <a routerLink="/auth/register"
+            class="text-sm bg-accent hover:bg-accent-hover text-white px-4 py-1.5 rounded-md transition-colors cursor-pointer font-medium no-underline">
+            Sign up
+          </a>
+        }
+
+      </div>
+
+    </div>
+  </div>
+</nav>

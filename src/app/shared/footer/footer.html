@@ -1,0 +1,67 @@
+@if (isVisible()) {
+<footer class="bg-white border-t border-border-light mt-14">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+
+      <!-- Brand -->
+      <div class="md:col-span-1">
+        <div class="flex items-center gap-2 mb-3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+            stroke="#3de048" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 7v14" />
+            <path
+              d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
+          </svg>
+          <span class="font-bold text-text-main text-base">{{ brand.name }}</span>
+        </div>
+        <p class="text-sm text-text-muted leading-relaxed">
+          Discover great reads and curated collections for every kind of reader.
+        </p>
+      </div>
+
+      <!-- Shop -->
+      <div>
+        <h4 class="text-xs font-bold tracking-widest text-text-muted uppercase mb-4">Shop</h4>
+        <div class="space-y-2.5 text-sm">
+          <a routerLink="/books" class="block text-text-muted hover:text-accent transition-colors">All Books</a>
+          <a routerLink="/categories" class="block text-text-muted hover:text-accent transition-colors">Categories</a>
+          <a routerLink="/authors" class="block text-text-muted hover:text-accent transition-colors">Authors</a>
+        </div>
+      </div>
+
+      <!-- Account -->
+      <div>
+        <h4 class="text-xs font-bold tracking-widest text-text-muted uppercase mb-4">Account</h4>
+        <div class="space-y-2.5 text-sm">
+          <a routerLink="/profile" class="block text-text-muted hover:text-accent transition-colors">My Profile</a>
+          <a routerLink="/orders" class="block text-text-muted hover:text-accent transition-colors">My Orders</a>
+          <a routerLink="/cart" class="block text-text-muted hover:text-accent transition-colors">Cart</a>
+        </div>
+      </div>
+
+      <!-- Newsletter -->
+      <div>
+        <h4 class="text-xs font-bold tracking-widest text-text-muted uppercase mb-4">Stay in the loop</h4>
+        <p class="text-sm text-text-muted mb-3">Weekly picks, no spam.</p>
+        <div class="flex gap-2">
+          <input type="email" placeholder="Your email" class="flex-1 h-9 px-3 text-sm rounded-lg border border-border-light outline-none
+                   focus:border-accent bg-bg-soft text-text-main placeholder-text-muted transition-colors" />
+          <button
+            class="h-9 px-4 text-sm rounded-lg bg-accent hover:bg-accent-hover text-white font-medium transition-colors cursor-pointer shrink-0">
+            Subscribe
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div
+      class="border-t border-border-light mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-text-muted">
+      <span>© 2026 {{ brand.name }}. All rights reserved.</span>
+      <span>Made by Haneen , Muhanad, Nagy &amp; Asaad</span>
+    </div>
+
+  </div>
+</footer>
+}

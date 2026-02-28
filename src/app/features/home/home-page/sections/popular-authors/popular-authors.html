@@ -1,0 +1,54 @@
+<div class="w-full bg-bg-soft px-4 md:px-6 py-10 md:py-16">
+  <div class="max-w-screen-xl mx-auto">
+
+    <!-- Section Header -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 md:mb-10 gap-3">
+      <div>
+        <p class="text-accent text-xs md:text-sm font-semibold tracking-widest uppercase mb-1">Meet the Minds</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-text-main">Popular Authors</h2>
+      </div>
+      <a routerLink="/authors" class="text-accent hover:text-accent-hover text-sm font-medium flex items-center gap-1 transition-colors no-underline">
+        View all <span>→</span>
+      </a>
+    </div>
+
+    <p-carousel
+      [value]="authors()"
+      [numVisible]="4"
+      [numScroll]="1"
+      [responsiveOptions]="responsiveOptions"
+      [showIndicators]="false"
+      [showNavigators]="true"
+      [autoplayInterval]="3000"
+      [circular]="true"
+    >
+      <ng-template #item let-author>
+        <div class="px-3 py-4">
+          <a
+            [routerLink]="['/authors', author._id]"
+            class="group flex flex-col rounded-lg overflow-hidden bg-white hover:shadow-md transition-shadow cursor-pointer no-underline"
+          >
+            <!-- Avatar — same 5:7 aspect ratio as book cards -->
+            <div class="relative w-full aspect-[5/7] overflow-hidden bg-bg-soft">
+              <img
+                [ngSrc]="avatar(author)"
+                fill
+                [alt]="author.name"
+                class="object-cover transition-transform duration-300 group-hover:scale-105"
+                (error)="onImgError($event)"
+              />
+            </div>
+
+            <!-- Info — same padding & font sizes as BookCard -->
+            <div class="p-3 bg-bg-soft flex flex-col gap-1">
+              <p class="font-semibold text-sm truncate text-text-main">{{ author.name }}</p>
+              <p class="text-xs text-text-muted line-clamp-2 leading-relaxed">{{ author.bio || 'Author' }}</p>
+              <span class="text-accent font-bold text-sm mt-1">View profile →</span>
+            </div>
+          </a>
+        </div>
+      </ng-template>
+    </p-carousel>
+
+  </div>
+</div>
