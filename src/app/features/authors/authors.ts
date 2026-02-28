@@ -8,7 +8,7 @@ import { AuthorsService } from '../../core/services/authors.service';
 @Component({
   selector: 'app-authors',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './authors.html',
   styleUrls: ['./authors.css'],
 })
@@ -45,6 +45,6 @@ export class AuthorsComponent implements OnInit {
 
   viewBooks(a: any) {
     const authorId = a?._id ?? a?.id;
-    this.router.navigate(['/books'], { queryParams: { authorId } });
+    this.router.navigate(['/books'], { queryParams: { author: authorId } });
   }
 }

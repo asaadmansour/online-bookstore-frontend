@@ -1,15 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FooterComponent } from '../../shared/footer/footer';
-import { NavbarComponent} from '../../shared/navbar/navbar';
+import { Navbar } from '../../shared/components/navbar/navbar';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [RouterOutlet, FooterComponent, NavbarComponent],
+  imports: [RouterOutlet, FooterComponent, Navbar],
   templateUrl: './layout.html',
   styleUrl: './layout.css',
 })
-export class LayoutComponent{
-
-}
+export class LayoutComponent {}

@@ -120,8 +120,8 @@
         </div>
 
         <div class="space-y-3">
-          <!-- Active Option -->
-          <div class="w-full border-2 border-accent bg-accent/5 rounded-xl p-4 flex items-center justify-between cursor-pointer">
+          <!-- Only Free Standard Shipping -->
+          <div class="w-full border-2 border-accent bg-accent/5 rounded-xl p-4 flex items-center justify-between">
             <div class="flex items-center gap-4">
               <div class="w-5 h-5 rounded-full border-2 border-accent flex items-center justify-center shrink-0">
                 <div class="w-2.5 h-2.5 rounded-full bg-accent"></div>
@@ -133,30 +133,64 @@
             </div>
             <span class="text-sm font-bold text-accent">Free</span>
           </div>
-
-          <!-- Inactive Option -->
-          <div class="w-full border border-gray-200 bg-transparent rounded-xl p-4 flex items-center justify-between cursor-pointer hover:border-gray-300 transition-colors">
-            <div class="flex items-center gap-4">
-              <div class="w-5 h-5 rounded-full border border-gray-300 flex items-center justify-center shrink-0"></div>
-              <div class="flex flex-col">
-                <span class="text-sm font-bold text-gray-900">Express Courier</span>
-                <span class="text-[0.8rem] text-gray-500">1-2 business days</span>
-              </div>
-            </div>
-            <span class="text-sm font-bold text-gray-900">$12.00</span>
-          </div>
         </div>
       </div>
 
-      <!-- Step 3: Payment Details -->
+      <!-- Step 3: Payment Method -->
       <div class="mb-12">
-        <div class="flex items-center gap-4 mb-6 opacity-60">
-          <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center font-bold text-sm shrink-0">3</div>
-          <h2 class="text-xl font-bold text-gray-500">Payment Details</h2>
+        <div class="flex items-center gap-4 mb-6">
+          <div class="w-8 h-8 rounded-full bg-[#dcfce7] text-[#15803d] flex items-center justify-center font-bold text-sm shrink-0">3</div>
+          <h2 class="text-xl font-bold text-gray-900">Payment Method</h2>
         </div>
 
-        <div class="w-full border-2 border-dashed border-gray-200 rounded-xl py-10 px-6 flex items-center justify-center text-center">
-          <p class="text-sm text-gray-400 font-medium">Complete shipping information to unlock payment options</p>
+        <div class="space-y-3">
+          <!-- Cash on Delivery -->
+          <label class="w-full border-2 rounded-xl p-4 flex items-center justify-between cursor-pointer transition-colors"
+            [class.border-accent]="paymentMethod === 'COD'"
+            [class.bg-accent\/5]="paymentMethod === 'COD'"
+            [class.border-gray-200]="paymentMethod !== 'COD'">
+            <div class="flex items-center gap-4">
+              <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0"
+                [class.border-accent]="paymentMethod === 'COD'"
+                [class.border-gray-300]="paymentMethod !== 'COD'">
+                @if (paymentMethod === 'COD') {
+                  <div class="w-2.5 h-2.5 rounded-full bg-accent"></div>
+                }
+              </div>
+              <div class="flex flex-col">
+                <span class="text-sm font-bold text-gray-900">Cash on Delivery</span>
+                <span class="text-[0.8rem] text-gray-500">Pay when your order arrives</span>
+              </div>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 0 0-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 0 1-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 0 0 3 15h-.75M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm3 0h.008v.008H18V10.5Zm-12 0h.008v.008H6V10.5Z" />
+            </svg>
+            <input type="radio" name="paymentMethod" value="COD" [(ngModel)]="paymentMethod" class="sr-only" />
+          </label>
+
+          <!-- Debit/Credit Card -->
+          <label class="w-full border-2 rounded-xl p-4 flex items-center justify-between cursor-pointer transition-colors"
+            [class.border-accent]="paymentMethod === 'online'"
+            [class.bg-accent\/5]="paymentMethod === 'online'"
+            [class.border-gray-200]="paymentMethod !== 'online'">
+            <div class="flex items-center gap-4">
+              <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0"
+                [class.border-accent]="paymentMethod === 'online'"
+                [class.border-gray-300]="paymentMethod !== 'online'">
+                @if (paymentMethod === 'online') {
+                  <div class="w-2.5 h-2.5 rounded-full bg-accent"></div>
+                }
+              </div>
+              <div class="flex flex-col">
+                <span class="text-sm font-bold text-gray-900">Debit or Credit Card</span>
+                <span class="text-[0.8rem] text-gray-500">Visa, Mastercard, and more</span>
+              </div>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 21Z" />
+            </svg>
+            <input type="radio" name="paymentMethod" value="online" [(ngModel)]="paymentMethod" class="sr-only" />
+          </label>
         </div>
       </div>
       
@@ -229,7 +263,7 @@
           </div>
           <div class="flex justify-between text-gray-600 font-medium">
             <span>Shipping</span>
-            <span class="text-accent font-semibold">Calculated at next step</span>
+            <span class="text-accent font-semibold">Free</span>
           </div>
         </div>
 
@@ -238,10 +272,28 @@
           <span class="text-3xl font-extrabold tracking-tight text-gray-900">${{ subtotal().toFixed(2) }}</span>
         </div>
 
+        <!-- Error -->
+        @if (orderError()) {
+          <div class="mb-4 px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
+            {{ orderError() }}
+          </div>
+        }
+
         <!-- Payment Button -->
-        <button (click)="test()" class="w-full bg-accent hover:bg-[#32c93d] transition-colors text-[#0b330e] font-bold py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-accent/20 group">
-          Continue to Payment
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        <button
+          (click)="placeOrder()"
+          [disabled]="placing()"
+          class="w-full bg-accent hover:bg-accent-hover transition-colors text-[#0b330e] font-bold py-4 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-accent/20 group disabled:opacity-60 disabled:cursor-not-allowed">
+          @if (placing()) {
+            <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+            </svg>
+            Placing Order…
+          } @else {
+            Place Order
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          }
         </button>
 
         <div class="flex items-center justify-center gap-2 mt-6 text-[#737373]">

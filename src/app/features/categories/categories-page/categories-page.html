@@ -1,61 +1,98 @@
-<section class="cat-page">
-  <div class="cat-container">
-    <!-- Header -->
-    <header class="cat-header">
-      <h1>Browse by <span>Category</span></h1>
-      <p>
-        Discover your next favorite read through our curated collections, ranging from timeless classics to modern
-        scientific breakthroughs.
-      </p>
+<!-- categories-page.html -->
+<div class="max-w-6xl mx-auto px-6 py-10">
 
-      <!-- Top actions -->
-      <div class="cat-topbar">
-        <button class="btn-outline" type="button" (click)="refresh()" [disabled]="loading">
-          <span class="dot" aria-hidden="true"></span>
-          Refresh
-        </button>
-
-        <div class="pager" *ngIf="!loading && !error">
-          <button class="pager-btn" type="button" (click)="prevPage()" [disabled]="page <= 1">Prev</button>
-          <span class="pager-text">Page <b>{{ page }}</b> of <b>{{ totalPages }}</b></span>
-          <button class="pager-btn" type="button" (click)="nextPage()" [disabled]="page >= totalPages">Next</button>
-        </div>
-      </div>
-    </header>
-
-    <!-- States -->
-    <div class="state state-loading" *ngIf="loading">Loading categories...</div>
-    <div class="state state-error" *ngIf="!loading && error">{{ error }}</div>
-
-    <!-- Grid -->
-    <div class="cat-grid" *ngIf="!loading && !error && categories.length > 0">
-      <article class="cat-card" *ngFor="let c of categories; trackBy: trackById">
-        <div class="cat-img">
-        
-          <img
-            src="images/category-placeholder.jpg"
-            alt="Category image"
-            loading="lazy"
-          />
-        </div>
-
-        <div class="cat-body">
-          <h3 class="cat-title">{{ c.name }}</h3>
-
-          <p class="cat-desc">
-            Explore books in <b>{{ c.name }}</b> and discover your next favorite read.
-          </p>
-
-          <button class="btn-primary" type="button" (click)="goToCategory(c._id)">
-            Explore Category <span class="arrow" aria-hidden="true">→</span>
-          </button>
-        </div>
-      </article>
-    </div>
-
-    <!-- Empty -->
-    <div class="state state-empty" *ngIf="!loading && !error && categories.length === 0">
-      No categories yet.
-    </div>
+  <!-- Header -->
+  <div class="mb-10 text-center">
+    <p class="text-accent text-sm font-semibold tracking-widest uppercase mb-1">Explore the Collection</p>
+    <h1 class="text-4xl font-bold text-text-main">Browse by Category</h1>
+    <p class="mt-3 text-text-muted max-w-xl mx-auto">
+      Discover your next favorite read through our curated collections, ranging from timeless classics to modern scientific breakthroughs.
+    </p>
   </div>
-</section>
+
+  <!-- Loading skeletons -->
+  @if (loading) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      @for (i of [1,2,3,4,5,6]; track i) {
+        <div class="bg-white rounded-2xl border border-border-light overflow-hidden animate-pulse">
+          <div class="w-full aspect-[5/4] bg-bg-soft"></div>
+          <div class="p-4 space-y-2">
+            <div class="h-4 bg-bg-soft rounded w-1/2"></div>
+            <div class="h-3 bg-bg-soft rounded w-full"></div>
+            <div class="h-3 bg-bg-soft rounded w-4/5"></div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Error -->
+  @if (!loading && error) {
+    <div class="text-center py-12 text-text-muted">{{ error }}</div>
+  }
+
+  <!-- Grid -->
+  @if (!loading && !error && categories.length > 0) {
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      @for (c of categories; track c._id) {
+        <div class="bg-white rounded-2xl border border-border-light shadow-sm hover:shadow-md transition-shadow overflow-hidden group">
+
+          <!-- Image -->
+          <div class="w-full aspect-[5/4] overflow-hidden bg-bg-soft flex items-center justify-center">
+            <img
+              [src]="c.categoryImage || 'images/category-placeholder.jpg'"
+              [alt]="c.name"
+              loading="lazy"
+              class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              (error)="$any($event.target).src = 'images/category-placeholder.jpg'"
+            />
+          </div>
+
+          <!-- Info -->
+          <div class="p-4">
+            <h3 class="font-bold text-text-main text-base mb-1">{{ c.name }}</h3>
+            <p class="text-text-muted text-sm line-clamp-2 mb-4">
+              Explore books in <strong>{{ c.name }}</strong> and discover your next favorite read.
+            </p>
+            <button
+              type="button"
+              class="w-full py-2 rounded-lg bg-accent/10 text-accent font-semibold text-sm hover:bg-accent hover:text-white transition-colors cursor-pointer"
+              (click)="goToCategory(c._id)"
+            >
+              Explore Category
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Empty -->
+  @if (!loading && !error && categories.length === 0) {
+    <div class="text-center py-12 text-text-muted">No categories yet.</div>
+  }
+
+  <!-- Pagination -->
+  @if (!loading && !error && totalPages > 1) {
+    <div class="flex items-center justify-center gap-3 mt-10">
+      <button
+        type="button"
+        (click)="prevPage()"
+        [disabled]="page <= 1"
+        class="px-4 py-2 rounded-lg border border-border-light text-sm font-medium text-text-main bg-white hover:bg-bg-soft transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+      >
+        ← Prev
+      </button>
+      <span class="text-sm text-text-muted">Page <strong>{{ page }}</strong> of <strong>{{ totalPages }}</strong></span>
+      <button
+        type="button"
+        (click)="nextPage()"
+        [disabled]="page >= totalPages"
+        class="px-4 py-2 rounded-lg border border-border-light text-sm font-medium text-text-main bg-white hover:bg-bg-soft transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+      >
+        Next →
+      </button>
+    </div>
+  }
+
+</div>

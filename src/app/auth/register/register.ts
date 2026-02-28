@@ -70,7 +70,7 @@ export class RegisterComponent {
     this.loading = true;
     this.error = '';
 
-    const { dob, ...rest } = this.form.value;
+    const { dob, confirmPassword, ...rest } = this.form.value;
     const payload = { ...rest, ...(dob ? { dob } : {}) };
 
     this.auth.register(payload).subscribe({

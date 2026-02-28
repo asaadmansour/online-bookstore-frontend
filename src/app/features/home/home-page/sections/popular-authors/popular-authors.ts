@@ -30,7 +30,7 @@ export class TrendingAuthors implements OnInit {
   }
 
   avatar(a: Author): string {
-    return (a as any)?.photo || (a as any)?.imageUrl || 'images/default-avatar.jpg';
+    return a.authorImage || 'images/default-avatar.jpg';
   }
 
   onImgError(e: Event) {

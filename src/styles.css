@@ -169,6 +169,54 @@ a {
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 18%, transparent 82%);
 }
 
+/* =========================
+   Global input base styles
+   ========================= */
+
+/* All native inputs get a white background and correct text color by default */
+input,
+textarea,
+select {
+  background-color: #ffffff;
+  color: #1F2937;
+}
+
+/* Disabled inputs get a light gray background */
+input:disabled,
+textarea:disabled,
+select:disabled {
+  background-color: #F9FAFB;
+  color: #6B7280;
+  cursor: not-allowed;
+  opacity: 1; /* prevent browser dimming on top of our color */
+}
+
+/* ─── Autofill override ─────────────────────────────────────────────────────
+   Browsers (Chrome/Edge/Safari) force a yellow or dark background on autofill.
+   The only reliable workaround is the inset box-shadow trick — background-color
+   is ignored for autofilled inputs but box-shadow is not.
+   ─────────────────────────────────────────────────────────────────────────── */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  /* Push a white "fill" over the browser-injected yellow/dark background */
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  box-shadow:         0 0 0 1000px #ffffff inset !important;
+
+  /* Force text to always be dark (not black-on-dark or invisible) */
+  -webkit-text-fill-color: #1F2937 !important;
+
+  /* Keep the transition smooth */
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 /* Dropdown menu (Admin) */
 .dropdown-menu {
   background: var(--surface);

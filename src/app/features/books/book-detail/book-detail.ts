@@ -1,14 +1,15 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LucideAngularModule, ShoppingCart } from 'lucide-angular';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { CartFacade } from '../../../core/services/cart.facade';
 import { BookService } from '../../../core/services/book.service';
 import { Book } from '../../../shared/models/book.model';
+
 @Component({
   selector: 'app-book-detail',
-  imports: [LucideAngularModule, ProgressSpinnerModule, RouterLink],
+  imports: [LucideAngularModule, ProgressSpinnerModule],
   templateUrl: './book-detail.html',
   styleUrl: './book-detail.css',
 })
@@ -18,6 +19,7 @@ export class BookDetail implements OnInit {
   private readonly cartFacade = inject(CartFacade);
   private readonly bookService = inject(BookService);
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   readonly book = signal<Book | null>(null);
   readonly quantity = signal<number>(1);
@@ -25,13 +27,19 @@ export class BookDetail implements OnInit {
   readonly loadingSuggestions = signal<boolean>(false);
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (!id) {
-      return;
-    }
-    this.bookService.getBookById(id).subscribe((data) => {
-      this.book.set(data);
-      this.loadSuggestedBooks(data.categories?.[0]?._id);
+    // Use params observable (not snapshot) so navigation between books works
+    this.route.params.subscribe((params) => {
+      const id = params['id'];
+      if (!id) return;
+
+      this.book.set(null);
+      this.suggestedBooks.set([]);
+      this.quantity.set(1);
+
+      this.bookService.getBookById(id).subscribe((data) => {
+        this.book.set(data);
+        this.loadSuggestedBooks(data.categories?.[0]?._id);
+      });
     });
   }
 
@@ -45,10 +53,12 @@ export class BookDetail implements OnInit {
 
   addCurrentBookToCart() {
     const currentBook = this.book();
-    if (!currentBook) {
-      return;
-    }
+    if (!currentBook) return;
     this.cartFacade.addItemWithValues(currentBook._id, this.quantity());
+  }
+
+  goToBook(id: string) {
+    this.router.navigate(['/books', id]);
   }
 
   private loadSuggestedBooks(categoryId?: string) {
@@ -61,7 +71,9 @@ export class BookDetail implements OnInit {
     this.bookService.getBooks({ categoryId }).subscribe({
       next: (response) => {
         const currentId = this.book()?._id;
-        const filtered = response.books.filter((item) => item._id !== currentId).slice(0, 8);
+        const filtered = response.books
+          .filter((item) => item._id !== currentId)
+          .slice(0, 8);
         this.suggestedBooks.set(filtered);
       },
       error: () => {

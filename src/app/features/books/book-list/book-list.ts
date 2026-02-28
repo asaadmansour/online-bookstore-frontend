@@ -8,6 +8,7 @@ import { Category } from '../../../shared/models/category.model';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { AuthorService } from '../../../core/services/author.service';
 import { Author } from '../../../shared/models/author.model';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-book-list',
@@ -17,6 +18,8 @@ import { Author } from '../../../shared/models/author.model';
 })
 export class BookList implements OnInit {
   readonly Filter = Filter;
+  route = inject(ActivatedRoute);
+  router = inject(Router);
   readonly ArrowUpDown = ArrowUpDown;
   private bookService = inject(BookService);
   private categoryService = inject(CategoryService);
@@ -37,26 +40,54 @@ export class BookList implements OnInit {
   selectedSort = signal<string | null>(null);
   isFilterOpen = signal<boolean>(false);
   isSortOpen = signal<boolean>(false);
+  search = signal<string | null>('');
 
   ngOnInit() {
-    this.loadBooks();
     this.loadAuthors();
     this.categoryService.getCategories().subscribe((data) => {
       this.categories.set(data.items);
     });
+    this.route.queryParams.subscribe((params) => {
+      const category = params['category'] || null;
+      const author = params['author'] ?? null;
+      const sort = params['sort'] ?? null;
+      const minPrice = params['minPrice'] ? +params['minPrice'] : null;
+      const maxPrice = params['maxPrice'] ? +params['maxPrice'] : null;
+      const search = params['search'] ?? null;
+      this.selectedCategoryId.set(category);
+      this.selectedAuthorId.set(author);
+      this.selectedSort.set(sort);
+      this.minPrice.set(minPrice);
+      this.maxPrice.set(maxPrice);
+      this.search.set(search);
+      this.fetchBooks();
+    });
   }
-  loadBooks() {
+  fetchBooks() {
     this.bookService
       .getBooks({
         categoryId: this.selectedCategoryId() ?? undefined,
         authorId: this.selectedAuthorId() ?? undefined,
+        sort: this.selectedSort() ?? undefined,
         minPrice: this.minPrice() ?? undefined,
         maxPrice: this.maxPrice() ?? undefined,
-        sort: this.selectedSort() ?? undefined,
+        search: this.search() ?? undefined,
       })
-      .subscribe((data) => {
-        this.books.set(data.books);
-      });
+      .subscribe((data) => this.books.set(data.books));
+  }
+
+  loadBooks() {
+    this.router.navigate(['books'], {
+      queryParams: {
+        category: this.selectedCategoryId(),
+        sort: this.selectedSort(),
+        author: this.selectedAuthorId(),
+        minPrice: this.minPrice(),
+        maxPrice: this.maxPrice(),
+        search: this.search() || null,
+      },
+      queryParamsHandling: 'merge',
+    });
   }
   loadAuthors() {
     this.authorService.getAuthors().subscribe((data) => {
@@ -89,6 +120,12 @@ export class BookList implements OnInit {
     this.minPrice.set(null);
     this.maxPrice.set(null);
     this.selectedSort.set(null);
+    this.search.set(null);
+    this.loadBooks();
+  }
+
+  clearSearch() {
+    this.search.set(null);
     this.loadBooks();
   }
 }

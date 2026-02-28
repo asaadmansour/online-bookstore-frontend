@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { CategoriesService } from '../../../core/services/categories.service';
 import { Category } from '../../../shared/models/category.model';
@@ -7,9 +6,8 @@ import { Category } from '../../../shared/models/category.model';
 @Component({
   selector: 'app-categories-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './categories-page.html',
-  styleUrl: './categories-page.css',
 })
 export class CategoriesPageComponent implements OnInit {
   categories: Category[] = [];
@@ -37,10 +35,8 @@ export class CategoriesPageComponent implements OnInit {
 
     this.categoriesService.getAll(this.page, this.limit).subscribe({
       next: (res) => {
-        console.log('Categories response:', res);
-        console.log('Categories items:', res.items);
-        this.categories = res.items;      
-        this.totalPages = res.totalPages; 
+        this.categories = res.items;
+        this.totalPages = res.totalPages;
         this.loading = false;
       },
       error: (err) => {

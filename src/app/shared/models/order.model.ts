@@ -19,13 +19,13 @@ export interface ShippingAddress {
 
 export interface Order {
   _id: string;
-  user: User;
+  user: User | string;
   items: OrderItem[];
   status: OrderStatus;
-  paymentStatus: PaymentStatus;
-  paymentMethod: PaymentMethod;
-  shippingAddress: ShippingAddress;
-  totalPrice: number;
+  payment_status: PaymentStatus;
+  payment_method: PaymentMethod;
+  shipping_address: ShippingAddress;
+  total_price: number;
   createdAt: string;
   updatedAt: string;
 }

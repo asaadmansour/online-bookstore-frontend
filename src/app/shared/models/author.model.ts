@@ -2,7 +2,7 @@ export interface Author {
   _id: string;
   name: string;
   bio?: string;
-  imageUrl?: string;
+  authorImage?: string;
   createdAt: string;
   updatedAt: string;
 }

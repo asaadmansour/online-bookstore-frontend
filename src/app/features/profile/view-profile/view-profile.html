@@ -35,15 +35,15 @@
 @if (user && !loading && !editing) {
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
   <div>
-    <label class="text-xs text-gray-500">FIRST NAME</label>
+    <label class="text-xs text-text-muted">FIRST NAME</label>
     <p class="font-medium mb-0">{{ user.firstName }}</p>
   </div>
   <div>
-    <label class="text-xs text-gray-500">LAST NAME</label>
+    <label class="text-xs text-text-muted">LAST NAME</label>
     <p class="font-medium mb-0">{{ user.lastName }}</p>
   </div>
   <div>
-    <label class="text-xs text-gray-500">EMAIL</label>
+    <label class="text-xs text-text-muted">EMAIL</label>
     <div class="flex items-center gap-2">
       <span class="font-medium">{{ user.email }}</span>
       @if (user.isVerified) {
@@ -54,11 +54,11 @@
     </div>
   </div>
   <div>
-    <label class="text-xs text-gray-500">DATE OF BIRTH</label>
+    <label class="text-xs text-text-muted">DATE OF BIRTH</label>
     <p class="font-medium mb-0">{{ formattedDob }}</p>
   </div>
   <div>
-    <label class="text-xs text-gray-500">ROLE</label>
+    <label class="text-xs text-text-muted">ROLE</label>
     <div>
       <span class="inline-block px-2 py-0.5 rounded text-xs font-semibold"
         [class]="user.role === 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-green-100 text-green-700'">{{ user.role |
@@ -66,13 +66,13 @@
     </div>
   </div>
   <div>
-    <label class="text-xs text-gray-500">MEMBER SINCE</label>
+    <label class="text-xs text-text-muted">MEMBER SINCE</label>
     <p class="font-medium mb-0">{{ memberSince }}</p>
   </div>
 </div>
 
 <div class="mt-4">
-  <button class="px-3 py-2 bg-green-600 text-white rounded text-sm inline-flex items-center gap-2"
+  <button class="px-3 py-2 bg-accent hover:bg-accent-hover text-white rounded text-sm inline-flex items-center gap-2 transition-colors"
     (click)="startEditing()">
     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
       stroke-width="2">
@@ -91,8 +91,8 @@
 
     <!-- First Name -->
     <div>
-      <label class="text-xs text-gray-500">FIRST NAME</label>
-      <input type="text" class="border border-gray-200 rounded px-3 py-2 w-full" formControlName="firstName"
+      <label class="text-xs text-text-muted">FIRST NAME</label>
+      <input type="text" class="border border-border-light rounded px-3 py-2 w-full text-text-main outline-none hover:border-accent/60 focus:border-accent bg-bg-soft transition-colors" formControlName="firstName"
         placeholder="John" [class.border-red-500]="form.get('firstName')?.touched && form.get('firstName')?.invalid">
       @if (form.get('firstName')?.touched && form.get('firstName')?.invalid) {
       <div class="text-red-600 text-sm mt-1">
@@ -105,8 +105,8 @@
 
     <!-- Last Name -->
     <div>
-      <label class="text-xs text-gray-500">LAST NAME</label>
-      <input type="text" class="border border-gray-200 rounded px-3 py-2 w-full" formControlName="lastName"
+      <label class="text-xs text-text-muted">LAST NAME</label>
+      <input type="text" class="border border-border-light rounded px-3 py-2 w-full text-text-main outline-none hover:border-accent/60 focus:border-accent bg-bg-soft transition-colors" formControlName="lastName"
         placeholder="Doe" [class.border-red-500]="form.get('lastName')?.touched && form.get('lastName')?.invalid">
       @if (form.get('lastName')?.touched && form.get('lastName')?.invalid) {
       <div class="text-red-600 text-sm mt-1">
@@ -119,14 +119,14 @@
 
     <!-- Date of Birth -->
     <div>
-      <label class="text-xs text-gray-500">DATE OF BIRTH <span class="text-gray-400 text-xs">(optional)</span></label>
-      <input type="date" class="border border-gray-200 rounded px-3 py-2 w-full" formControlName="dob">
+      <label class="text-xs text-text-muted">DATE OF BIRTH <span class="text-gray-400 text-xs">(optional)</span></label>
+      <input type="date" class="border border-border-light rounded px-3 py-2 w-full text-text-main outline-none hover:border-accent/60 focus:border-accent bg-bg-soft transition-colors" formControlName="dob">
     </div>
 
     <!-- Email (read-only) -->
     <div>
-      <label class="text-xs text-gray-500">EMAIL <span class="text-gray-400 text-xs">(cannot change)</span></label>
-      <input type="email" class="border border-gray-100 bg-gray-50 rounded px-3 py-2 w-full" [value]="user.email"
+      <label class="text-xs text-text-muted">EMAIL <span class="text-gray-400 text-xs">(cannot change)</span></label>
+      <input type="email" class="border border-border-light bg-bg-soft rounded px-3 py-2 w-full text-text-muted" [value]="user.email"
         disabled>
     </div>
   </div>
@@ -134,7 +134,7 @@
   <div class="border-t my-4"></div>
 
   <div class="flex gap-2">
-    <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded inline-flex items-center gap-2"
+    <button type="submit" class="px-4 py-2 bg-accent hover:bg-accent-hover text-white rounded inline-flex items-center gap-2 transition-colors"
       [disabled]="saving || form.invalid || form.pristine">
       @if (saving) {
       <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -150,7 +150,7 @@
       Save Changes
       }
     </button>
-    <button type="button" class="px-4 py-2 bg-gray-100 rounded" (click)="cancelEditing()"
+    <button type="button" class="px-4 py-2 bg-bg-soft border border-border-light rounded text-text-muted hover:text-text-main transition-colors" (click)="cancelEditing()"
       [disabled]="saving">Cancel</button>
   </div>
 </form>

@@ -24,11 +24,9 @@ export class OrderListComponent implements OnInit {
   selectedStatus = 'all';
   statuses: { value: string; label: string }[] = [
     { value: 'all', label: 'All Orders' },
-    { value: 'pending', label: 'Pending' },
     { value: 'processing', label: 'Processing' },
-    { value: 'shipped', label: 'Shipped' },
+    { value: 'out_for_delivery', label: 'Out for Delivery' },
     { value: 'delivered', label: 'Delivered' },
-    { value: 'cancelled', label: 'Cancelled' },
   ];
 
   private orderService = inject(OrderService);

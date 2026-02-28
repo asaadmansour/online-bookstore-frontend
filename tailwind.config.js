@@ -10,8 +10,8 @@ module.exports = {
         'text-main': '#1F2937',
         'text-muted': '#6B7280',
         accent: '#3de048',
-        'accent-hover': '#7A9386',
-        'accent-light': '#F0F4F2',
+        'accent-hover': '#2bc634',
+        'accent-light': '#edfaee',
       },
       fontFamily: {
         sans: ['Inter', 'Geist', 'system-ui', 'sans-serif'],

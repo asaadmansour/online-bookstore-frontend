@@ -3,12 +3,12 @@
   <!-- Header -->
   <div class="flex flex-col md:flex-row justify-between md:items-center gap-3 mb-4">
     <div>
-      <h4 class="font-bold mb-1">My Orders</h4>
+      <h4 class="font-bold mb-1 text-text-main">My Orders</h4>
       @if (!loading && totalItems > 0) {
-      <p class="text-sm text-gray-500 mb-0">{{ totalItems }} order{{ totalItems !== 1 ? 's' : '' }}</p>
+      <p class="text-sm text-text-muted mb-0">{{ totalItems }} order{{ totalItems !== 1 ? 's' : '' }}</p>
       }
     </div>
-    <select class="border border-gray-200 rounded px-2 py-1 text-sm" style="width: auto" [(ngModel)]="selectedStatus"
+    <select class="border border-border-light rounded px-2 py-1 text-sm text-text-main bg-white outline-none focus:border-accent" style="width: auto" [(ngModel)]="selectedStatus"
       (ngModelChange)="onStatusChange()">
       @for (s of statuses; track s.value) {
       <option [value]="s.value">{{ s.label }}</option>
@@ -18,14 +18,14 @@
 
   <!-- Loading -->
   @if (loading) {
-  <div class="bg-white rounded-lg shadow-sm">
+  <div class="bg-white rounded-lg shadow-sm border border-border-light">
     <div class="p-4">
       @for (i of [1, 2, 3]; track i) {
-      <div class="flex gap-3 py-3 border-b animate-pulse">
-        <div class="h-4 bg-gray-200 rounded w-1/6"></div>
-        <div class="h-4 bg-gray-200 rounded w-1/4"></div>
-        <div class="h-4 bg-gray-200 rounded w-1/12"></div>
-        <div class="h-4 bg-gray-200 rounded w-1/6"></div>
+      <div class="flex gap-3 py-3 border-b border-border-light animate-pulse">
+        <div class="h-4 bg-bg-soft rounded w-1/6"></div>
+        <div class="h-4 bg-bg-soft rounded w-1/4"></div>
+        <div class="h-4 bg-bg-soft rounded w-1/12"></div>
+        <div class="h-4 bg-bg-soft rounded w-1/6"></div>
       </div>
       }
     </div>
@@ -34,43 +34,43 @@
 
   <!-- Error -->
   @if (error && !loading) {
-  <div class="bg-white rounded-lg shadow-sm text-center py-8">
+  <div class="bg-white rounded-lg shadow-sm border border-border-light text-center py-8">
     <div class="px-6">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-red-600 mx-auto mb-3" fill="none" viewBox="0 0 24 24"
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-red-500 mx-auto mb-3" fill="none" viewBox="0 0 24 24"
         stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round"
           d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
       </svg>
-      <h6 class="font-semibold">Something went wrong</h6>
-      <p class="text-sm text-gray-500 mb-3">{{ error }}</p>
-      <button class="px-3 py-1 bg-green-600 text-white text-sm rounded" (click)="loadOrders()">Try Again</button>
+      <h6 class="font-semibold text-text-main">Something went wrong</h6>
+      <p class="text-sm text-text-muted mb-3">{{ error }}</p>
+      <button class="px-3 py-1 bg-accent hover:bg-accent-hover text-white text-sm rounded transition-colors" (click)="loadOrders()">Try Again</button>
     </div>
   </div>
   }
 
   <!-- Empty -->
   @if (!loading && !error && orders.length === 0) {
-  <div class="bg-white rounded-lg shadow-sm text-center py-8">
+  <div class="bg-white rounded-lg shadow-sm border border-border-light text-center py-8">
     <div class="px-6">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-gray-400 mx-auto mb-3" fill="none" viewBox="0 0 24 24"
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-text-muted mx-auto mb-3" fill="none" viewBox="0 0 24 24"
         stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round"
           d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
       </svg>
-      <h6 class="font-semibold">No orders yet</h6>
-      <p class="text-sm text-gray-500 mb-3">Start browsing and place your first order!</p>
-      <a routerLink="/books" class="inline-block px-3 py-1 bg-green-600 text-white text-sm rounded">Browse Books</a>
+      <h6 class="font-semibold text-text-main">No orders yet</h6>
+      <p class="text-sm text-text-muted mb-3">Start browsing and place your first order!</p>
+      <a routerLink="/books" class="inline-block px-3 py-1 bg-accent hover:bg-accent-hover text-white text-sm rounded transition-colors">Browse Books</a>
     </div>
   </div>
   }
 
   <!-- Orders table -->
   @if (!loading && !error && orders.length > 0) {
-  <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+  <div class="bg-white rounded-lg shadow-sm border border-border-light overflow-hidden">
     <div class="overflow-x-auto">
       <table class="w-full text-sm table-auto">
-        <thead class="bg-gray-50">
-          <tr class="text-left text-xs text-gray-600">
+        <thead class="bg-bg-soft border-b border-border-light">
+          <tr class="text-left text-xs text-text-muted">
             <th class="px-4 py-3">ORDER</th>
             <th class="px-4 py-3">DATE</th>
             <th class="px-4 py-3">ITEMS</th>
@@ -82,20 +82,20 @@
         </thead>
         <tbody>
           @for (order of orders; track trackByOrderId($index, order)) {
-          <tr class="hover:bg-gray-50 cursor-pointer" [routerLink]="['/orders', order._id]">
+          <tr class="hover:bg-bg-soft transition-colors cursor-pointer border-b border-border-light last:border-0" [routerLink]="['/orders', order._id]">
             <td class="px-4 py-3">
-              <span class="font-semibold">#{{ order._id.slice(-8).toUpperCase() }}</span>
+              <span class="font-semibold text-text-main">#{{ order._id.slice(-8).toUpperCase() }}</span>
             </td>
-            <td class="px-4 py-3"><span class="text-sm text-gray-500">{{ order.createdAt | date: 'MMM d, y' }}</span>
+            <td class="px-4 py-3"><span class="text-sm text-text-muted">{{ order.createdAt | date: 'MMM d, y' }}</span>
             </td>
-            <td class="px-4 py-3"><span class="text-sm text-gray-500">{{ getItemsSummary(order) }}</span></td>
-            <td class="px-4 py-3"><span class="font-semibold">{{ order.totalPrice | currency }}</span></td>
+            <td class="px-4 py-3"><span class="text-sm text-text-muted">{{ getItemsSummary(order) }}</span></td>
+            <td class="px-4 py-3"><span class="font-semibold text-text-main">{{ order.total_price | currency }}</span></td>
             <td class="px-4 py-3">
               <span class="inline-block px-3 py-1 rounded-full text-sm font-semibold badge-status-{{ order.status }}">{{
                 order.status | titlecase }}</span>
             </td>
-            <td class="px-4 py-3"><span class="text-sm text-gray-500 uppercase">{{ order.paymentMethod }}</span></td>
-            <td class="px-4 py-3 text-gray-400">
+            <td class="px-4 py-3"><span class="text-sm text-text-muted uppercase">{{ order.payment_method }}</span></td>
+            <td class="px-4 py-3 text-text-muted">
               <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
@@ -109,26 +109,26 @@
 
     <!-- Pagination -->
     @if (totalPages > 1) {
-    <div class="px-4 py-3 flex items-center justify-between">
-      <small class="text-sm text-gray-500"> Page {{ currentPage }} of {{ totalPages }} </small>
+    <div class="px-4 py-3 flex items-center justify-between border-t border-border-light">
+      <small class="text-sm text-text-muted"> Page {{ currentPage }} of {{ totalPages }} </small>
       <nav>
         <ul class="inline-flex items-center space-x-2">
           <li>
-            <button class="px-2 py-1 rounded border border-gray-200 text-sm" [disabled]="currentPage === 1"
+            <button class="px-2 py-1 rounded border border-border-light text-sm text-text-muted hover:border-accent hover:text-accent transition-colors" [disabled]="currentPage === 1"
               (click)="goToPage(currentPage - 1)">Previous</button>
           </li>
           @for (p of pageNumbers; track $index) {
           @if (p === '...') {
-          <li><span class="px-2 text-sm text-gray-500">…</span></li>
+          <li><span class="px-2 text-sm text-text-muted">…</span></li>
           } @else {
           <li>
-            <button class="px-3 py-1 rounded text-sm" [class.bg-gray-900]="p === currentPage"
-              [class.text-white]="p === currentPage" (click)="goToPage(+p)">{{ p }}</button>
+            <button class="px-3 py-1 rounded text-sm transition-colors" [class.bg-accent]="p === currentPage"
+              [class.text-white]="p === currentPage" [class.text-text-muted]="p !== currentPage" (click)="goToPage(+p)">{{ p }}</button>
           </li>
           }
           }
           <li>
-            <button class="px-2 py-1 rounded border border-gray-200 text-sm" [disabled]="currentPage === totalPages"
+            <button class="px-2 py-1 rounded border border-border-light text-sm text-text-muted hover:border-accent hover:text-accent transition-colors" [disabled]="currentPage === totalPages"
               (click)="goToPage(currentPage + 1)">Next</button>
           </li>
         </ul>

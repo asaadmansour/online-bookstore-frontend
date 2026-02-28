@@ -11,7 +11,8 @@ import { API_URL } from '../api.config';
 import { OrderResponse } from '../../shared/models/orderResponse';
 @Injectable({ providedIn: 'root' })
 export class OrderService {
-  private API = inject(API_URL);
+  private baseUrl = inject(API_URL);
+  private get API() { return `${this.baseUrl}/orders`; }
   private http = inject(HttpClient);
   private _httpClient = inject(HttpClient);
   getOrders(page = 1, limit = 10, status?: string): Observable<OrderListResponse> {

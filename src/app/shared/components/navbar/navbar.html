@@ -21,7 +21,9 @@
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
           </svg>
           <input
-          (input)="onSearch($event)"
+            (input)="onSearch($event)"
+            (keydown.enter)="onEnterSearch()"
+            [value]="searchQuery()"
             type="text"
             placeholder="Search books, authors..."
             class="w-full pl-9 pr-4 py-2 text-sm bg-bg-soft border border-slate-300 rounded-full
@@ -60,7 +62,7 @@
       <!-- Actions -->
       <div class="flex items-center gap-2 shrink-0">
 
-        @if (isLoggedIn) {
+        @if (isLoggedIn()) {
           <!-- Cart -->
           <button routerLink="/cart"
             class="flex items-center gap-1.5 text-sm text-text-muted hover:text-text-main hover:bg-accent/10 px-3 py-1.5 rounded-md transition-colors cursor-pointer">
@@ -77,14 +79,14 @@
             <button
               (click)="toggleDropdown()"
               class="w-8 h-8 rounded-full bg-accent text-white text-sm font-semibold flex items-center justify-center cursor-pointer hover:bg-accent-hover transition-colors shrink-0"
-              [attr.aria-label]="userName">
-              {{ userInitial }}
+              [attr.aria-label]="userName()">
+              {{ userInitial() }}
             </button>
 
             @if (dropdownOpen()) {
             <div class="absolute right-0 top-full mt-1 w-44 bg-white border border-border-light rounded-lg shadow-lg py-1 z-50">
               <div class="px-3 py-2 border-b border-border-light">
-                <p class="text-xs font-semibold text-text-main truncate">{{ userName }}</p>
+                <p class="text-xs font-semibold text-text-main truncate">{{ userName() }}</p>
               </div>
               <a routerLink="/profile"
                 (click)="closeDropdown()"

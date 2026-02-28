@@ -20,7 +20,7 @@
       [responsiveOptions]="responsiveOptions"
       [showIndicators]="false"
       [showNavigators]="true"
-      [autoplayInterval]="6000"
+      [autoplayInterval]="3000"
       [circular]="true"
     >
       <ng-template #item let-author>
@@ -41,7 +41,7 @@
 
             <!-- Info — same padding & font sizes as BookCard -->
             <div class="p-3 bg-bg-soft flex flex-col gap-1">
-              <p class="font-semibold text-sm truncate text-surface-900">{{ author.name }}</p>
+              <p class="font-semibold text-sm truncate text-text-main">{{ author.name }}</p>
               <p class="text-xs text-text-muted line-clamp-2 leading-relaxed">{{ author.bio || 'Author' }}</p>
               <span class="text-accent font-bold text-sm mt-1">View profile →</span>
             </div>

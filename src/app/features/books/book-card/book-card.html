@@ -1,10 +1,10 @@
 <div (click)="goToDetail()" (keyup.enter)="goToDetail()"
   role="button"
-  tabindex="0"class="w-full sm:w-48 md:w-60 rounded-lg overflow-hidden  dark:border-surface-700 hover:shadow-md transition-shadow cursor-pointer bg-white dark:bg-surface-800">
+  tabindex="0" class="w-full sm:w-48 md:w-60 rounded-lg overflow-hidden border border-border-light hover:shadow-md transition-shadow cursor-pointer bg-white">
   <img [src]="book().coverUrl" class="w-full aspect-[5/7] object-cover" [alt]="book().name" />
   <div class="p-3 bg-bg-soft flex flex-col gap-1">
-    <p class="font-semibold text-sm truncate text-surface-900 dark:text-surface-0">{{ book().name }}</p>
-    <p class="text-xs truncate text-text-muted dark:text-surface-400">{{ book().author.name }}</p>
+    <p class="font-semibold text-sm truncate text-text-main">{{ book().name }}</p>
+    <p class="text-xs truncate text-text-muted">{{ book().author.name }}</p>
     <div class="flex justify-between items-center mt-1">
       <span class="text-accent font-bold text-sm">${{ book().price }}</span>
       <span class="text-xs text-yellow-400">★ {{ book().averageRating }}</span>

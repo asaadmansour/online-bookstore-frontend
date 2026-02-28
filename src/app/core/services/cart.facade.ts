@@ -12,7 +12,9 @@ export class CartFacade {
   readonly error = signal<string>('');
   readonly selectedBookId = signal<string | null>(null);
   readonly selectedQuantity = signal<number>(1);
-
+  clearCart() {
+    this.cart.set(null);
+  }
   loadCart(): void {
     this.loading.set(true);
     this.error.set('');
