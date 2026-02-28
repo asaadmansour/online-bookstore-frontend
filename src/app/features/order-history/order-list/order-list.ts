@@ -1,14 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+
 import { OrderService } from '../../../core/services/order.service';
 import { Order, OrderStatus } from '../../../shared/models/order.model';
 
 @Component({
   selector: 'app-order-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, DatePipe, CurrencyPipe, FormsModule],
+  imports: [CommonModule, RouterLink, DatePipe, CurrencyPipe],
   templateUrl: './order-list.html',
 })
 export class OrderListComponent implements OnInit {
@@ -21,13 +21,7 @@ export class OrderListComponent implements OnInit {
   totalItems = 0;
   limit = 10;
 
-  selectedStatus = 'all';
-  statuses: { value: string; label: string }[] = [
-    { value: 'all', label: 'All Orders' },
-    { value: 'processing', label: 'Processing' },
-    { value: 'out_for_delivery', label: 'Out for Delivery' },
-    { value: 'delivered', label: 'Delivered' },
-  ];
+
 
   private orderService = inject(OrderService);
   ngOnInit(): void {
@@ -38,7 +32,7 @@ export class OrderListComponent implements OnInit {
     this.loading = true;
     this.error = '';
 
-    this.orderService.getOrders(this.currentPage, this.limit, this.selectedStatus).subscribe({
+    this.orderService.getOrders(this.currentPage, this.limit).subscribe({
       next: (res) => {
         this.orders = res.items;
         this.totalItems = res.total;
@@ -61,10 +55,7 @@ export class OrderListComponent implements OnInit {
     });
   }
 
-  onStatusChange(): void {
-    this.currentPage = 1;
-    this.loadOrders();
-  }
+
 
   goToPage(page: number): void {
     if (page < 1 || page > this.totalPages) return;

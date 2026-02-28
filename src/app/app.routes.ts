@@ -98,6 +98,30 @@ export const routes: Routes = [
             (m) => m.ManageCategoriesComponent,
           ),
       },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('./features/profile/profile-layout/profile-layout').then(
+            (m) => m.ProfileLayoutComponent,
+          ),
+        children: [
+          { path: '', redirectTo: 'info', pathMatch: 'full' },
+          {
+            path: 'info',
+            loadComponent: () =>
+              import('./features/profile/view-profile/view-profile').then(
+                (m) => m.ViewProfileComponent,
+              ),
+          },
+          {
+            path: 'password',
+            loadComponent: () =>
+              import('./features/profile/change-password/change-password').then(
+                (m) => m.ChangePasswordComponent,
+              ),
+          },
+        ],
+      },
     ],
   },
   {

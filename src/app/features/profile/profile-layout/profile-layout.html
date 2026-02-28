@@ -41,6 +41,7 @@
             Password
           </a>
         </li>
+        @if (!isAdmin()) {
         <li>
           <a class="inline-flex items-center px-4 py-3 text-sm font-medium text-text-muted border-b-2 border-transparent hover:text-accent hover:bg-accent/10 transition-colors"
             routerLink="/orders">
@@ -56,6 +57,7 @@
             </svg>
           </a>
         </li>
+        }
       </ul>
     </div>
     <div class="p-4">

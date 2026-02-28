@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-admin-navbar',
@@ -7,4 +8,33 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './admin-navbar.html',
   styleUrl: './admin-navbar.css',
 })
-export class AdminNavbar {}
+export class AdminNavbar {
+  private auth = inject(AuthService);
+  private router = inject(Router);
+  showLogoutModal = false;
+  logoutLoading = false;
+
+  openLogoutModal(): void {
+    this.showLogoutModal = true;
+  }
+
+  cancelLogout(): void {
+    this.showLogoutModal = false;
+  }
+
+  confirmLogout(): void {
+    this.logoutLoading = true;
+    this.auth.logoutWithConfirmation().subscribe({
+      next: () => {
+        this.logoutLoading = false;
+        this.showLogoutModal = false;
+        this.router.navigate(['/']);
+      },
+      error: () => {
+        this.logoutLoading = false;
+        this.showLogoutModal = false;
+        this.auth.forceLogout();
+      },
+    });
+  }
+}

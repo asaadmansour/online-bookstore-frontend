@@ -3,6 +3,7 @@ import { Component, computed, inject } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AuthService } from '../../../core/services/auth.service';
+import { TokenService } from '../../../core/services/token.service';
 
 @Component({
   selector: 'app-profile-layout',
@@ -28,4 +29,7 @@ export class ProfileLayoutComponent {
   });
 
   email = computed(() => this.currentUser()?.email ?? '');
+
+  private tokenService = inject(TokenService);
+  isAdmin = computed(() => this.tokenService.getUserRole() === 'admin');
 }

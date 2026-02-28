@@ -6,14 +6,12 @@ import { AuthService } from './core/services/auth.service';
 import { TokenService } from './core/services/token.service';
 import { ToastModule } from 'primeng/toast';
 import { inject } from '@angular/core';
-import { Button } from 'primeng/button';
-import { Navbar } from './shared/components/navbar/navbar';
 import { FooterComponent } from './shared/footer/footer';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, ToastModule, Navbar, RouterOutlet, Button, Navbar, FooterComponent],
+  imports: [CommonModule, ToastModule, RouterOutlet, FooterComponent],
   templateUrl: './app.html',
 })
 export class App {

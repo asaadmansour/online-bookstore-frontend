@@ -53,8 +53,8 @@
   @for(item of orders()?.orders; track item._id) {
     <tr>
       <td class="py-3 text-text-muted">{{ item._id }}</td>
-      <td class="py-3 text-text-main font-medium">{{ item.user.firstName }} {{item.user.lastName}}</td>
-      <td class="py-3 text-text-main">${{ item.totalPrice }}</td>
+      <td class="py-3 text-text-main font-medium">{{ $any(item.user).firstName }} {{ $any(item.user).lastName }}</td>
+      <td class="py-3 text-text-main">${{ item.total_price }}</td>
       <td class="py-3">
         <span class="px-3 py-1 rounded-full text-xs"
   [class.bg-yellow-100]="item.status === 'processing'"
