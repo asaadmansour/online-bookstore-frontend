@@ -1,21 +1,17 @@
-<!-- Loading -->
 <div *ngIf="loading" class="state-box">
   <div class="spinner"></div>
   <span>Loading authors…</span>
 </div>
 
-<!-- Error -->
 <div *ngIf="!loading && error" class="state-box error-box">
   <span>⚠ {{ error }}</span>
   <button class="btn-retry" (click)="load()">Retry</button>
 </div>
 
-<!-- Empty -->
 <div *ngIf="!loading && !error && authors.length === 0" class="state-box">
   <span>No authors yet. Add your first one!</span>
 </div>
 
-<!-- Table -->
 <table *ngIf="!loading && !error && authors.length > 0" class="tbl">
   <thead>
     <tr>
@@ -36,7 +32,6 @@
   </tbody>
 </table>
 
-<!-- Delete Confirm Modal -->
 <div class="modal-backdrop" *ngIf="pendingDeleteId" (click)="cancelDelete()">
   <div class="modal" (click)="$event.stopPropagation()">
     <div class="modal-icon">🗑</div>

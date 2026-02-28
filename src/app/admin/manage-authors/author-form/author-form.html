@@ -1,5 +1,4 @@
 <div class="form-page">
-  <!-- Loading existing author -->
   <div *ngIf="loading" class="loader-row">
     <div class="spinner"></div>
     <span>Loading author…</span>
@@ -25,13 +24,22 @@
         <textarea id="author-bio" class="input textarea" [(ngModel)]="bio" rows="4"
           placeholder="Short biography…"></textarea>
       </div>
-
-      <div class="field">
-        <label class="label" for="author-photo">Photo URL</label>
-        <input id="author-photo" class="input" type="url" [(ngModel)]="photo" placeholder="https://…" />
-      </div>
+        <div class="field">
+          <label class="label" for="author-image">
+            Author Image <span class="req">*</span>
+          </label>
+          <input
+            id="author-image"
+            class="input"
+            type="file"
+            accept="image/*"
+            (change)="onFileSelected($event)"
+          />
+          <small *ngif="isEdit" class="hint">
+            (optional) Upload a new image only if you want to change it.
+          </small>
+       </div>
     </div>
-
     <div class="form-actions">
       <button class="btn-save" [disabled]="saving" (click)="save()">{{ submitLabel }}</button>
       <button class="btn-cancel" [disabled]="saving" (click)="cancel()">Cancel</button>

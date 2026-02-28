@@ -25,6 +25,11 @@
                 <textarea id="cat-desc" class="input textarea" [(ngModel)]="description" rows="4"
                     placeholder="Brief description of this category…"></textarea>
             </div>
+            <div class="field">
+                <label class="label">Category Image <span class="req">*</span></label>
+                <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+                <small *ngIf="selectedFile">{{ selectedFile.name }}</small>
+            </div>
         </div>
 
         <div class="form-actions">

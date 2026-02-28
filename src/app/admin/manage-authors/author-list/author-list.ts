@@ -43,7 +43,7 @@ export class AuthorListComponent implements OnInit {
   }
 
   getId(a: Author): string {
-    return (a._id ?? String(a.id));
+    return (a._id);
   }
 
   openDelete(author: Author) {

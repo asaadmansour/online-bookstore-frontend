@@ -12,14 +12,13 @@ import { AuthorsService } from '../../../core/services/authors.service';
   styleUrl: './author-form.css',
 })
 export class AuthorFormComponent implements OnInit {
-  // Form fields
   name = '';
   bio = '';
-  photo = '';
+  authorImage = '';
+  selectedFile: File | null = null;
 
-  // State
   editId: string | null = null;
-  loading = false;   // loading existing author for edit
+  loading = false;   
   saving = false;
   error = '';
 
@@ -29,7 +28,10 @@ export class AuthorFormComponent implements OnInit {
     if (this.saving) return this.isEdit ? 'Saving…' : 'Creating…';
     return this.isEdit ? 'Save Changes' : 'Create Author';
   }
-
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.selectedFile = input.files && input.files.length? input.files[0] : null;
+  }
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -45,8 +47,8 @@ export class AuthorFormComponent implements OnInit {
         next: (author) => {
           this.name = author.name ?? '';
           this.bio = author.bio ?? '';
-          this.photo = author.photo ?? author.imageUrl ?? '';
-          this.loading = false;
+          this.authorImage = author.authorImage ?? '';
+           this.loading = false;
         },
         error: () => {
           this.error = 'Could not load author data.';
@@ -58,13 +60,20 @@ export class AuthorFormComponent implements OnInit {
 
   save() {
     if (!this.name.trim()) { this.error = 'Name is required.'; return; }
-    this.error = '';
-    this.saving = true;
-    const payload = { name: this.name.trim(), bio: this.bio.trim(), photo: this.photo.trim() };
+    if (!this.isEdit && !this.selectedFile) { this.error = 'Author Image is required.'; return; }
 
+          this.error = '';
+          this.saving = true;
+
+        const formData = new FormData();
+        formData.append('name', this.name.trim());
+        formData.append('bio', this.bio.trim());
+        if (this.selectedFile) {
+        formData.append('authorImage', this.selectedFile);
+        }
     const req$ = this.isEdit
-      ? this.authorsService.update(this.editId!, payload)
-      : this.authorsService.create(payload);
+      ? this.authorsService.updateWithImage(this.editId!, formData)
+      : this.authorsService.createWithImage(formData);
 
     req$.subscribe({
       next: () => this.router.navigate(['/admin/authors']),

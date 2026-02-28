@@ -15,6 +15,12 @@ export class CategoryFormComponent implements OnInit {
   // Form fields
   name = '';
   description = '';
+  categoryImage = '';
+  selectedFile: File | null = null;
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.selectedFile = input.files && input.files.length? input.files[0] : null;
+  }
 
   // State
   editId: string | null = null;
@@ -44,6 +50,7 @@ export class CategoryFormComponent implements OnInit {
         next: (cat) => {
           this.name = cat.name ?? '';
           this.description = cat.description ?? '';
+          this.categoryImage = cat.categoryImage ?? '';
           this.loading = false;
         },
         error: () => {
@@ -56,13 +63,19 @@ export class CategoryFormComponent implements OnInit {
 
   save() {
     if (!this.name.trim()) { this.error = 'Name is required.'; return; }
+    if (!this.isEdit && !this.selectedFile) { this.error = 'Image is required.'; return; }
     this.error = '';
     this.saving = true;
-    const payload = { name: this.name.trim(), description: this.description.trim() };
+    const formData = new FormData();
+    formData.append('name', this.name.trim());
+    formData.append('description', this.description.trim());
+    if (this.selectedFile) {
+      formData.append('categoryImage', this.selectedFile);
+    }
 
     const req$ = this.isEdit
-      ? this.categoriesService.update(this.editId!, payload)
-      : this.categoriesService.create(payload);
+      ? this.categoriesService.updateWithImage(this.editId!, formData)
+      : this.categoriesService.createWithImage(formData);
 
     req$.subscribe({
       next: () => this.router.navigate(['/admin/categories']),

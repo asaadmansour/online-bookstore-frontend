@@ -3,7 +3,7 @@ import { ButtonModule } from 'primeng/button';
 import { CarouselModule } from 'primeng/carousel';
 import { TagModule } from 'primeng/tag';
 import { RouterLink } from '@angular/router';
-import { AuthorService } from '../../../../../core/services/author.service';
+import { AuthorsService } from '../../../../../core/services/authors.service';
 import { Author } from '../../../../../shared/models/author.model';
 
 @Component({
@@ -13,7 +13,7 @@ import { Author } from '../../../../../shared/models/author.model';
   imports: [ButtonModule, CarouselModule, TagModule, RouterLink],
 })
 export class TrendingAuthors implements OnInit {
-  private authorService = inject(AuthorService);
+  private authorService = inject(AuthorsService);
 
   authors = signal<Author[]>([]);
   responsiveOptions = [

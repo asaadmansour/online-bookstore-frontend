@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { API_URL } from '../api.config';
 import { Observable } from 'rxjs';
 import { Author } from '../../shared/models/author.model';
+import { AuthorResponse } from '../../shared/models/authorResponse';
  import { map } from 'rxjs/operators';
  
 type PagedResponse<T> = {
@@ -16,39 +19,36 @@ type PagedResponse<T> = {
 })
 export class AuthorsService {
 
-  private baseUrl = 'http://localhost:5000/authors';
+ private http = inject(HttpClient);
+  private API = inject(API_URL);
 
-  constructor(private http: HttpClient) {}
+  getAuthors() {
+    return this.http.get<AuthorResponse>(`${this.API}/authors`);
+  }
 
-  // Get all authors
   getAll(): Observable<Author[]> {
-    return this.http.get<PagedResponse<Author>>(this.baseUrl)
+    return this.http.get<PagedResponse<Author>>(`${this.API}/authors`)
       .pipe(map(res => res?.items ?? []));
   }
 
-  // Get popular authors
   getPopular(): Observable<Author[]> {
-  return this.http.get<PagedResponse<Author>>(`${this.baseUrl}/popular`)
+  return this.http.get<PagedResponse<Author>>(`${this.API}/authors/popular`)
     .pipe(map(res => res?.items ?? []));
 }
 
-  // Get author by id
   getById(id: string): Observable<Author> {
-    return this.http.get<Author>(`${this.baseUrl}/${id}`);
+    return this.http.get<Author>(`${this.API}/authors/${id}`);
   }
 
-  // Create author
-  create(author: Partial<Author>): Observable<Author> {
-    return this.http.post<Author>(this.baseUrl, author);
-  }
+  createWithImage(author: FormData): Observable<Author> {
+  return this.http.post<Author>(`${this.API}/authors`, author);
 
-  // Update author
-  update(id: string, author: Partial<Author>): Observable<Author> {
-    return this.http.patch<Author>(`${this.baseUrl}/${id}`, author);
   }
-
-  // Delete author
+  updateWithImage(id: string, author: FormData): Observable<Author> {
+  return this.http.patch<Author>(`${this.API}/authors/${id}`, author);
+  }
+  
   delete(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+    return this.http.delete<void>(`${this.API}/authors/${id}`);
   }
 }
