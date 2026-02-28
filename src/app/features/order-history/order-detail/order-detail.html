@@ -127,7 +127,7 @@
               {{ item.book.name }}
             </h6>
 
-            @if (item.book.author?.name) {
+            @if (item.book.author.name) {
             <small class="text-sm text-text-muted">
               by {{ item.book.author.name }}
             </small>
@@ -200,13 +200,13 @@
         </h6>
 
         <div class="text-sm text-gray-500">
-          <p class="mb-1">{{ order.shipping_address?.street }}</p>
+          <p class="mb-1">{{ order.shipping_address.street }}</p>
           <p class="mb-1">
-            {{ order.shipping_address?.city }},
-            {{ order.shipping_address?.state }}
-            {{ order.shipping_address?.zip }}
+            {{ order.shipping_address.city }},
+            {{ order.shipping_address.state }}
+            {{ order.shipping_address.zip }}
           </p>
-          <p class="mb-3">{{ order.shipping_address?.country }}</p>
+          <p class="mb-3">{{ order.shipping_address.country }}</p>
 
           <div class="border-t pt-3 flex justify-between items-center">
             <span>Payment</span>
