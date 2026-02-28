@@ -10,11 +10,15 @@
             <div class="absolute top-1 right-1 w-4 h-4 border-t-2 border-r-2 border-accent rounded-tr-lg"></div>
             <div class="absolute bottom-1 left-1 w-4 h-4 border-b-2 border-l-2 border-accent rounded-bl-lg"></div>
             <div class="absolute bottom-1 right-1 w-4 h-4 border-b-2 border-r-2 border-accent rounded-br-lg"></div>
-            <img
-              [src]="book()!.coverUrl"
-              [alt]="book()!.name"
-              class="w-full rounded-xl object-cover aspect-[3/4]"
-            />
+            <div class="relative w-full aspect-[3/4] rounded-xl overflow-hidden">
+              <img
+                [ngSrc]="book()!.coverUrl"
+                fill
+                priority
+                [alt]="book()!.name"
+                class="object-cover"
+              />
+            </div>
           </div>
         </div>
 
@@ -118,11 +122,12 @@
                     (click)="goToBook(suggested._id)"
                     class="snap-start shrink-0 w-52 bg-white rounded-xl border border-border-light shadow-sm hover:shadow-md transition-shadow cursor-pointer overflow-hidden group"
                   >
-                    <div class="h-64 overflow-hidden">
+                    <div class="relative h-64 overflow-hidden">
                       <img
-                        [src]="suggested.coverUrl"
+                        [ngSrc]="suggested.coverUrl"
+                        fill
                         [alt]="suggested.name"
-                        class="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                        class="object-cover transition duration-300 group-hover:scale-105"
                       />
                     </div>
                     <div class="p-4 space-y-1">

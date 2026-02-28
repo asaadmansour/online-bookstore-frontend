@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LucideAngularModule, ShoppingCart } from 'lucide-angular';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -9,7 +10,7 @@ import { Book } from '../../../shared/models/book.model';
 
 @Component({
   selector: 'app-book-detail',
-  imports: [LucideAngularModule, ProgressSpinnerModule],
+  imports: [LucideAngularModule, ProgressSpinnerModule, NgOptimizedImage],
   templateUrl: './book-detail.html',
   styleUrl: './book-detail.css',
 })
@@ -61,19 +62,17 @@ export class BookDetail implements OnInit {
     this.router.navigate(['/books', id]);
   }
 
-  private loadSuggestedBooks(categoryId?: string) {
+  private loadSuggestedBooks(categoryId?: string, page = 1) {
     if (!categoryId) {
       this.suggestedBooks.set([]);
       this.loadingSuggestions.set(false);
       return;
     }
     this.loadingSuggestions.set(true);
-    this.bookService.getBooks({ categoryId }).subscribe({
+    this.bookService.getBooks({ categoryId, page }).subscribe({
       next: (response) => {
         const currentId = this.book()?._id;
-        const filtered = response.books
-          .filter((item) => item._id !== currentId)
-          .slice(0, 8);
+        const filtered = response.books.filter((item) => item._id !== currentId).slice(0, 8);
         this.suggestedBooks.set(filtered);
       },
       error: () => {

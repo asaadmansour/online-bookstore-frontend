@@ -1,7 +1,9 @@
 <div (click)="goToDetail()" (keyup.enter)="goToDetail()"
   role="button"
   tabindex="0" class="w-full sm:w-48 md:w-60 rounded-lg overflow-hidden border border-border-light hover:shadow-md transition-shadow cursor-pointer bg-white">
-  <img [src]="book().coverUrl" class="w-full aspect-[5/7] object-cover" [alt]="book().name" />
+  <div class="relative w-full aspect-[5/7]">
+    <img [ngSrc]="book().coverUrl" fill class="object-cover" [alt]="book().name" />
+  </div>
   <div class="p-3 bg-bg-soft flex flex-col gap-1">
     <p class="font-semibold text-sm truncate text-text-main">{{ book().name }}</p>
     <p class="text-xs truncate text-text-muted">{{ book().author.name }}</p>

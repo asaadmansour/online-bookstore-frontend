@@ -15,6 +15,7 @@ export class BookService {
     maxPrice?: number;
     sort?: string;
     search?: string;
+    page: number;
   }) {
     let params = new HttpParams();
     if (filters?.categoryId) params = params.append('category', filters.categoryId);
@@ -23,6 +24,7 @@ export class BookService {
     if (filters?.maxPrice) params = params.append('maxPrice', filters.maxPrice.toString());
     if (filters?.sort) params = params.append('sort', filters.sort);
     if (filters?.search) params = params.append('search', filters.search);
+    if (filters?.page) params = params.append('page', filters.page);
     return this.http.get<BooksResponse>(`${this.API}/books`, { params });
   }
   getBookById(id: string) {

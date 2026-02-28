@@ -1,4 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { CarouselModule } from 'primeng/carousel';
 import { TagModule } from 'primeng/tag';
@@ -10,7 +11,7 @@ import { Author } from '../../../../../shared/models/author.model';
   selector: 'app-trending-authors',
   templateUrl: './popular-authors.html',
   standalone: true,
-  imports: [ButtonModule, CarouselModule, TagModule, RouterLink],
+  imports: [ButtonModule, CarouselModule, TagModule, RouterLink, NgOptimizedImage],
 })
 export class TrendingAuthors implements OnInit {
   private authorService = inject(AuthorService);

@@ -57,7 +57,7 @@ export class Navbar {
   onEnterSearch() {
     const query = this.searchQuery();
     if (!query.trim()) return;
-    this.router.navigate(['/books'], { queryParams: { search: query } });
+    this.router.navigate(['/books'], { queryParams: { search: query, page: 1 } });
     this.searchQuery.set('');
   }
 

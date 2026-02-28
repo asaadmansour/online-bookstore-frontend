@@ -38,12 +38,12 @@
         <div class="bg-white rounded-2xl border border-border-light shadow-sm hover:shadow-md transition-shadow overflow-hidden group">
 
           <!-- Image -->
-          <div class="w-full aspect-[5/4] overflow-hidden bg-bg-soft flex items-center justify-center">
+          <div class="relative w-full aspect-[5/4] overflow-hidden bg-bg-soft">
             <img
-              [src]="c.categoryImage || 'images/category-placeholder.jpg'"
+              [ngSrc]="c.categoryImage || 'images/category-placeholder.jpg'"
+              fill
               [alt]="c.name"
-              loading="lazy"
-              class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              class="object-cover transition-transform duration-300 group-hover:scale-105"
               (error)="$any($event.target).src = 'images/category-placeholder.jpg'"
             />
           </div>

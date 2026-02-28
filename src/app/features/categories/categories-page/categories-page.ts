@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { Router } from '@angular/router';
 import { CategoriesService } from '../../../core/services/categories.service';
 import { Category } from '../../../shared/models/category.model';
@@ -6,7 +7,7 @@ import { Category } from '../../../shared/models/category.model';
 @Component({
   selector: 'app-categories-page',
   standalone: true,
-  imports: [],
+  imports: [NgOptimizedImage],
   templateUrl: './categories-page.html',
 })
 export class CategoriesPageComponent implements OnInit {
