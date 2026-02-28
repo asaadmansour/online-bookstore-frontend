@@ -19,12 +19,12 @@ interface PageResponse<T> {
 export class CategoriesService {
   private baseUrl = 'http://localhost:5000/categories';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAll(page = 1, limit = 10): Observable<PageResponse<Category>> {
     return this.http
       .get<PageResponse<Category>>(`${this.baseUrl}?page=${page}&limit=${limit}`);
-      
+
   }
 
   // GET /categories/:id
@@ -33,12 +33,12 @@ export class CategoriesService {
   }
 
   // POST /categories
-  create(payload: { name: string }): Observable<Category> {
+  create(payload: { name: string; description?: string }): Observable<Category> {
     return this.http.post<Category>(this.baseUrl, payload);
   }
 
   // PATCH /categories/:id
-  update(id: string, payload: { name?: string }): Observable<Category> {
+  update(id: string, payload: { name?: string; description?: string }): Observable<Category> {
     return this.http.patch<Category>(`${this.baseUrl}/${id}`, payload);
   }
 
