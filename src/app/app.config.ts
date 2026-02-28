@@ -12,6 +12,7 @@ import Aura from '@primeuix/themes/aura';
 import { routes } from './app.routes';
 import { API_URL } from './core/api.config';
 import { jwtInterceptor } from './core/interceptors/jwt.interceptor';
+import { environment } from '../environments/environments';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,7 +21,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([jwtInterceptor]), withFetch()),
     provideBrowserGlobalErrorListeners(),
     MessageService,
-    { provide: API_URL, useValue: 'http://localhost:5000' },
+    { provide: API_URL, useValue: environment.apiUrl },
     providePrimeNG({
       theme: {
         preset: Aura,
