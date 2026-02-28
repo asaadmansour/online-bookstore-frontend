@@ -3,11 +3,15 @@
 
   <div class="books-grid">
     <div class="book-card" *ngFor="let book of popularBooks">
-    <img
-  [src]="defaultBookCover"
-  (error)="onBookImgError($event)"
-  [alt]="book.title"
-/>
+      <div class="relative w-full aspect-[5/7]">
+        <img
+          [ngSrc]="defaultBookCover"
+          fill
+          class="object-cover"
+          (error)="onBookImgError($event)"
+          [alt]="book.title"
+        />
+      </div>
 
       <div class="book-info">
         <h3>{{ book.title }}</h3>

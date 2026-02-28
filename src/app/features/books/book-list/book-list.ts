@@ -41,7 +41,8 @@ export class BookList implements OnInit {
   isFilterOpen = signal<boolean>(false);
   isSortOpen = signal<boolean>(false);
   search = signal<string | null>('');
-
+  currentPage = signal<number>(1);
+  totalPages = signal<number>(0);
   ngOnInit() {
     this.loadAuthors();
     this.categoryService.getCategories().subscribe((data) => {
@@ -54,12 +55,14 @@ export class BookList implements OnInit {
       const minPrice = params['minPrice'] ? +params['minPrice'] : null;
       const maxPrice = params['maxPrice'] ? +params['maxPrice'] : null;
       const search = params['search'] ?? null;
+      const page = params['page'] ? +params['page'] : 1;
       this.selectedCategoryId.set(category);
       this.selectedAuthorId.set(author);
       this.selectedSort.set(sort);
       this.minPrice.set(minPrice);
       this.maxPrice.set(maxPrice);
       this.search.set(search);
+      this.currentPage.set(page);
       this.fetchBooks();
     });
   }
@@ -72,8 +75,12 @@ export class BookList implements OnInit {
         minPrice: this.minPrice() ?? undefined,
         maxPrice: this.maxPrice() ?? undefined,
         search: this.search() ?? undefined,
+        page: this.currentPage(),
       })
-      .subscribe((data) => this.books.set(data.books));
+      .subscribe((data) => {
+        this.books.set(data.books);
+        this.totalPages.set(data.totalPages);
+      });
   }
 
   loadBooks() {
@@ -85,9 +92,14 @@ export class BookList implements OnInit {
         minPrice: this.minPrice(),
         maxPrice: this.maxPrice(),
         search: this.search() || null,
+        page: this.currentPage(),
       },
       queryParamsHandling: 'merge',
     });
+  }
+  goToPage(page: number) {
+    this.currentPage.set(page);
+    this.loadBooks();
   }
   loadAuthors() {
     this.authorService.getAuthors().subscribe((data) => {
@@ -96,21 +108,25 @@ export class BookList implements OnInit {
   }
   onSortChange(selected: string) {
     this.selectedSort.set(selected);
+    this.currentPage.set(1);
     this.loadBooks();
   }
   selectCategory(id: string | null) {
     this.selectedCategoryId.set(id);
+    this.currentPage.set(1);
     this.loadBooks();
   }
 
   selectAuthor(id: string | null) {
     this.selectedAuthorId.set(id);
+    this.currentPage.set(1);
     this.loadBooks();
   }
 
   setPriceRange(min: number | null, max: number | null) {
     this.minPrice.set(min);
     this.maxPrice.set(max);
+    this.currentPage.set(1);
     this.loadBooks();
   }
 
@@ -121,11 +137,13 @@ export class BookList implements OnInit {
     this.maxPrice.set(null);
     this.selectedSort.set(null);
     this.search.set(null);
+    this.currentPage.set(1);
     this.loadBooks();
   }
 
   clearSearch() {
     this.search.set(null);
+    this.currentPage.set(1);
     this.loadBooks();
   }
 }

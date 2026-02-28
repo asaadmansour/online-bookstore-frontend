@@ -1,11 +1,11 @@
-<div class="w-full bg-bg-soft px-6">
+<div class="w-full bg-bg-soft px-4 md:px-6 py-10 md:py-16">
   <div class="max-w-screen-xl mx-auto">
 
     <!-- Section Header -->
-    <div class="flex items-end justify-between mb-10">
+    <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 md:mb-10 gap-3">
       <div>
-        <p class="text-accent text-sm font-semibold tracking-widest uppercase mb-1">Meet the Minds</p>
-        <h2 class="text-4xl font-bold text-text-main">Popular Authors</h2>
+        <p class="text-accent text-xs md:text-sm font-semibold tracking-widest uppercase mb-1">Meet the Minds</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-text-main">Popular Authors</h2>
       </div>
       <a routerLink="/authors" class="text-accent hover:text-accent-hover text-sm font-medium flex items-center gap-1 transition-colors no-underline">
         View all <span>→</span>
@@ -30,11 +30,12 @@
             class="group flex flex-col rounded-lg overflow-hidden bg-white hover:shadow-md transition-shadow cursor-pointer no-underline"
           >
             <!-- Avatar — same 5:7 aspect ratio as book cards -->
-            <div class="w-full aspect-[5/7] overflow-hidden bg-bg-soft">
+            <div class="relative w-full aspect-[5/7] overflow-hidden bg-bg-soft">
               <img
-                [src]="avatar(author)"
+                [ngSrc]="avatar(author)"
+                fill
                 [alt]="author.name"
-                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                class="object-cover transition-transform duration-300 group-hover:scale-105"
                 (error)="onImgError($event)"
               />
             </div>

@@ -3,37 +3,24 @@ import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
 import { guestGuard } from './core/guards/guest.guard';
-import { BookDetail } from './features/books/book-detail/book-detail';
-import { BookList } from './features/books/book-list/book-list';
-import { UserLayout } from './layouts/user-layout/user-layout';
-import { AdminLayout } from './layouts/admin-layout/admin-layout';
-import { AdminPanel } from './admin/admin-panel/admin-panel';
-import { ManageBooks } from './admin/manage-books/manage-books';
-import { BookForm } from './admin/book-form/book-form';
-import { CheckoutPage } from './features/checkout/checkout-page/checkout-page';
-import { CartPage } from './features/cart/cart-page/cart-page';
-import { SearchSuggestion } from './shared/components/search-suggestion/search-suggestion';
-import { HomePage } from './features/home/home-page/home-page';
-import { AuthLayout } from './layouts/auth-layout/auth-layout';
-import { CategoriesPageComponent } from './features/categories/categories-page/categories-page';
-import { AuthorsComponent } from './features/authors/authors';
+
 
 export const routes: Routes = [
   {
     path: '',
-    component: UserLayout,
+    loadComponent: () => import('./layouts/user-layout/user-layout').then(m => m.UserLayout),
     children: [
-      { path: 'home', component: HomePage },
-      { path: 'books', component: BookList },
-      { path: 'books/suggestions', component: SearchSuggestion },
-      { path: 'books/:id', component: BookDetail },
-      { path: 'categories', component: CategoriesPageComponent },
-      { path: 'categories/:id', component: CategoriesPageComponent },
-      { path: 'authors', component: AuthorsComponent },
-      { path: 'authors/:id', component: AuthorsComponent },
+      { path: 'home', loadComponent: () => import('./features/home/home-page/home-page').then(m => m.HomePage) },
+      { path: 'books', loadComponent: () => import('./features/books/book-list/book-list').then(m => m.BookList) },
+      { path: 'books/suggestions', loadComponent: () => import('./shared/components/search-suggestion/search-suggestion').then(m => m.SearchSuggestion) },
+      { path: 'books/:id', loadComponent: () => import('./features/books/book-detail/book-detail').then(m => m.BookDetail) },
+      { path: 'categories', loadComponent: () => import('./features/categories/categories-page/categories-page').then(m => m.CategoriesPageComponent) },
+      { path: 'categories/:id', loadComponent: () => import('./features/categories/categories-page/categories-page').then(m => m.CategoriesPageComponent) },
+      { path: 'authors', loadComponent: () => import('./features/authors/authors').then(m => m.AuthorsComponent) },
+      { path: 'authors/:id', loadComponent: () => import('./features/authors/authors').then(m => m.AuthorsComponent) },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'checkout', canActivate: [authGuard], component: CheckoutPage },
-      { path: 'cart', canActivate: [authGuard], component: CartPage },
+      { path: 'checkout', canActivate: [authGuard], loadComponent: () => import('./features/checkout/checkout-page/checkout-page').then(m => m.CheckoutPage) },
+      { path: 'cart', canActivate: [authGuard], loadComponent: () => import('./features/cart/cart-page/cart-page').then(m => m.CartPage) },
       {
         path: 'orders',
         canActivate: [authGuard],
@@ -80,12 +67,12 @@ export const routes: Routes = [
   {
     path: 'admin',
     canActivate: [authGuard, adminGuard],
-    component: AdminLayout,
+    loadComponent: () => import('./layouts/admin-layout/admin-layout').then(m => m.AdminLayout),
     children: [
-      { path: 'home', component: AdminPanel },
-      { path: 'manage-books', component: ManageBooks },
-      { path: 'books/create', component: BookForm },
-      { path: 'books/edit/:id', component: BookForm },
+      { path: 'home', loadComponent: () => import('./admin/admin-panel/admin-panel').then(m => m.AdminPanel) },
+      { path: 'manage-books', loadComponent: () => import('./admin/manage-books/manage-books').then(m => m.ManageBooks) },
+      { path: 'books/create', loadComponent: () => import('./admin/book-form/book-form').then(m => m.BookForm) },
+      { path: 'books/edit/:id', loadComponent: () => import('./admin/book-form/book-form').then(m => m.BookForm) },
       {
         path: 'authors',
         loadComponent: () =>
@@ -127,7 +114,7 @@ export const routes: Routes = [
   {
     path: 'auth',
     canActivate: [guestGuard],
-    component: AuthLayout,
+    loadComponent: () => import('./layouts/auth-layout/auth-layout').then(m => m.AuthLayout),
     children: [
       {
         path: 'login',

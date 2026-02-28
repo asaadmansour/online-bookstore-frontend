@@ -5,15 +5,15 @@
       <!-- Logo -->
       <a routerLink="/" class="flex items-center gap-2 shrink-0 cursor-pointer no-underline">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
-          stroke="#3de048" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+          stroke="#3de048" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
           <path d="M12 7v14"/>
           <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>
         </svg>
-        <span class="font-bold text-text-main text-lg">ChapterOne</span>
+        <span class="hidden sm:block font-bold text-text-main text-lg">ChapterOne</span>
       </a>
 
       <!-- Search Bar -->
-      <div class="flex-1 max-w-xl mx-auto">
+      <div class="flex-1 max-w-xl mx-auto px-2 sm:px-0">
         <div class="relative">
           <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none"
             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
@@ -37,7 +37,11 @@
       <!-- Nav Links -->
       <ul class="hidden md:flex items-center gap-1 shrink-0">
         <li>
-          <a routerLink="/books" routerLinkActive="text-text-main bg-accent/10 font-medium"
+          <a
+            routerLink="/books"
+            [queryParams]="{ page: 1 }"
+            routerLinkActive="text-text-main bg-accent/10 font-medium"
+            [routerLinkActiveOptions]="{exact: false}"
             class="text-sm text-text-muted hover:text-text-main hover:bg-accent/10 px-3 py-1.5 rounded-md cursor-pointer transition-colors block">
             Books
           </a>

@@ -1,10 +1,11 @@
 import { Component, inject, input } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { Book } from '../../../shared/models/book.model';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-book-card',
   standalone: true,
-  imports: [],
+  imports: [NgOptimizedImage],
   templateUrl: './book-card.html',
   styleUrl: './book-card.css',
 })
