@@ -15,7 +15,7 @@
       class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-muted hover:bg-accent-light hover:text-accent text-sm transition-colors">
       📚 Books
     </a>
-    <a routerLink="/admin/orders" routerLinkActive="bg-accent-light text-accent"
+    <a routerLink="/admin/manage-orders" routerLinkActive="bg-accent-light text-accent"
       class="flex items-center gap-3 px-4 py-3 rounded-xl text-text-muted hover:bg-accent-light hover:text-accent text-sm transition-colors">
       🛒 Orders
     </a>
@@ -31,10 +31,12 @@
 
   <!-- Admin User -->
   <div class="px-6 py-4 border-t border-border-light flex items-center gap-3">
-    <div class="w-9 h-9 rounded-full bg-accent flex items-center justify-center text-white text-sm font-bold">A</div>
-    <div>
-      <p class="text-text-main text-sm font-medium">Admin</p>
-      <p class="text-text-muted text-xs">Administrator</p>
-    </div>
+    <div class="w-9 h-9 rounded-full bg-accent flex items-center justify-center text-white text-sm font-bold">
+  {{ currentUser?.firstName?.charAt(0) }}
+</div>
+<div>
+  <p class="text-text-main text-sm font-medium">{{ currentUser?.firstName }} {{ currentUser?.lastName }}</p>
+  <p class="text-text-muted text-xs">{{ currentUser?.role }}</p>
+</div>
   </div>
 </aside>

@@ -1,6 +1,7 @@
 // src/app/core/not-found/not-found.ts
-import { Component } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { TokenService } from '../services/token.service';
 
 @Component({
   selector: 'app-not-found',
@@ -15,7 +16,7 @@ import { RouterLink } from '@angular/router';
           The page you're looking for doesn't exist or has been moved.
         </p>
         <a
-          routerLink="/"
+          [routerLink]="getRoleRedirect()"
           class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded"
         >
           <svg
@@ -38,4 +39,16 @@ import { RouterLink } from '@angular/router';
     </div>
   `,
 })
-export class NotFoundComponent {}
+export class NotFoundComponent implements OnInit {
+  private tokenService = inject(TokenService);
+  userRole = signal<string | null>(null);
+
+  ngOnInit() {
+    // Get the user role from the token service
+    this.userRole.set(this.tokenService.getUserRole());
+  }
+
+  getRoleRedirect(): string {
+    return this.userRole() === 'admin' ? '/admin/home' : '/';
+  }
+}

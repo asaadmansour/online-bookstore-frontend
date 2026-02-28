@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-admin-navbar',
@@ -7,4 +8,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './admin-navbar.html',
   styleUrl: './admin-navbar.css',
 })
-export class AdminNavbar {}
+export class AdminNavbar {
+  private authService = inject(AuthService);
+  currentUser = this.authService.currentUser;
+}

@@ -100,10 +100,10 @@
             } @else {
             <h6 class="mb-0 text-gray-500 italic">Book unavailable</h6>
             }
-            <small class="text-sm text-gray-500 block mt-1">Qty: {{ item.quantity }} · {{ item.unitPrice | currency
+            <small class="text-sm text-gray-500 block mt-1">Qty: {{ item.quantity }} · {{ item.unit_price | currency
               }}</small>
           </div>
-          <div class="font-semibold">{{ item.unitPrice * item.quantity | currency }}</div>
+          <div class="font-semibold">{{ item.unit_price * item.quantity | currency }}</div>
         </div>
         }
       </div>
@@ -118,12 +118,12 @@
             }}</span></div>
         <div class="flex justify-between text-sm text-gray-500 mb-2"><span>Shipping</span><span
             class="text-green-600 font-medium">Free</span></div>
-        @if (order.totalPrice !== subtotal) {
-        <div class="flex justify-between text-sm text-gray-500 mb-2"><span>Tax</span><span>{{ order.totalPrice -
+        @if (order.total_price !== subtotal) {
+        <div class="flex justify-between text-sm text-gray-500 mb-2"><span>Tax</span><span>{{ order.total_price -
             subtotal | currency }}</span></div>
         }
         <div class="border-t mt-3 pt-3 flex justify-between"><span class="font-semibold">Total</span><span
-            class="font-semibold text-lg">{{ order.totalPrice | currency }}</span></div>
+            class="font-semibold text-lg">{{ order.total_price | currency }}</span></div>
       </div>
 
       <!-- Shipping -->
@@ -138,12 +138,12 @@
           Shipping
         </h6>
         <div class="text-sm text-gray-500">
-          <p class="mb-1">{{ order.shippingAddress.street }}</p>
-          <p class="mb-1">{{ order.shippingAddress.city }}, {{ order.shippingAddress.state }} {{
-            order.shippingAddress.zip }}</p>
-          <p class="mb-3">{{ order.shippingAddress.country }}</p>
+          <p class="mb-1">{{ order.shipping_address.street }}</p>
+          <p class="mb-1">{{ order.shipping_address.city }}, {{ order.shipping_address.state }} {{
+            order.shipping_address.zip }}</p>
+          <p class="mb-3">{{ order.shipping_address.country }}</p>
           <div class="border-t pt-3 flex justify-between items-center"><span>Payment</span><span
-              class="uppercase font-medium">{{ order.paymentMethod }}</span></div>
+              class="uppercase font-medium">{{ order.payment_method }}</span></div>
         </div>
       </div>
     </div>

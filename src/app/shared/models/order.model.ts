@@ -7,7 +7,7 @@ export type PaymentStatus = 'pending' | 'success';
 export interface OrderItem {
   book: Book | null;
   quantity: number;
-  unitPrice: number;
+  unit_price: number;
 }
 export interface ShippingAddress {
   street: string;
@@ -22,10 +22,10 @@ export interface Order {
   user: User;
   items: OrderItem[];
   status: OrderStatus;
-  paymentStatus: PaymentStatus;
-  paymentMethod: PaymentMethod;
-  shippingAddress: ShippingAddress;
-  totalPrice: number;
+  payment_status: PaymentStatus;
+  payment_method: PaymentMethod;
+  shipping_address: ShippingAddress;
+  total_price: number;
   createdAt: string;
   updatedAt: string;
 }

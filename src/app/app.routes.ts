@@ -17,6 +17,7 @@ import { HomePage } from './features/home/home-page/home-page';
 import { AuthLayout } from './layouts/auth-layout/auth-layout';
 import { CategoriesPageComponent } from './features/categories/categories-page/categories-page';
 import { AuthorsComponent } from './features/authors/authors';
+import { ManageOrders } from './admin/manage-orders/manage-orders';
 
 export const routes: Routes = [
   {
@@ -86,6 +87,7 @@ export const routes: Routes = [
       { path: 'manage-books', component: ManageBooks },
       { path: 'books/create', component: BookForm },
       { path: 'books/edit/:id', component: BookForm },
+      { path: 'manage-orders', component: ManageOrders },
       {
         path: 'authors',
         loadComponent: () =>
@@ -98,6 +100,7 @@ export const routes: Routes = [
             (m) => m.ManageCategoriesComponent,
           ),
       },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],
   },
   {

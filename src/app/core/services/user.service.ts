@@ -30,7 +30,7 @@ export class UserService {
 
   getAllUsers(
     page = 1,
-    limit = 10,
+    limit = 8,
   ): Observable<{
     users: User[];
     pagination: { currentPage: number; totalItems: number; totalPages: number };

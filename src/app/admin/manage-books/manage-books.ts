@@ -23,6 +23,7 @@ export class ManageBooks implements OnInit {
       this.totalPages.set(data.totalPages);
     });
   }
+
   deleteBook() {
     const id = this.bookToDelete();
     if (!id) return;

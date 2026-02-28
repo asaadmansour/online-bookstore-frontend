@@ -16,27 +16,21 @@
   </div>
 </div>
 
-<!-- Stats Row -->
-<div class="grid grid-cols-4 gap-4 mb-8">
+<div class="grid grid-cols-3 gap-4 mb-8">
   <div class="bg-white rounded-2xl p-5 shadow-soft">
     <p class="text-text-muted text-xs uppercase tracking-widest mb-1">Total Books</p>
     <p class="text-2xl font-bold text-text-main">{{books()?.total}}</p>
-    <p class="text-accent text-xs mt-1">↑ 4 added this week</p>
+    <p class="text-text-muted text-xs mt-1">In the store</p>
   </div>
   <div class="bg-white rounded-2xl p-5 shadow-soft">
-    <p class="text-text-muted text-xs uppercase tracking-widest mb-1">Active</p>
-    <p class="text-2xl font-bold text-green-500">318</p>
-    <p class="text-text-muted text-xs mt-1">In store</p>
+    <p class="text-text-muted text-xs uppercase tracking-widest mb-1">Current Page</p>
+    <p class="text-2xl font-bold text-accent">{{currentPage()}}</p>
+    <p class="text-text-muted text-xs mt-1">of {{totalPages()}} pages</p>
   </div>
   <div class="bg-white rounded-2xl p-5 shadow-soft">
-    <p class="text-text-muted text-xs uppercase tracking-widest mb-1">Out of Stock</p>
-    <p class="text-2xl font-bold text-yellow-500">12</p>
-    <p class="text-yellow-500 text-xs mt-1">⚠ Needs restock</p>
-  </div>
-  <div class="bg-white rounded-2xl p-5 shadow-soft">
-    <p class="text-text-muted text-xs uppercase tracking-widest mb-1">Deleted</p>
-    <p class="text-2xl font-bold text-red-400">12</p>
-    <p class="text-text-muted text-xs mt-1">Soft deleted</p>
+    <p class="text-text-muted text-xs uppercase tracking-widest mb-1">Showing</p>
+    <p class="text-2xl font-bold text-green-500">{{books()?.books?.length}}</p>
+    <p class="text-text-muted text-xs mt-1">Books on this page</p>
   </div>
 </div>
 
