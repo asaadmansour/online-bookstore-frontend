@@ -29,7 +29,7 @@
           Author Image <span class="req">*</span>
         </label>
         <input id="author-image" class="input" type="file" accept="image/*" (change)="onFileSelected($event)" />
-        <small *ngif="isEdit" class="hint">
+        <small *ngIf="isEdit" class="hint">
           (optional) Upload a new image only if you want to change it.
         </small>
       </div>

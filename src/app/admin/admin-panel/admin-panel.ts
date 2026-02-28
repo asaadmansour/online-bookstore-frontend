@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { OrderService } from '../../core/services/order.service';
-import { DatePipe, TitleCasePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 
 import { OrderResponse } from '../../shared/models/orderResponse';
 import { UserService } from '../../core/services/user.service';
@@ -14,7 +14,7 @@ import { User } from '../../shared/models/user.model';
 
 @Component({
   selector: 'app-admin-panel',
-  imports: [DatePipe, TitleCasePipe],
+  imports: [DatePipe],
   templateUrl: './admin-panel.html',
   styleUrl: './admin-panel.css',
 })

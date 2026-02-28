@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 
 import { API_URL } from '../api.config';
@@ -10,31 +10,21 @@ export class CartService {
   private API = inject(API_URL);
 
   addBook(payload: AddToCartPayload) {
-    return this.http.post<CartResponse>(`${this.API}/cart`, payload, {
-      headers: this.testHeaders,
-    });
+    return this.http.post<CartResponse>(`${this.API}/cart`, payload);
   }
 
   getCart() {
-    return this.http.get<CartResponse>(`${this.API}/cart`, {
-      headers: this.testHeaders,
-    });
+    return this.http.get<CartResponse>(`${this.API}/cart`);
   }
 
   updateQuantity(bookId: string, quantity: number) {
-    return this.http.patch<{ message: string; item: any }>(
-      `${this.API}/cart/${bookId}`,
-      { quantity },
-      {
-        headers: this.testHeaders,
-      },
-    );
+    return this.http.patch<{ message: string; item: any }>(`${this.API}/cart/${bookId}`, {
+      quantity,
+    });
   }
 
   removeItem(bookId: string) {
-    return this.http.delete<{ message: string; item: any }>(`${this.API}/cart/${bookId}`, {
-      headers: this.testHeaders,
-    });
+    return this.http.delete<{ message: string; item: any }>(`${this.API}/cart/${bookId}`);
   }
 }
 
