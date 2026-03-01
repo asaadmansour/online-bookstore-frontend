@@ -3,22 +3,19 @@ import { NgOptimizedImage } from '@angular/common';
 import { Router } from '@angular/router';
 import { CategoriesService } from '../../../core/services/categories.service';
 import { Category } from '../../../shared/models/category.model';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-categories-page',
   standalone: true,
-  imports: [NgOptimizedImage],
+  imports: [NgOptimizedImage, ProgressSpinnerModule],
   templateUrl: './categories-page.html',
 })
 export class CategoriesPageComponent implements OnInit {
   categories: Category[] = [];
-
-  // pagination
   page = 1;
   limit = 10;
   totalPages = 0;
-
-  // UI state
   loading = true;
   error = '';
 

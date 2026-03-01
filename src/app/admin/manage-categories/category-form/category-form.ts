@@ -3,16 +3,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CategoriesService } from '../../../core/services/categories.service';
+import { MessageService } from 'primeng/api';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-category-form',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ProgressSpinnerModule],
   templateUrl: './category-form.html',
   styleUrl: './category-form.css',
 })
 export class CategoryFormComponent implements OnInit {
-  // Form fields
   name = '';
   description = '';
   categoryImage = '';
@@ -21,8 +22,6 @@ export class CategoryFormComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     this.selectedFile = input.files && input.files.length ? input.files[0] : null;
   }
-
-  // State
   editId: string | null = null;
   loading = false;
   saving = false;
@@ -43,6 +42,7 @@ export class CategoryFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private categoriesService: CategoriesService,
+    private messageService: MessageService,
   ) {}
 
   ngOnInit() {
@@ -60,6 +60,7 @@ export class CategoryFormComponent implements OnInit {
         error: () => {
           this.error = 'Could not load category data.';
           this.loading = false;
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Could not load category data' });
         },
       });
     }
@@ -88,10 +89,14 @@ export class CategoryFormComponent implements OnInit {
       : this.categoriesService.createWithImage(formData);
 
     req$.subscribe({
-      next: () => this.router.navigate(['/admin/categories']),
+      next: () => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Category saved successfully' });
+        this.router.navigate(['/admin/categories']);
+      },
       error: () => {
         this.error = 'Failed to save. Please try again.';
         this.saving = false;
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to save category' });
       },
     });
   }

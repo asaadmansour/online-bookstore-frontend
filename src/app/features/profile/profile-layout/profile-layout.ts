@@ -1,4 +1,4 @@
-// src/app/features/profile/profile-layout/profile-layout.ts
+
 import { Component, computed, inject } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';

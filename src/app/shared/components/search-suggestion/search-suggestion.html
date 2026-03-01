@@ -1,8 +1,8 @@
-<!-- Absolutely-positioned dropdown — only shows when there are suggestions -->
+
 @if (suggestions().length > 0) {
   <div class="absolute top-full left-0 right-0 mt-1 bg-white border border-slate-200 rounded-xl shadow-lg z-50 overflow-hidden py-1">
 
-    <!-- First row: search for exactly what was typed -->
+    
     <button
       type="button"
       (click)="setBook(rawQuery())"
@@ -17,7 +17,7 @@
       </span>
     </button>
 
-    <!-- Book suggestions -->
+    
     @for (suggestion of suggestions(); track suggestion._id) {
       <button
         type="button"

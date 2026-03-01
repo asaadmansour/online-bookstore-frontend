@@ -4,8 +4,6 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environments';
 import { User } from '../../shared/models/user.model';
 
-// const USER_KEY = 'currentUser';
-
 @Injectable({ providedIn: 'root' })
 export class UserService {
   private readonly api = `${environment.apiUrl}/users`;

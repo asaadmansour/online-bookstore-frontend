@@ -13,7 +13,6 @@ export class BookCard {
   book = input.required<Book>();
   private router = inject(Router);
   goToDetail() {
-    console.log(this.book()._id);
     this.router.navigate(['/books', this.book()._id]);
   }
 }

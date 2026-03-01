@@ -1,4 +1,4 @@
-// src/app/auth/register/register.ts
+
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -11,6 +11,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-register',
@@ -26,6 +27,7 @@ export class RegisterComponent {
   private fb = inject(FormBuilder);
   private auth = inject(AuthService);
   private router = inject(Router);
+  private messageService = inject(MessageService);
   constructor() {
     this.form = this.fb.group(
       {
@@ -82,7 +84,8 @@ export class RegisterComponent {
       },
       error: (err) => {
         this.loading = false;
-        this.error = err?.error?.error || err?.message || 'Registration failed';
+        const msg = err?.error?.error || err?.message || 'Registration failed';
+        this.messageService.add({ severity: 'error', summary: 'Registration Failed', detail: msg });
       },
     });
   }

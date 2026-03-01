@@ -36,5 +36,5 @@ export interface AddToCartPayload {
 export interface CartResponse {
   message?: string;
   cart?: Cart;
-  userCart?: Cart; // keep for backward compatibility
+  userCart?: Cart;
 }

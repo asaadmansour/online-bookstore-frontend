@@ -1,4 +1,4 @@
-// src/app/core/not-found/not-found.ts
+
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TokenService } from '../services/token.service';
@@ -44,7 +44,6 @@ export class NotFoundComponent implements OnInit {
   userRole = signal<string | null>(null);
 
   ngOnInit() {
-    // Get the user role from the token service
     this.userRole.set(this.tokenService.getUserRole());
   }
 

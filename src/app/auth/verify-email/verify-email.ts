@@ -1,4 +1,4 @@
-// src/app/auth/verify-email/verify-email.ts
+
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {

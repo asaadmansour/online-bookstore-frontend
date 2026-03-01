@@ -1,14 +1,16 @@
-// src/app/features/order-history/order-detail/order-detail.ts
+
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { OrderService } from '../../../core/services/order.service';
 import { Order, OrderStatus } from '../../../shared/models/order.model';
+import { MessageService } from 'primeng/api';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-order-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, DatePipe, CurrencyPipe],
+  imports: [CommonModule, RouterLink, DatePipe, CurrencyPipe, ProgressSpinnerModule],
   templateUrl: './order-detail.html',
 })
 export class OrderDetailComponent implements OnInit {
@@ -22,6 +24,7 @@ export class OrderDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private orderService = inject(OrderService);
+  private messageService = inject(MessageService);
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -41,11 +44,11 @@ export class OrderDetailComponent implements OnInit {
       next: (res) => {
         this.order = res.order;
         this.loading = false;
-        console.log('Order detail:', this.order);
       },
       error: (err) => {
         this.loading = false;
         this.error = err?.error?.error || err?.message || 'Failed to load order';
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: this.error });
       },
     });
   }
@@ -58,24 +61,6 @@ export class OrderDetailComponent implements OnInit {
   closeCancelModal(): void {
     this.showCancelModal = false;
   }
-
-  //   confirmCancel(): void {
-  //     if (!this.order) return;
-  //     this.cancelLoading = true;
-  //     this.cancelError = '';
-
-  //     this.orderService.cancelOrder(this.order._id).subscribe({
-  //       next: (res) => {
-  //         this.cancelLoading = false;
-  //         this.showCancelModal = false;
-  //         this.order = res.order;
-  //       },
-  //       error: (err) => {
-  //         this.cancelLoading = false;
-  //         this.cancelError = err?.error?.error || err?.message || 'Failed to cancel';
-  //       },
-  //     });
-  //   }
 
   getStatusConfig(status: OrderStatus): {
     color: string;

@@ -1,4 +1,4 @@
-// src/app/core/services/order.service.ts
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 
@@ -47,14 +47,11 @@ export class OrderService {
       params,
     });
   }
-  // update order status
   updateOrderStatus(id: string, status: string): Observable<Order> {
     return this._httpClient.patch<Order>(`${this.API}/orders/${id}/status`, {
       status,
     });
   }
-
-  // update order payment
   updatePaymentStatus(id: string, payment: string): Observable<Order> {
     return this._httpClient.patch<Order>(`${this.API}/orders/${id}/payment`, {
       payment_status: payment,

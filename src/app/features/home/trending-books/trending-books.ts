@@ -6,22 +6,31 @@ import { BookService } from '../../../core/services/book.service';
 import { Book } from '../../../shared/models/book.model';
 import { BookCard } from '../../books/book-card/book-card';
 import { RouterLink } from '@angular/router';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-trending-books',
   templateUrl: './trending-books.html',
   standalone: true,
-  imports: [ButtonModule, CarouselModule, TagModule, BookCard, RouterLink],
+  imports: [ButtonModule, CarouselModule, TagModule, BookCard, RouterLink, ProgressSpinnerModule],
 })
 export class TrendingBooks implements OnInit {
   private bookService = inject(BookService);
 
   products = signal<Book[]>([]);
+  loading = signal<boolean>(true);
   responsiveOptions: any[] | undefined;
 
   ngOnInit() {
-    this.bookService.getBooks().subscribe((data) => {
-      this.products.set(data.books.slice(0, 9));
+    this.loading.set(true);
+    this.bookService.getBooks().subscribe({
+      next: (data) => {
+        this.products.set(data.books.slice(0, 9));
+        this.loading.set(false);
+      },
+      error: () => {
+        this.loading.set(false);
+      }
     });
 
     this.responsiveOptions = [

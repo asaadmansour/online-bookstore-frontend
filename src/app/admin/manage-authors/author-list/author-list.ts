@@ -3,11 +3,13 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthorsService } from '../../../core/services/authors.service';
 import { Author } from '../../../shared/models/author.model';
+import { MessageService } from 'primeng/api';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-author-list',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, ProgressSpinnerModule],
   templateUrl: './author-list.html',
   styleUrl: './author-list.css',
 })
@@ -15,13 +17,14 @@ export class AuthorListComponent implements OnInit {
   authors: Author[] = [];
   loading = true;
   error = '';
-
-  // Delete modal state
   pendingDeleteId: string | null = null;
   pendingDeleteName = '';
   deleting = false;
 
-  constructor(private authorsService: AuthorsService) { }
+  constructor(
+    private authorsService: AuthorsService,
+    private messageService: MessageService
+  ) { }
 
   ngOnInit() {
     this.load();
@@ -65,10 +68,11 @@ export class AuthorListComponent implements OnInit {
         this.pendingDeleteId = null;
         this.pendingDeleteName = '';
         this.deleting = false;
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Author deleted' });
       },
       error: () => {
         this.deleting = false;
-        alert('Failed to delete. Please try again.');
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete author' });
       }
     });
   }

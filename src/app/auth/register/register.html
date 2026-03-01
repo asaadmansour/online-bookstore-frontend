@@ -1,10 +1,10 @@
-<!-- src/app/auth/register/register.html -->
+
 <div class="min-h-screen flex" style="background: #f5f5f0;">
 
-  <!-- Left – Illustration Panel -->
+  
   <div class="hidden lg:flex w-1/2 rounded-r-3xl relative flex-col justify-between p-10"
     style="background: linear-gradient(180deg, #e8f5e9 0%, #c8e6c9 50%, #a5d6a7 100%);">
-    <!-- Logo -->
+    
     <a routerLink="/" class="flex items-center gap-2">
       <div class="w-9 h-9 rounded-lg bg-white/60 border border-green-300 flex items-center justify-center">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-800" fill="none" viewBox="0 0 24 24"
@@ -16,28 +16,28 @@
       <span class="font-bold text-green-900">Book Store</span>
     </a>
 
-    <!-- Centered illustration area -->
+    
     <div class="flex-1 flex items-center justify-center">
       <div class="text-center">
-        <!-- Stacked books SVG illustration -->
+        
         <svg class="w-64 h-64 mx-auto mb-6 drop-shadow-lg" viewBox="0 0 200 200" fill="none"
           xmlns="http://www.w3.org/2000/svg">
-          <!-- Bottom book -->
+          
           <rect x="30" y="130" width="140" height="24" rx="3" fill="#2e7d32" stroke="#1b5e20" stroke-width="1" />
           <rect x="34" y="133" width="3" height="18" rx="1" fill="#4caf50" opacity="0.5" />
-          <!-- Middle book -->
+          
           <rect x="40" y="104" width="130" height="24" rx="3" fill="#66bb6a" stroke="#43a047" stroke-width="1" />
           <rect x="44" y="107" width="3" height="18" rx="1" fill="#a5d6a7" opacity="0.5" />
-          <!-- Top book (open) -->
+          
           <path d="M50 100 Q100 70 100 85 Q100 70 150 100 L150 60 Q100 30 100 45 Q100 30 50 60 Z" fill="#e8f5e9"
             stroke="#43a047" stroke-width="1.5" />
           <path d="M100 85 L100 45" stroke="#43a047" stroke-width="1" stroke-dasharray="3 2" />
-          <!-- Pages -->
+          
           <path d="M55 95 Q100 68 100 82" stroke="#81c784" stroke-width="0.8" fill="none" />
           <path d="M60 92 Q100 70 100 80" stroke="#81c784" stroke-width="0.6" fill="none" />
           <path d="M145 95 Q100 68 100 82" stroke="#81c784" stroke-width="0.8" fill="none" />
           <path d="M140 92 Q100 70 100 80" stroke="#81c784" stroke-width="0.6" fill="none" />
-          <!-- Decorations -->
+          
           <circle cx="70" cy="50" r="4" fill="#fdd835" opacity="0.7" />
           <path d="M130 42 L134 38 L138 42 L134 46 Z" fill="#fdd835" opacity="0.6" />
           <circle cx="155" cy="55" r="3" fill="#fdd835" opacity="0.5" />
@@ -47,34 +47,21 @@
       </div>
     </div>
 
-    <!-- Bottom text -->
+    
     <p class="text-sm text-green-800 font-medium">Join 50,000+ readers worldwide</p>
   </div>
 
-  <!-- Right – Form Panel -->
+  
   <div class="flex-1 flex items-center justify-center px-6 py-12 overflow-y-auto">
     <div class="w-full max-w-lg">
 
-      <!-- Heading -->
+      
       <h1 class="text-3xl font-bold text-gray-900 mb-1">Create Account</h1>
       <p class="text-gray-500 mb-8">Discover your next favorite story today.</p>
 
-      <!-- Error -->
-      @if (error) {
-      <div
-        class="bg-red-50 border border-red-100 text-red-700 rounded-lg px-4 py-3 flex items-center gap-2 text-sm mb-5">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24"
-          stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-        </svg>
-        {{ error }}
-      </div>
-      }
-
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-        <!-- Name row -->
+        
         <div class="grid grid-cols-2 gap-4 mb-5">
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">First Name</label>
@@ -96,7 +83,7 @@
           </div>
         </div>
 
-        <!-- Email -->
+        
         <div class="mb-5">
           <label class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
           <input type="email" formControlName="email" placeholder="name@example.com"
@@ -107,7 +94,7 @@
           }
         </div>
 
-        <!-- Password row -->
+        
         <div class="grid grid-cols-2 gap-4 mb-5">
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-2">Password</label>
@@ -149,7 +136,7 @@
           </div>
         </div>
 
-        <!-- DOB (optional) -->
+        
         <div class="mb-6">
           <label class="block text-sm font-semibold text-gray-700 mb-2">Date of Birth <span
               class="text-gray-400 font-normal">(optional)</span></label>
@@ -157,7 +144,7 @@
             class="w-full px-4 py-3.5 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition" />
         </div>
 
-        <!-- Submit -->
+        
         <button type="submit"
           class="w-full py-3.5 rounded-xl font-semibold text-white bg-gradient-to-r from-green-500 to-green-400 hover:from-green-600 hover:to-green-500 shadow-lg shadow-green-500/25 transition-all disabled:opacity-60 flex items-center justify-center gap-2"
           [disabled]="loading">
@@ -176,7 +163,7 @@
           }
         </button>
       </form>
-      <!-- Footer link -->
+      
       <p class="text-center text-sm text-gray-500 mt-8">
         Already have an account?
         <a routerLink="/auth/login" class="font-semibold text-green-600 hover:text-green-700">Log In</a>

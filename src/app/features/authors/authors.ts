@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthorsService } from '../../core/services/authors.service';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-authors',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, ProgressSpinnerModule],
   templateUrl: './authors.html',
   styleUrls: ['./authors.css'],
 })

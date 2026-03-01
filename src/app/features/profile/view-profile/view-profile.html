@@ -1,37 +1,13 @@
-<!-- src/app/features/profile/view-profile/view-profile.html -->
+
 
 @if (loading) {
-<div class="animate-pulse">
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    @for (i of [1,2,3,4]; track i) {
-    <div class="h-14 bg-gray-200 rounded"></div>
-    }
-  </div>
+<div class="flex flex-col items-center justify-center p-12">
+  <p-progressSpinner strokeWidth="4" styleClass="w-12 h-12 text-accent"></p-progressSpinner>
+  <p class="mt-4 text-sm text-text-muted font-medium">Loading profile...</p>
 </div>
 }
 
-@if (error && !loading) {
-<div class="bg-red-50 border border-red-100 text-red-700 text-sm px-3 py-2 rounded flex items-center gap-2">
-  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-    stroke-width="2">
-    <path stroke-linecap="round" stroke-linejoin="round"
-      d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-  </svg>
-  {{ error }}
-</div>
-}
-@if (success) {
-<div class="bg-green-50 border border-green-100 text-green-700 text-sm px-3 py-2 rounded flex items-center gap-2">
-  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-    stroke-width="2">
-    <path stroke-linecap="round" stroke-linejoin="round"
-      d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-  </svg>
-  {{ success }}
-</div>
-}
 
-<!-- ══════════════ VIEW MODE ══════════════ -->
 @if (user && !loading && !editing) {
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
   <div>
@@ -84,12 +60,12 @@
 </div>
 }
 
-<!-- ══════════════ EDIT MODE ══════════════ -->
+
 @if (user && !loading && editing) {
 <form [formGroup]="form" (ngSubmit)="saveProfile()">
   <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
 
-    <!-- First Name -->
+    
     <div>
       <label class="text-xs text-text-muted">FIRST NAME</label>
       <input type="text" class="border border-border-light rounded px-3 py-2 w-full text-text-main outline-none hover:border-accent/60 focus:border-accent bg-bg-soft transition-colors" formControlName="firstName"
@@ -103,7 +79,7 @@
       }
     </div>
 
-    <!-- Last Name -->
+    
     <div>
       <label class="text-xs text-text-muted">LAST NAME</label>
       <input type="text" class="border border-border-light rounded px-3 py-2 w-full text-text-main outline-none hover:border-accent/60 focus:border-accent bg-bg-soft transition-colors" formControlName="lastName"
@@ -117,13 +93,13 @@
       }
     </div>
 
-    <!-- Date of Birth -->
+    
     <div>
       <label class="text-xs text-text-muted">DATE OF BIRTH <span class="text-gray-400 text-xs">(optional)</span></label>
       <input type="date" class="border border-border-light rounded px-3 py-2 w-full text-text-main outline-none hover:border-accent/60 focus:border-accent bg-bg-soft transition-colors" formControlName="dob">
     </div>
 
-    <!-- Email (read-only) -->
+    
     <div>
       <label class="text-xs text-text-muted">EMAIL <span class="text-gray-400 text-xs">(cannot change)</span></label>
       <input type="email" class="border border-border-light bg-bg-soft rounded px-3 py-2 w-full text-text-muted" [value]="user.email"

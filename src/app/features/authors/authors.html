@@ -1,7 +1,7 @@
-<!-- authors.html -->
+
 <div class="max-w-6xl mx-auto px-6 py-10">
 
-  <!-- Header -->
+  
   <div class="mb-10 text-center">
     <p class="text-accent text-sm font-semibold tracking-widest uppercase mb-1">Meet the Minds</p>
     <h1 class="text-4xl font-bold text-text-main">Our Authors</h1>
@@ -10,12 +10,12 @@
     </p>
   </div>
 
-  <!-- Grid -->
+  
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
     @for (a of authors; track a._id ?? a.id) {
       <div class="bg-white rounded-2xl border border-border-light shadow-sm hover:shadow-md transition-shadow overflow-hidden group">
 
-        <!-- Avatar -->
+        
         <div class="w-full aspect-[5/4] overflow-hidden bg-bg-soft">
           <img
             [src]="a.authorImage || defaultAvatar"
@@ -25,7 +25,7 @@
           />
         </div>
 
-        <!-- Info -->
+        
         <div class="p-4">
           <h3 class="font-bold text-text-main text-base mb-1">{{ a.name }}</h3>
           <p class="text-text-muted text-sm line-clamp-2 mb-4">{{ a.bio || 'Author' }}</p>
@@ -41,23 +41,15 @@
     }
   </div>
 
-  <!-- Loading -->
+  
   @if (loading) {
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-4">
-      @for (i of [1,2,3,4,5,6]; track i) {
-        <div class="bg-white rounded-2xl border border-border-light overflow-hidden animate-pulse">
-          <div class="w-full aspect-[5/4] bg-bg-soft"></div>
-          <div class="p-4 space-y-2">
-            <div class="h-4 bg-bg-soft rounded w-2/3"></div>
-            <div class="h-3 bg-bg-soft rounded w-full"></div>
-            <div class="h-3 bg-bg-soft rounded w-4/5"></div>
-          </div>
-        </div>
-      }
+    <div class="flex flex-col items-center justify-center p-12">
+      <p-progressSpinner strokeWidth="4" styleClass="w-12 h-12 text-accent"></p-progressSpinner>
+      <p class="mt-4 text-sm text-text-muted font-medium">Loading authors...</p>
     </div>
   }
 
-  <!-- Error -->
+  
   @if (error) {
     <div class="text-center py-12 text-text-muted">{{ error }}</div>
   }

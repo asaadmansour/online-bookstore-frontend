@@ -1,23 +1,23 @@
-<!-- src/app/auth/login/login.html -->
+
 <div class="min-h-screen flex" style="background: #f5f5f0;">
 
-  <!-- Left – Hero Image Panel -->
+  
   <div class="hidden lg:flex w-1/2 relative overflow-hidden rounded-r-3xl">
     <img ngSrc="images/auth-bookshelf.png" fill priority alt="Curated bookshelf" class="object-cover" />
-    <!-- Gradient overlay -->
+    
     <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-    <!-- Text overlay -->
+    
     <div class="relative z-10 flex flex-col justify-end p-10">
       <h2 class="text-white text-3xl font-bold leading-snug mb-2">Curated for the<br>curious mind.</h2>
       <p class="text-white/80 text-sm">Join our community of over 50,000 readers.</p>
     </div>
   </div>
 
-  <!-- Right – Form Panel -->
+  
   <div class="flex-1 flex items-center justify-center px-6 py-12">
     <div class="w-full max-w-md">
 
-      <!-- Logo -->
+      
       <a routerLink="/" class="flex items-center gap-2 mb-8">
         <div class="w-9 h-9 rounded-lg bg-green-100 border border-green-200 flex items-center justify-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-green-700" fill="none" viewBox="0 0 24 24"
@@ -29,26 +29,13 @@
         <span class="font-bold text-gray-900">Book Store</span>
       </a>
 
-      <!-- Heading -->
+      
       <h1 class="text-3xl font-bold text-gray-900 mb-1">Welcome Back</h1>
       <p class="text-gray-500 mb-8">Please enter your details to sign in.</p>
 
-      <!-- Error -->
-      @if (error) {
-      <div
-        class="bg-red-50 border border-red-100 text-red-700 rounded-lg px-4 py-3 flex items-center gap-2 text-sm mb-5">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24"
-          stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
-        </svg>
-        {{ error }}
-      </div>
-      }
-
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-        <!-- Email -->
+        
         <div class="mb-5">
           <label class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
           <div
@@ -71,7 +58,7 @@
           }
         </div>
 
-        <!-- Password -->
+        
         <div class="mb-6">
           <div class="flex items-center justify-between mb-2">
             <label class="text-sm font-semibold text-gray-700">Password</label>
@@ -115,7 +102,7 @@
           }
         </div>
 
-        <!-- Submit -->
+        
         <button type="submit"
           class="w-full py-3.5 rounded-xl font-semibold text-white bg-gradient-to-r from-green-500 to-green-400 hover:from-green-600 hover:to-green-500 shadow-lg shadow-green-500/25 transition-all disabled:opacity-60 flex items-center justify-center gap-2"
           [disabled]="loading">
@@ -134,7 +121,7 @@
           }
         </button>
       </form>
-      <!-- Footer link -->
+      
       <p class="text-center text-sm text-gray-500 mt-8">
         Don't have an account?
         <a routerLink="/auth/register" class="font-semibold text-green-600 hover:text-green-700">Sign Up</a>

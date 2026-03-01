@@ -1,9 +1,10 @@
-// src/app/features/profile/change-password/change-password.ts
+
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, } from '@angular/forms';
 import { UserService } from '../../../core/services/user.service';
 import { AuthService } from '../../../core/services/auth.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-change-password',
@@ -14,8 +15,6 @@ import { AuthService } from '../../../core/services/auth.service';
 export class ChangePasswordComponent {
   form: FormGroup;
   loading = false;
-  error = '';
-  success = '';
 
   showCurrentPassword = false;
   showNewPassword = false;
@@ -24,7 +23,8 @@ export class ChangePasswordComponent {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private authService: AuthService
+    private authService: AuthService,
+    private messageService: MessageService
   ) {
     this.form = this.fb.group(
       {
@@ -53,23 +53,20 @@ export class ChangePasswordComponent {
     }
 
     this.loading = true;
-    this.error = '';
-    this.success = '';
 
     const { currentPassword, newPassword } = this.form.value;
 
     this.userService.changePassword(currentPassword, newPassword).subscribe({
       next: (res) => {
         this.loading = false;
-        this.success = res.message || 'Password changed successfully!';
+        const msg = res.message || 'Password changed successfully!';
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: msg });
         this.form.reset();
-
-        setTimeout(() => (this.success = ''), 5000);
       },
       error: (err) => {
         this.loading = false;
-        this.error =
-          err?.error?.error || err?.message || 'Failed to change password';
+        const msg = err?.error?.error || err?.message || 'Failed to change password';
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: msg });
       },
     });
   }

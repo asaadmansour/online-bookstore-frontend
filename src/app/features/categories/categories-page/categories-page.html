@@ -1,7 +1,7 @@
-<!-- categories-page.html -->
+
 <div class="max-w-6xl mx-auto px-6 py-10">
 
-  <!-- Header -->
+  
   <div class="mb-10 text-center">
     <p class="text-accent text-sm font-semibold tracking-widest uppercase mb-1">Explore the Collection</p>
     <h1 class="text-4xl font-bold text-text-main">Browse by Category</h1>
@@ -10,34 +10,26 @@
     </p>
   </div>
 
-  <!-- Loading skeletons -->
+  
   @if (loading) {
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-      @for (i of [1,2,3,4,5,6]; track i) {
-        <div class="bg-white rounded-2xl border border-border-light overflow-hidden animate-pulse">
-          <div class="w-full aspect-[5/4] bg-bg-soft"></div>
-          <div class="p-4 space-y-2">
-            <div class="h-4 bg-bg-soft rounded w-1/2"></div>
-            <div class="h-3 bg-bg-soft rounded w-full"></div>
-            <div class="h-3 bg-bg-soft rounded w-4/5"></div>
-          </div>
-        </div>
-      }
+    <div class="flex flex-col items-center justify-center p-12">
+      <p-progressSpinner strokeWidth="4" styleClass="w-12 h-12 text-accent"></p-progressSpinner>
+      <p class="mt-4 text-sm text-text-muted font-medium">Loading categories...</p>
     </div>
   }
 
-  <!-- Error -->
+  
   @if (!loading && error) {
     <div class="text-center py-12 text-text-muted">{{ error }}</div>
   }
 
-  <!-- Grid -->
+  
   @if (!loading && !error && categories.length > 0) {
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
       @for (c of categories; track c._id) {
         <div class="bg-white rounded-2xl border border-border-light shadow-sm hover:shadow-md transition-shadow overflow-hidden group">
 
-          <!-- Image -->
+          
           <div class="relative w-full aspect-[5/4] overflow-hidden bg-bg-soft">
             <img
               [ngSrc]="c.categoryImage || 'images/category-placeholder.jpg'"
@@ -48,7 +40,7 @@
             />
           </div>
 
-          <!-- Info -->
+          
           <div class="p-4">
             <h3 class="font-bold text-text-main text-base mb-1">{{ c.name }}</h3>
             <p class="text-text-muted text-sm line-clamp-2 mb-4">
@@ -67,12 +59,12 @@
     </div>
   }
 
-  <!-- Empty -->
+  
   @if (!loading && !error && categories.length === 0) {
     <div class="text-center py-12 text-text-muted">No categories yet.</div>
   }
 
-  <!-- Pagination -->
+  
   @if (!loading && !error && totalPages > 1) {
     <div class="flex items-center justify-center gap-3 mt-10">
       <button

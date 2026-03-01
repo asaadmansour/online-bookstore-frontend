@@ -2,7 +2,7 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center gap-4 h-16">
 
-      <!-- Logo -->
+      
       <a routerLink="/" class="flex items-center gap-2 shrink-0 cursor-pointer no-underline">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
           stroke="#3de048" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
@@ -12,7 +12,7 @@
         <span class="hidden sm:block font-bold text-text-main text-lg">ChapterOne</span>
       </a>
 
-      <!-- Search Bar -->
+      
       <div class="flex-1 max-w-xl mx-auto px-2 sm:px-0">
         <div class="relative">
           <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none"
@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <!-- Nav Links -->
+      
       <ul class="hidden md:flex items-center gap-1 shrink-0">
         <li>
           <a
@@ -60,14 +60,14 @@
         </li>
       </ul>
 
-      <!-- Divider -->
+      
       <div class="hidden md:block h-5 w-px bg-border-light shrink-0"></div>
 
-      <!-- Actions -->
+      
       <div class="flex items-center gap-2 shrink-0">
 
         @if (isLoggedIn()) {
-          <!-- Cart -->
+          
           <button routerLink="/cart"
             class="flex items-center gap-1.5 text-sm text-text-muted hover:text-text-main hover:bg-accent/10 px-3 py-1.5 rounded-md transition-colors cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
@@ -78,7 +78,7 @@
             Cart
           </button>
 
-          <!-- User Avatar + Dropdown -->
+          
           <div class="relative">
             <button
               (click)="toggleDropdown()"
@@ -123,7 +123,7 @@
           </div>
 
         } @else {
-          <!-- Guest: Login + Register -->
+          
           <a routerLink="/auth/login"
             class="text-sm text-text-muted hover:text-text-main px-3 py-1.5 rounded-md hover:bg-accent/10 transition-colors cursor-pointer no-underline">
             Log in

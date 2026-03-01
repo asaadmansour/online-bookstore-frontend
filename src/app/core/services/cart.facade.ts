@@ -90,7 +90,6 @@ export class CartFacade {
   removeItem(bookId: string): void {
     this.cartService.removeItem(bookId).subscribe({
       next: () => {
-        // Backend returns { message, item } — remove locally
         this.cart.update((c) => {
           if (!c) return c;
           return { ...c, items: c.items.filter((i) => i.book._id !== bookId) };

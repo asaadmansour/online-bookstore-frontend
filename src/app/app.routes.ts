@@ -1,4 +1,4 @@
-// src/app/app.routes.ts
+
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { adminGuard } from './core/guards/admin.guard';
@@ -237,7 +237,6 @@ export const routes: Routes = [
       },
     ],
   },
-  // ═══════════════════ 404 ═══════════════════
   {
     path: '**',
     loadComponent: () => import('./core/not-found/not-found').then((m) => m.NotFoundComponent),

@@ -3,7 +3,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* Base page background (design light) */
+
 html,
 body {
   height: 100%;
@@ -17,27 +17,27 @@ body {
 
 
 
-/* Theme tokens */
 
-/* Light theme (default) */
+
+
 :root {
   --bg: #f6f6f2;
-  /* page background */
+  
   --surface: #ffffff;
-  /* cards / navbar / footer */
+  
   --text: #111827;
-  /* main text */
+  
   --muted: #6b7280;
-  /* secondary text */
+  
   --border: #e5e7eb;
-  /* borders */
+  
   --primary: #22c55e;
-  /* green accent */
+  
   --primaryText: #ffffff;
-  /* text on primary */
+  
 }
 
-/* Dark theme overrides (applied when .data-theme="dark" on <html>) */
+
 :root[data-theme="dark"] {
   --bg: #0b0f14;
   --surface: #111827;
@@ -48,9 +48,7 @@ body {
   --primaryText: #0b0f14;
 }
 
-/* =========================
-   Global base styles
-   ========================= */
+
 
 html,
 body {
@@ -64,7 +62,7 @@ body {
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
-/* Make links inherit nicely (Tailwind will still work if you use it) */
+
 a {
   color: inherit;
   text-decoration: none;
@@ -74,9 +72,7 @@ a {
   box-sizing: border-box;
 }
 
-/* =========================
-   Helpful layout helpers
-   ========================= */
+
 
 .container {
   max-width: 1120px;
@@ -84,17 +80,15 @@ a {
   padding: 0 24px;
 }
 
-/* Use this on the wrapper around <router-outlet> */
+
 .page-content {
   min-height: calc(100vh - 64px);
-  /* adjust if navbar height changes */
+  
   padding: 24px 0;
   background: var(--bg);
 }
 
-/* =========================
-   Common UI blocks
-   ========================= */
+
 
 .navbar {
   background: var(--surface);
@@ -119,7 +113,7 @@ a {
   color: var(--muted);
 }
 
-/* Buttons */
+
 .btn {
   height: 40px;
   padding: 0 14px;
@@ -149,7 +143,7 @@ a {
   background: color-mix(in srgb, var(--primary) 92%, #000 8%);
 }
 
-/* Inputs */
+
 .input {
   height: 40px;
   padding: 0 12px;
@@ -169,11 +163,9 @@ a {
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 18%, transparent 82%);
 }
 
-/* =========================
-   Global input base styles
-   ========================= */
 
-/* All native inputs get a white background and correct text color by default */
+
+
 input,
 textarea,
 select {
@@ -181,21 +173,17 @@ select {
   color: #1F2937;
 }
 
-/* Disabled inputs get a light gray background */
+
 input:disabled,
 textarea:disabled,
 select:disabled {
   background-color: #F9FAFB;
   color: #6B7280;
   cursor: not-allowed;
-  opacity: 1; /* prevent browser dimming on top of our color */
+  opacity: 1; 
 }
 
-/* ─── Autofill override ─────────────────────────────────────────────────────
-   Browsers (Chrome/Edge/Safari) force a yellow or dark background on autofill.
-   The only reliable workaround is the inset box-shadow trick — background-color
-   is ignored for autofilled inputs but box-shadow is not.
-   ─────────────────────────────────────────────────────────────────────────── */
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -206,18 +194,18 @@ textarea:-webkit-autofill:focus,
 select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
-  /* Push a white "fill" over the browser-injected yellow/dark background */
+  
   -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
   box-shadow:         0 0 0 1000px #ffffff inset !important;
 
-  /* Force text to always be dark (not black-on-dark or invisible) */
+  
   -webkit-text-fill-color: #1F2937 !important;
 
-  /* Keep the transition smooth */
+  
   transition: background-color 5000s ease-in-out 0s;
 }
 
-/* Dropdown menu (Admin) */
+
 .dropdown-menu {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -237,7 +225,7 @@ select:-webkit-autofill:focus {
   background: color-mix(in srgb, var(--surface) 88%, var(--text) 12%);
 }
 
-/* Tiny badge (for cart count, etc.) */
+
 .badge {
   display: inline-flex;
   align-items: center;

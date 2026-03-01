@@ -10,11 +10,13 @@ import { CategoriesService } from '../../core/services/categories.service';
 import { Category } from '../../shared/models/category.model';
 import { AuthService } from '../../core/services/auth.service';
 import { User } from '../../shared/models/user.model';
-//import { Order } from '../../shared/models/order.model';
+import { MessageService } from 'primeng/api';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { forkJoin, finalize } from 'rxjs';
 
 @Component({
   selector: 'app-admin-panel',
-  imports: [DatePipe],
+  imports: [DatePipe, ProgressSpinnerModule],
   templateUrl: './admin-panel.html',
   styleUrl: './admin-panel.css',
 })
@@ -24,6 +26,9 @@ export class AdminPanel implements OnInit {
   private authorService = inject(AuthorsService);
   private categoryService = inject(CategoriesService);
   private authService = inject(AuthService);
+  private messageService = inject(MessageService);
+
+  loading = signal<boolean>(true);
   currentUser = signal<User | null>(this.authService.currentUser);
   totalOrder = signal<number>(0);
   orders = signal<OrderResponse | null>(null);
@@ -32,42 +37,78 @@ export class AdminPanel implements OnInit {
   pendingOrders = signal<OrderResponse | null>(null);
   users = signal<any>(null);
   authors = signal<AuthorResponse | null>(null);
-  categories = signal<Category[] | null>(null);
+  categories = signal<any>(null);
   userCurrentPage = signal<number>(1);
   ngOnInit() {
-    this.loadUsers();
-    console.log(this.authService.currentUser?._id);
     this.authService.currentUser$.subscribe((user) => {
-      console.log(user);
       this.currentUser.set(user);
     });
-    this.orderService.getAllOrders().subscribe((data) => {
-      this.orders.set(data);
-    });
-    this.orderService.getAllOrders(1, 'processing').subscribe((data) => {
-      this.processingOrder.set(data);
-    });
-    this.orderService.getAllOrders(1, 'delivered').subscribe((data) => {
-      this.deliveredOrder.set(data);
-    });
-    this.authorService.getAuthors().subscribe((data) => {
-      this.authors.set(data);
-    });
-    this.categoryService.getAll().subscribe((data) => {
-      this.categories.set(data.items);
+
+    this.loading.set(true);
+
+    forkJoin({
+      users: this.userService.getAllUsers(1),
+      orders: this.orderService.getAllOrders(),
+      processing: this.orderService.getAllOrders(1, 'processing'),
+      delivered: this.orderService.getAllOrders(1, 'delivered'),
+      authors: this.authorService.getAuthors(),
+      categories: this.categoryService.getAll(),
+    }).pipe(
+      finalize(() => this.loading.set(false))
+    ).subscribe({
+      next: (results) => {
+        this.users.set(results.users);
+        this.userCurrentPage.set(1);
+        this.orders.set(results.orders);
+        this.processingOrder.set(results.processing);
+        this.deliveredOrder.set(results.delivered);
+        this.authors.set(results.authors);
+        this.categories.set(results.categories);
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to load dashboard data',
+        });
+      },
     });
   }
 
   loadUsers(page = 1) {
-    this.userService.getAllUsers(page).subscribe((data) => {
-      this.users.set(data);
-      this.userCurrentPage.set(page);
+    this.loading.set(true);
+    this.userService.getAllUsers(page).subscribe({
+      next: (data) => {
+        this.users.set(data);
+        this.userCurrentPage.set(page);
+        this.loading.set(false);
+      },
+      error: (err) => {
+        this.loading.set(false);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to load users',
+        });
+      }
     });
   }
 
   loadOrders(page = 1) {
-    this.orderService.getAllOrders(page).subscribe((data) => {
-      this.orders.set(data);
+    this.loading.set(true);
+    this.orderService.getAllOrders(page).subscribe({
+      next: (data) => {
+        this.orders.set(data);
+        this.loading.set(false);
+      },
+      error: (err) => {
+        this.loading.set(false);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to load orders',
+        });
+      }
     });
   }
 

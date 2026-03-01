@@ -13,7 +13,7 @@
       }
     </div>
 
-    <!-- Loading State -->
+    
     @if (loading()) {
       <div class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-white/70 p-16 text-center">
         <p-progressSpinner strokeWidth="4" styleClass="w-12 h-12 text-accent"></p-progressSpinner>
@@ -21,7 +21,7 @@
       </div>
     }
 
-    <!-- Error State -->
+    
     @else if (error()) {
       <div class="flex flex-col items-center justify-center rounded-2xl border border-red-200 bg-red-50 p-16 text-center gap-3">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -34,7 +34,7 @@
       </div>
     }
 
-    <!-- Empty Cart State -->
+    
     @else if (!cart() || cart()!.items.length === 0) {
       <div class="flex flex-col items-center justify-center rounded-2xl border border-dashed border-gray-300 bg-white/70 p-16 text-center gap-4">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -51,7 +51,7 @@
       </div>
     }
 
-    <!-- Cart with items -->
+    
     @else {
       <div class="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
         <div class="flex flex-col gap-4">
@@ -59,7 +59,7 @@
             <div
               class="flex w-full items-center gap-6 rounded-3xl border border-gray-200 bg-white px-6 py-5 shadow-[0_10px_30px_rgba(15,23,42,0.05)]"
             >
-              <!-- Book Cover -->
+              
               <div
                 class="relative flex h-32 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-gray-100 bg-gradient-to-b from-gray-50 to-gray-100 shadow-inner"
               >
@@ -70,9 +70,9 @@
                 />
               </div>
 
-              <!-- Info -->
+              
               <div class="flex flex-1 flex-col gap-3 min-w-0">
-                <!-- Top row: title + unit price -->
+                
                 <div class="flex items-start justify-between gap-4">
                   <div class="min-w-0">
                     <p class="text-base font-semibold text-gray-900 truncate">{{ item.book.name }}</p>
@@ -81,9 +81,9 @@
                   <span class="shrink-0 text-sm font-medium text-gray-400">${{ item.book.price.toFixed(2) }}</span>
                 </div>
 
-                <!-- Bottom row: qty controls + line total + remove -->
+                
                 <div class="flex items-center justify-between gap-4">
-                  <!-- Quantity stepper -->
+                  
                   <div class="flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-3 py-1">
                     <button
                       type="button"
@@ -99,7 +99,7 @@
                     >+</button>
                   </div>
 
-                  <!-- Line total + remove -->
+                  
                   <div class="flex items-center gap-4">
                     <span class="text-lg font-extrabold text-gray-900">
                       ${{ (item.book.price * item.quantity).toFixed(2) }}

@@ -9,7 +9,6 @@ import { CommonModule, NgOptimizedImage } from '@angular/common';
   styleUrl: './popular-books.css'
 })
 export class PopularBooksComponent {
-  // Placeholder image for books without a cover
 defaultBookCover = 'images/default-book.jpg';
 
 onBookImgError(e: Event) {

@@ -3,11 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthorsService } from '../../../core/services/authors.service';
+import { MessageService } from 'primeng/api';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-author-form',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ProgressSpinnerModule],
   templateUrl: './author-form.html',
   styleUrl: './author-form.css',
 })
@@ -40,6 +42,7 @@ export class AuthorFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authorsService: AuthorsService,
+    private messageService: MessageService,
   ) {}
 
   ngOnInit() {
@@ -57,6 +60,7 @@ export class AuthorFormComponent implements OnInit {
         error: () => {
           this.error = 'Could not load author data.';
           this.loading = false;
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Could not load author data' });
         },
       });
     }
@@ -86,10 +90,14 @@ export class AuthorFormComponent implements OnInit {
       : this.authorsService.createWithImage(formData);
 
     req$.subscribe({
-      next: () => this.router.navigate(['/admin/authors']),
+      next: () => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Author saved successfully' });
+        this.router.navigate(['/admin/authors']);
+      },
       error: () => {
         this.error = 'Failed to save. Please try again.';
         this.saving = false;
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to save author' });
       },
     });
   }

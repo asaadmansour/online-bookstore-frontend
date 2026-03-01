@@ -9,10 +9,11 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { AuthorsService } from '../../../core/services/authors.service';
 import { Author } from '../../../shared/models/author.model';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-book-list',
-  imports: [BookCard, LucideAngularModule, OverlayModule],
+  imports: [BookCard, LucideAngularModule, OverlayModule, ProgressSpinnerModule],
   templateUrl: './book-list.html',
   styleUrl: './book-list.css',
 })
@@ -43,6 +44,7 @@ export class BookList implements OnInit {
   search = signal<string | null>('');
   currentPage = signal<number>(1);
   totalPages = signal<number>(0);
+  loading = signal<boolean>(true);
   ngOnInit() {
     this.loadAuthors();
     this.categoryService.getCategories().subscribe((data) => {
@@ -67,6 +69,7 @@ export class BookList implements OnInit {
     });
   }
   fetchBooks() {
+    this.loading.set(true);
     this.bookService
       .getBooks({
         categoryId: this.selectedCategoryId() ?? undefined,
@@ -80,6 +83,7 @@ export class BookList implements OnInit {
       .subscribe((data) => {
         this.books.set(data.books);
         this.totalPages.set(data.totalPages);
+        this.loading.set(false);
       });
   }
 

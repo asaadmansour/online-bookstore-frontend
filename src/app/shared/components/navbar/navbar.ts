@@ -33,7 +33,7 @@ export class Navbar {
         const parsed = JSON.parse(stored);
         return parsed?.firstName?.charAt(0)?.toUpperCase() ?? '?';
       }
-    } catch { /* ignore */ }
+    } catch {  }
     return '?';
   });
 
@@ -46,7 +46,7 @@ export class Navbar {
         const parsed = JSON.parse(stored);
         return parsed ? `${parsed.firstName} ${parsed.lastName}` : '';
       }
-    } catch { /* ignore */ }
+    } catch {  }
     return '';
   });
 

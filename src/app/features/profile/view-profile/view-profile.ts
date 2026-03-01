@@ -4,11 +4,13 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, } from '@angul
 import { UserService } from '../../../core/services/user.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { User } from '../../../shared/models/user.model';
+import { MessageService } from 'primeng/api';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-view-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ProgressSpinnerModule],
   templateUrl: './view-profile.html',
 })
 export class ViewProfileComponent implements OnInit {
@@ -19,13 +21,11 @@ export class ViewProfileComponent implements OnInit {
   saving = false;
   editing = false;
 
-  error = '';
-  success = '';
-
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private authService: AuthService
+    private authService: AuthService,
+    private messageService: MessageService
   ) {
     this.form = this.fb.group({
       firstName: ['', [
@@ -50,7 +50,6 @@ export class ViewProfileComponent implements OnInit {
 
   loadProfile(): void {
     this.loading = true;
-    this.error = '';
 
     this.userService.getProfile().subscribe({
       next: (res) => {
@@ -60,8 +59,8 @@ export class ViewProfileComponent implements OnInit {
       },
       error: (err) => {
         this.loading = false;
-        this.error =
-          err?.error?.error || err?.message || 'Failed to load profile';
+        const msg = err?.error?.error || err?.message || 'Failed to load profile';
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: msg });
       },
     });
   }
@@ -80,14 +79,11 @@ export class ViewProfileComponent implements OnInit {
 
   startEditing(): void {
     this.editing = true;
-    this.success = '';
-    this.error = '';
   }
 
   cancelEditing(): void {
     this.editing = false;
     this.populateForm();
-    this.error = '';
   }
 
   saveProfile(): void {
@@ -97,8 +93,6 @@ export class ViewProfileComponent implements OnInit {
     }
 
     this.saving = true;
-    this.error = '';
-    this.success = '';
 
     const { firstName, lastName, dob } = this.form.value;
     const data: any = { firstName, lastName };
@@ -109,17 +103,14 @@ export class ViewProfileComponent implements OnInit {
         this.saving = false;
         this.editing = false;
         this.user = res.user;
-        this.success = res.message || 'Profile updated successfully!';
-
-        // Update the AuthService's current user so navbar reflects changes
+        const msg = res.message || 'Profile updated successfully!';
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: msg });
         this.authService.updateCurrentUser(res.user);
-
-        setTimeout(() => (this.success = ''), 4000);
       },
       error: (err) => {
         this.saving = false;
-        this.error =
-          err?.error?.error || err?.message || 'Failed to update profile';
+        const msg = err?.error?.error || err?.message || 'Failed to update profile';
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: msg });
       },
     });
   }
