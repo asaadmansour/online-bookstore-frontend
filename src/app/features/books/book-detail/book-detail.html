@@ -3,7 +3,7 @@
     @if (book()) {
       <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
 
-        <!-- Left: Image with frame -->
+        
         <div class="flex justify-center w-full">
           <div class="relative w-full max-w-[28rem] p-3 bg-white rounded-2xl shadow-2xl border border-border-light">
             <div class="absolute top-1 left-1 w-4 h-4 border-t-2 border-l-2 border-accent rounded-tl-lg"></div>
@@ -22,11 +22,11 @@
           </div>
         </div>
 
-        <!-- Right: Details -->
+        
         <div class="flex flex-col gap-6 py-4">
 
 
-          <!-- Title & Author -->
+          
           <div>
             <h1 class="text-4xl font-bold text-text-main leading-tight">
               {{ book()!.name }}
@@ -36,21 +36,21 @@
             </p>
           </div>
 
-          <!-- Rating -->
+          
           <div class="flex items-center gap-2">
             <span class="text-yellow-400 text-xl">★</span>
             <span class="font-bold text-text-main">{{ book()!.averageRating }}</span>
             <span class="text-text-muted text-sm">({{ book()!.averageRating }} Reviews)</span>
           </div>
 
-          <!-- Price -->
+          
           <div class="flex items-center gap-3">
             <span class="text-4xl font-bold text-accent">${{ book()!.price }}</span>
           </div>
 
           <hr class="border-border-light" />
 
-          <!-- Description -->
+          
           <div>
             <h3 class="text-xs font-bold tracking-widest text-text-muted uppercase mb-2">Description</h3>
             <p class="text-text-muted leading-relaxed">{{ book()!.description }}</p>
@@ -70,7 +70,7 @@
 
         <hr class="border-border-light" />
 
-          <!-- Quantity + Add to Cart -->
+          
           <div class="flex items-center gap-4">
             <div class="flex items-center border border-border-light rounded-xl overflow-hidden">
               <button

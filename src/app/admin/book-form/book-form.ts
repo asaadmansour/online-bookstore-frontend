@@ -6,10 +6,13 @@ import { CategoriesService } from '../../core/services/categories.service';
 import { Category } from '../../shared/models/category.model';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { forkJoin, finalize } from 'rxjs';
 
 @Component({
   selector: 'app-book-form',
-  imports: [ReactiveFormsModule, RouterModule],
+  imports: [ReactiveFormsModule, RouterModule, ProgressSpinnerModule],
   templateUrl: './book-form.html',
   styleUrl: './book-form.css',
 })
@@ -28,26 +31,20 @@ export class BookForm implements OnInit {
   private categoryService = inject(CategoriesService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private messageService = inject(MessageService);
+
+  loading = signal<boolean>(true);
+  saving = signal<boolean>(false);
   bookId = signal<string | null>(null);
   authors = signal<Author[]>([]);
   categories = signal<Category[]>([]);
   selectedFile = signal<File | null>(null);
   previewUrl = signal<string | null>(null);
-  loadAuthors() {
-    this.authorService.getAuthors().subscribe((data) => {
-      this.authors.set(data.items || data);
-    });
-  }
-  loadCategories() {
-    this.categoryService.getCategories().subscribe((data) => {
-      this.categories.set(data.items);
-    });
-  }
+
   selectCategories(event: Event) {
     const select = event.target as HTMLSelectElement;
     const selectedValues = Array.from(select.selectedOptions).map((opt) => opt.value);
     this.newBook.get('categories')?.setValue(selectedValues);
-    console.log('Selected categories:', selectedValues);
   }
   getSelectedCategoryNames(): string {
     const selectedIds = this.newBook.get('categories')?.value || [];
@@ -65,7 +62,6 @@ export class BookForm implements OnInit {
         this.previewUrl.set(e.target?.result as string);
       };
       reader.readAsDataURL(input.files[0]);
-      console.log(this.selectedFile());
     }
   }
   clearCover() {
@@ -74,23 +70,39 @@ export class BookForm implements OnInit {
   }
 
   ngOnInit() {
-    this.loadAuthors();
-    this.loadCategories();
+    this.loading.set(true);
     const id = this.route.snapshot.paramMap.get('id');
+    const calls: any = {
+      authors: this.authorService.getAuthors(),
+      categories: this.categoryService.getAll(),
+    };
     if (id) {
-      this.bookService.getBookById(id).subscribe((data) => {
-        this.bookId.set(id);
-        this.newBook.patchValue({
-          name: data.name,
-          description: data.description,
-          author: data.author._id,
-          price: data.price,
-          stock: data.stock,
-          categories: data.categories.map((c) => c._id),
-        });
-        this.previewUrl.set(data.coverUrl);
-      });
+      calls.book = this.bookService.getBookById(id);
     }
+    forkJoin(calls).pipe(
+      finalize(() => this.loading.set(false))
+    ).subscribe({
+      next: (res: any) => {
+        this.authors.set(res.authors.items || res.authors);
+        this.categories.set(res.categories.items);
+        if (res.book) {
+          const data = res.book;
+          this.bookId.set(id);
+          this.newBook.patchValue({
+            name: data.name,
+            description: data.description,
+            author: data.author._id,
+            price: data.price,
+            stock: data.stock,
+            categories: data.categories.map((c: any) => c._id),
+          });
+          this.previewUrl.set(data.coverUrl);
+        }
+      },
+      error: (err) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to load basic data' });
+      }
+    });
   }
 
   submit(formbody: FormGroup) {
@@ -98,53 +110,43 @@ export class BookForm implements OnInit {
       formbody.markAllAsTouched();
       return;
     } else {
-      console.log(formbody.value);
       const formData = new FormData();
-      // text fields
       formData.append('name', formbody.value.name);
       formData.append('description', formbody.value.description);
       formData.append('author', formbody.value.author);
       formData.append('price', formbody.value.price);
       formData.append('stock', formbody.value.stock);
-      // Send categories as array of values
       const categories = Array.isArray(formbody.value.categories)
         ? formbody.value.categories
         : [formbody.value.categories];
 
       categories.forEach((cat: string) => formData.append('categories', cat));
-      /* formbody.value.categories.forEach((cat: string) => {
-        formData.append('categories', cat);
-      }); */
-      // file
       if (this.selectedFile()) {
         formData.append('coverImage', this.selectedFile()!);
       }
-      formData.forEach((value, key) => {
-        console.log(key, value);
-      });
+      this.saving.set(true);
       if (this.bookId()) {
-        this.bookService.updateBook(this.bookId()!, formData).subscribe(
-          (response) => {
-            console.log('Book updated successfully:', response);
+        this.bookService.updateBook(this.bookId()!, formData).pipe(finalize(() => this.saving.set(false))).subscribe({
+          next: () => {
+            this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Book updated successfully' });
             this.router.navigate(['/admin/manage-books']);
           },
-          (error) => {
-            console.error('Error updating book:', error.error);
+          error: (error) => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update book' });
           },
-        );
+        });
       } else {
-        this.bookService.addBook(formData).subscribe(
-          (response) => {
-            console.log('Book added successfully:', response);
-            formbody.reset();
-            this.clearCover();
-            this.router.navigate(['/admin/manage-books']);
-            this.clearCover();
+        this.bookService.addBook(formData).pipe(finalize(() => this.saving.set(false))).subscribe({
+          next: () => {
+             this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Book added successfully' });
+             formbody.reset();
+             this.router.navigate(['/admin/manage-books']);
+             this.clearCover();
           },
-          (error) => {
-            console.error('Error adding book:', error);
+          error: (error) => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to add book' });
           },
-        );
+        });
       }
     }
   }

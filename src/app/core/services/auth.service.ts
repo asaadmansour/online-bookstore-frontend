@@ -77,8 +77,8 @@ export class AuthService {
         : undefined;
 
       this.http.post(`${this.api}/logout`, { userId, refreshToken }, options).subscribe({
-        next: () => console.log('Server: refresh token invalidated'),
-        error: () => console.warn('Server logout failed — tokens cleared locally'),
+        next: () => {},
+        error: () => {},
       });
     }
 
@@ -123,7 +123,6 @@ export class AuthService {
   }
 
   verifyEmail(code: string): Observable<{ message: string }> {
-    // Backend expects POST with { verificationCode }
     return this.http.post<{ message: string }>(`${this.api}/verify-email`, {
       verificationCode: code,
     });

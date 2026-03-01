@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 
@@ -11,28 +11,28 @@ import { AuthService } from '../../core/services/auth.service';
 export class AdminNavbar {
   private auth = inject(AuthService);
   private router = inject(Router);
-  showLogoutModal = false;
-  logoutLoading = false;
+  showLogoutModal = signal(false);
+  logoutLoading = signal(false);
 
   openLogoutModal(): void {
-    this.showLogoutModal = true;
+    this.showLogoutModal.set(true);
   }
 
   cancelLogout(): void {
-    this.showLogoutModal = false;
+    this.showLogoutModal.set(false);
   }
 
   confirmLogout(): void {
-    this.logoutLoading = true;
+    this.logoutLoading.set(true);
     this.auth.logoutWithConfirmation().subscribe({
       next: () => {
-        this.logoutLoading = false;
-        this.showLogoutModal = false;
+        this.logoutLoading.set(false);
+        this.showLogoutModal.set(false);
         this.router.navigate(['/']);
       },
       error: () => {
-        this.logoutLoading = false;
-        this.showLogoutModal = false;
+        this.logoutLoading.set(false);
+        this.showLogoutModal.set(false);
         this.auth.forceLogout();
       },
     });

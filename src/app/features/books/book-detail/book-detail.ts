@@ -28,7 +28,6 @@ export class BookDetail implements OnInit {
   readonly loadingSuggestions = signal<boolean>(false);
 
   ngOnInit() {
-    // Use params observable (not snapshot) so navigation between books works
     this.route.params.subscribe((params) => {
       const id = params['id'];
       if (!id) return;

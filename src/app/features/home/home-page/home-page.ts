@@ -28,7 +28,6 @@ export class HomePage implements OnInit {
         this.loadingAuthors = false;
       },
       error: (err: any) => {
-        console.error('Failed to load popular authors', err);
         this.loadingAuthors = false;
       },
     });

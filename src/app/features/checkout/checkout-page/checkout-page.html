@@ -1,7 +1,7 @@
 <div class="min-h-screen bg-[#f8f9fa] font-sans text-gray-900 pb-12 mt-10">
   <div class="max-w-[1300px] mx-auto px-10 grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-16">
     
-    <!-- Left Column (Forms) -->
+    
     <div>
       <h1 class="text-4xl font-extrabold text-[#111827] mb-3">Checkout</h1>
       <div class="flex items-center gap-2 text-sm text-gray-500 font-medium mb-12">
@@ -12,7 +12,7 @@
         <span class="text-gray-500">Payment</span>
       </div>
 
-      <!-- Step 1: Shipping Information -->
+      
       <div class="mb-12">
         <div class="flex items-center gap-4 mb-6">
           <div class="w-8 h-8 rounded-full bg-[#dcfce7] text-[#15803d] flex items-center justify-center font-bold text-sm shrink-0">1</div>
@@ -112,7 +112,7 @@
         </form>
       </div>
 
-      <!-- Step 2: Shipping Method -->
+      
       <div class="mb-12">
         <div class="flex items-center gap-4 mb-6">
           <div class="w-8 h-8 rounded-full bg-[#e0f2fe] text-[#0369a1] flex items-center justify-center font-bold text-sm shrink-0">2</div>
@@ -120,7 +120,7 @@
         </div>
 
         <div class="space-y-3">
-          <!-- Only Free Standard Shipping -->
+          
           <div class="w-full border-2 border-accent bg-accent/5 rounded-xl p-4 flex items-center justify-between">
             <div class="flex items-center gap-4">
               <div class="w-5 h-5 rounded-full border-2 border-accent flex items-center justify-center shrink-0">
@@ -136,7 +136,7 @@
         </div>
       </div>
 
-      <!-- Step 3: Payment Method -->
+      
       <div class="mb-12">
         <div class="flex items-center gap-4 mb-6">
           <div class="w-8 h-8 rounded-full bg-[#dcfce7] text-[#15803d] flex items-center justify-center font-bold text-sm shrink-0">3</div>
@@ -144,7 +144,7 @@
         </div>
 
         <div class="space-y-3">
-          <!-- Cash on Delivery -->
+          
           <label class="w-full border-2 rounded-xl p-4 flex items-center justify-between cursor-pointer transition-colors"
             [class.border-accent]="paymentMethod === 'COD'"
             [class.bg-accent\/5]="paymentMethod === 'COD'"
@@ -168,7 +168,7 @@
             <input type="radio" name="paymentMethod" value="COD" [(ngModel)]="paymentMethod" class="sr-only" />
           </label>
 
-          <!-- Debit/Credit Card -->
+          
           <label class="w-full border-2 rounded-xl p-4 flex items-center justify-between cursor-pointer transition-colors"
             [class.border-accent]="paymentMethod === 'online'"
             [class.bg-accent\/5]="paymentMethod === 'online'"
@@ -194,7 +194,7 @@
         </div>
       </div>
       
-      <!-- Left column footer -->
+      
       <div class="mt-20 pt-8 border-t border-gray-200 flex justify-between items-center text-xs font-medium text-gray-500">
         <div class="flex gap-6">
           <a href="#" class="hover:text-gray-800 transition-colors">Refund Policy</a>
@@ -202,7 +202,7 @@
           <a href="#" class="hover:text-gray-800 transition-colors">Terms of Service</a>
         </div>
         <div class="flex gap-2 text-gray-400">
-          <!-- Card Icons Placeholders -->
+          
           <svg class="w-7 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6h16a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2zm0 4v6h16v-6H4z"/></svg>
           <svg class="w-7 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm-1 14.5c0 .28-.22.5-.5.5h-1c-.28 0-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5h1c.28 0 .5.22.5.5v4zm3 0c0 .28-.22.5-.5.5h-1c-.28 0-.5-.22-.5-.5v-5.5c0-.28.22-.5.5-.5h1c.28 0 .5.22.5.5v5.5zm3 0c0 .28-.22.5-.5.5h-1c-.28 0-.5-.22-.5-.5v-7c0-.28.22-.5.5-.5h1c.28 0 .5.22.5.5v7z"/></svg>
           <svg class="w-7 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12zM6 8h12v2H6V8zm0 4h8v2H6v-2z"/></svg>
@@ -211,13 +211,13 @@
       
     </div>
 
-    <!-- Right Column (Order Summary) -->
+    
     <div class="relative">
-      <!-- Sticky Card -->
+      
       <div class="sticky top-8 bg-white border border-gray-200 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-8">
         <h2 class="text-xl font-bold text-gray-900 mb-8">Order Summary</h2>
 
-        <!-- Items -->
+        
         <div class="flex flex-col gap-6 mb-8 max-h-[400px] overflow-y-auto pr-1">
           
           @if (cart() && cart()!.items.length > 0) {
@@ -255,7 +255,7 @@
 
         <div class="w-full h-px bg-gray-100 mb-6"></div>
 
-        <!-- Totals -->
+        
         <div class="flex flex-col gap-3 text-sm mb-6">
           <div class="flex justify-between text-gray-600 font-medium">
             <span>Subtotal</span>
@@ -272,14 +272,14 @@
           <span class="text-3xl font-extrabold tracking-tight text-gray-900">${{ subtotal().toFixed(2) }}</span>
         </div>
 
-        <!-- Error -->
+        
         @if (orderError()) {
           <div class="mb-4 px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
             {{ orderError() }}
           </div>
         }
 
-        <!-- Payment Button -->
+        
         <button
           (click)="placeOrder()"
           [disabled]="placing()"

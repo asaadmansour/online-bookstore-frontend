@@ -4,11 +4,13 @@ import { RouterLink } from '@angular/router';
 
 import { OrderService } from '../../../core/services/order.service';
 import { Order, OrderStatus } from '../../../shared/models/order.model';
+import { MessageService } from 'primeng/api';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-order-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, DatePipe, CurrencyPipe],
+  imports: [CommonModule, RouterLink, DatePipe, CurrencyPipe, ProgressSpinnerModule],
   templateUrl: './order-list.html',
 })
 export class OrderListComponent implements OnInit {
@@ -21,9 +23,8 @@ export class OrderListComponent implements OnInit {
   totalItems = 0;
   limit = 10;
 
-
-
   private orderService = inject(OrderService);
+  private messageService = inject(MessageService);
   ngOnInit(): void {
     this.loadOrders();
   }
@@ -38,19 +39,16 @@ export class OrderListComponent implements OnInit {
         this.totalItems = res.total;
         this.totalPages = res.PagesNumber;
         this.loading = false;
-
-        console.log('Orders loaded:', this.orders);
       },
       error: (err) => {
         this.loading = false;
-        // 404 = no orders yet for this user, treat as empty list
         if (err?.status === 404) {
           this.orders = [];
           return;
         }
         this.error =
           err?.error?.message || err?.error?.error || 'Failed to load orders. Please try again.';
-        console.error('Order load error:', err);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: this.error });
       },
     });
   }

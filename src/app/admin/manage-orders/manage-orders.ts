@@ -1,16 +1,22 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { OrderService } from '../../core/services/order.service';
 import { OrderResponse } from '../../shared/models/orderResponse';
+import { OrderService } from '../../core/services/order.service';
 import { DatePipe } from '@angular/common';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { MessageService } from 'primeng/api';
+import { forkJoin, finalize } from 'rxjs';
 
 @Component({
   selector: 'app-manage-orders',
-  imports: [DatePipe],
+  imports: [DatePipe, ProgressSpinnerModule],
   templateUrl: './manage-orders.html',
   styleUrl: './manage-orders.css',
 })
 export class ManageOrders implements OnInit {
   private orderService = inject(OrderService);
+  private messageService = inject(MessageService);
+
+  loading = signal<boolean>(true);
   orders = signal<OrderResponse | null>(null);
   processingOrders = signal<OrderResponse | null>(null);
   outForDeliveryOrders = signal<OrderResponse | null>(null);
@@ -18,32 +24,51 @@ export class ManageOrders implements OnInit {
   currentPage = signal<number>(1);
   selectedStatus = signal<string>('');
   searchedId = signal<string | null>(null);
+
   ngOnInit() {
-    this.loadOrders();
-    this.loadProccessingOrders();
-    this.loadOutForDeliveryOrders();
-    this.loadDeliveredOrders();
+    this.loading.set(true);
+    forkJoin({
+      all: this.orderService.getAllOrders(),
+      processing: this.orderService.getAllOrders(1, 'processing'),
+      delivery: this.orderService.getAllOrders(1, 'out_for_delivery'),
+      delivered: this.orderService.getAllOrders(1, 'delivered'),
+    }).pipe(
+      finalize(() => this.loading.set(false))
+    ).subscribe({
+      next: (res) => {
+        this.orders.set(res.all);
+        this.processingOrders.set(res.processing);
+        this.outForDeliveryOrders.set(res.delivery);
+        this.deliveredOrders.set(res.delivered);
+      },
+      error: (err) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to load initial orders' });
+      }
+    });
   }
   setSearchId(event: Event) {
     const input = event.target as HTMLInputElement;
     const id = input.value.trim();
     if (!id) {
-      this.loadOrders(); // reset if empty
+      this.loadOrders();
       return;
     }
     this.searchedId.set(id);
-    this.orderService.getOrderById(id).subscribe(
-      (data) => {
+    this.loading.set(true);
+    this.orderService.getOrderById(id).pipe(
+      finalize(() => this.loading.set(false))
+    ).subscribe({
+      next: (data) => {
         this.orders.set({
           total: 1,
           pages: 1,
           orders: [data.order],
         });
       },
-      (error) => {
-        console.error('Order not found:', error);
-      },
-    );
+      error: (error) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Order not found' });
+      }
+    });
   }
   filterByStatus(event: Event) {
     const select = event.target as HTMLSelectElement;
@@ -51,9 +76,17 @@ export class ManageOrders implements OnInit {
     this.loadOrders(1, select.value || undefined);
   }
   loadOrders(page = 1, status?: string) {
-    this.orderService.getAllOrders(page, status).subscribe((data) => {
-      this.orders.set(data);
-      this.currentPage.set(page);
+    this.loading.set(true);
+    this.orderService.getAllOrders(page, status).subscribe({
+      next: (data) => {
+        this.orders.set(data);
+        this.currentPage.set(page);
+        this.loading.set(false);
+      },
+      error: (err) => {
+        this.loading.set(false);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to load orders' });
+      }
     });
   }
 
@@ -84,14 +117,33 @@ export class ManageOrders implements OnInit {
   }
 
   updateStatus(id: string, status: string) {
-    this.orderService.updateOrderStatus(id, status).subscribe(() => {
-      this.loadOrders(this.currentPage(), this.selectedStatus() || undefined);
+    this.orderService.updateOrderStatus(id, status).subscribe({
+      next: () => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Order status updated' });
+        this.loadOrders(this.currentPage(), this.selectedStatus() || undefined);
+        this.refreshStats();
+      },
+      error: (err) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update status' });
+      }
     });
   }
 
   updatePayment(id: string, payment: string) {
-    this.orderService.updatePaymentStatus(id, payment).subscribe(() => {
-      this.loadOrders(this.currentPage(), this.selectedStatus() || undefined);
+    this.orderService.updatePaymentStatus(id, payment).subscribe({
+      next: () => {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Payment status updated' });
+        this.loadOrders(this.currentPage(), this.selectedStatus() || undefined);
+      },
+      error: (err) => {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to update payment' });
+      }
     });
+  }
+
+  private refreshStats() {
+    this.orderService.getAllOrders(1, 'processing').subscribe(data => this.processingOrders.set(data));
+    this.orderService.getAllOrders(1, 'out_for_delivery').subscribe(data => this.outForDeliveryOrders.set(data));
+    this.orderService.getAllOrders(1, 'delivered').subscribe(data => this.deliveredOrders.set(data));
   }
 }

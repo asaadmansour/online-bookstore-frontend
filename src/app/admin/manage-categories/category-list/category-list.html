@@ -1,21 +1,21 @@
-<!-- Loading -->
-<div *ngIf="loading" class="state-box">
-    <div class="spinner"></div>
-    <span>Loading categories…</span>
+
+<div *ngIf="loading" class="flex flex-col items-center justify-center p-8 gap-4">
+    <p-progressSpinner strokeWidth="4" styleClass="w-12 h-12 text-accent"></p-progressSpinner>
+    <span class="text-gray-500 font-medium text-sm">Loading categories…</span>
 </div>
 
-<!-- Error -->
+
 <div *ngIf="!loading && error" class="state-box error-box">
     <span>⚠ {{ error }}</span>
     <button class="btn-retry" (click)="load()">Retry</button>
 </div>
 
-<!-- Empty -->
+
 <div *ngIf="!loading && !error && categories.length === 0" class="state-box">
     <span>No categories yet. Add your first one!</span>
 </div>
 
-<!-- Table -->
+
 <table *ngIf="!loading && !error && categories.length > 0" class="tbl">
     <thead>
         <tr>
@@ -38,7 +38,7 @@
     </tbody>
 </table>
 
-<!-- Delete Confirm Modal -->
+
 <div class="modal-backdrop" *ngIf="pendingDeleteId" (click)="cancelDelete()">
     <div class="modal" (click)="$event.stopPropagation()">
         <div class="modal-icon">🗑</div>

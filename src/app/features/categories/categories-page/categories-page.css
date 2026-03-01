@@ -1,8 +1,8 @@
 .cat-page {
-  background: #f6f7f5; /* off-white */
+  background: #f6f7f5; 
   min-height: 100vh;
   padding: 40px 0 60px;
-  color: #0f172a; /* slate-900 */
+  color: #0f172a; 
 }
 
 .cat-container {
@@ -18,13 +18,13 @@
 }
 
 .cat-header h1 span {
-  color: #6b7280; /* slate-ish like design */
+  color: #6b7280; 
 }
 
 .cat-header p {
   max-width: 720px;
   margin: 0 0 20px;
-  color: #475569; /* slate-600 */
+  color: #475569; 
   font-size: 15px;
 }
 
@@ -63,7 +63,7 @@
 .dot {
   width: 8px;
   height: 8px;
-  background: #22c55e; /* green */
+  background: #22c55e; 
   border-radius: 50%;
   display: inline-block;
 }
@@ -167,7 +167,7 @@
 .btn-primary {
   width: 100%;
   border: 0;
-  background: #66d38a; /* light green like design */
+  background: #66d38a; 
   color: #0f172a;
   padding: 11px 14px;
   border-radius: 10px;

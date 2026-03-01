@@ -1,4 +1,4 @@
-/* ---- Table ---- */
+
 .tbl {
     width: 100%;
     border-collapse: collapse;
@@ -54,7 +54,7 @@ tr:hover td {
     white-space: nowrap;
 }
 
-/* ---- Action buttons ---- */
+
 .btn-edit {
     display: inline-block;
     padding: 6px 14px;
@@ -89,7 +89,7 @@ tr:hover td {
     background: #fee2e2;
 }
 
-/* ---- State boxes ---- */
+
 .state-box {
     display: flex;
     flex-direction: column;
@@ -114,7 +114,7 @@ tr:hover td {
     cursor: pointer;
 }
 
-/* ---- Spinner ---- */
+
 .spinner {
     width: 32px;
     height: 32px;
@@ -130,7 +130,7 @@ tr:hover td {
     }
 }
 
-/* ---- Modal ---- */
+
 .modal-backdrop {
     position: fixed;
     inset: 0;

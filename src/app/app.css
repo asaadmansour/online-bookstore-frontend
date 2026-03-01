@@ -1,11 +1,11 @@
-/* src/app/app.css */
 
-/* Smooth route transitions */
+
+
 :host {
   display: block;
 }
 
-/* Active route animation (from withViewTransitions()) */
+
 ::view-transition-old(root) {
   animation: fade-out 150ms ease-in;
 }

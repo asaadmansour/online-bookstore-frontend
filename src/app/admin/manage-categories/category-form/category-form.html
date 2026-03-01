@@ -1,8 +1,8 @@
 <div class="form-page">
-    <!-- Loading existing category -->
-    <div *ngIf="loading" class="loader-row">
-        <div class="spinner"></div>
-        <span>Loading category…</span>
+    
+    <div *ngIf="loading" class="flex flex-col items-center justify-center p-8 gap-4">
+        <p-progressSpinner strokeWidth="4" styleClass="w-12 h-12 text-accent"></p-progressSpinner>
+        <span class="text-gray-500 font-medium text-sm">Loading category…</span>
     </div>
 
     <div *ngIf="!loading" class="form-card">

@@ -2,7 +2,7 @@
   padding: 24px;
 }
 
-/* loader */
+
 .loader-row {
   display: flex;
   align-items: center;
@@ -27,7 +27,7 @@
   }
 }
 
-/* card */
+
 .form-card {
   max-width: 560px;
 }
@@ -49,7 +49,7 @@
   color: rgba(0, 0, 0, 0.45);
 }
 
-/* fields */
+
 .fields {
   display: flex;
   flex-direction: column;
@@ -96,7 +96,7 @@
   min-height: 100px;
 }
 
-/* error */
+
 .error-msg {
   padding: 10px 14px;
   background: #fff5f5;
@@ -107,7 +107,7 @@
   margin-bottom: 20px;
 }
 
-/* actions */
+
 .form-actions {
   display: flex;
   gap: 10px;

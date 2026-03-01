@@ -1,9 +1,10 @@
-// src/app/auth/login/login.ts
+
 import { Component } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-login',
@@ -20,7 +21,8 @@ export class LoginComponent {
     constructor(
         private fb: FormBuilder,
         private auth: AuthService,
-        private router: Router
+        private router: Router,
+        private messageService: MessageService
     ) {
         this.form = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
@@ -40,11 +42,12 @@ export class LoginComponent {
             next: () => {
                 this.loading = false;
                 const role = this.auth.currentUser?.role;
-                this.router.navigate([role === 'admin' ? '/admin' : '/']);
+                this.router.navigate([role === 'admin' ? '/admin/home' : '/']);
             },
             error: (err) => {
                 this.loading = false;
-                this.error = err?.error?.error || err?.message || 'Login failed';
+                const msg = err?.error?.error || err?.message || 'Login failed';
+                this.messageService.add({ severity: 'error', summary: 'Login Failed', detail: msg });
             },
         });
     }
