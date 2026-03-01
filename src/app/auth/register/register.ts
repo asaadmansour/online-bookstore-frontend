@@ -78,9 +78,10 @@ export class RegisterComponent {
     this.auth.register(payload).subscribe({
       next: () => {
         this.loading = false;
-        this.router.navigate(['/auth/verify-email'], {
-          queryParams: { email: payload.email },
-        });
+        // this.router.navigate(['/auth/verify-email'], {
+        //   queryParams: { email: payload.email },
+        // });
+        this.router.navigate(['/auth/login']);
       },
       error: (err) => {
         this.loading = false;
