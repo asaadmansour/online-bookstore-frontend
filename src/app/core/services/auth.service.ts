@@ -122,15 +122,15 @@ export class AuthService {
     this.router.navigate(['/']);
   }
 
-  verifyEmail(code: string): Observable<{ message: string }> {
-    return this.http.post<{ message: string }>(`${this.api}/verify-email`, {
-      verificationCode: code,
-    });
-  }
+  // verifyEmail(code: string): Observable<{ message: string }> {
+  //   return this.http.post<{ message: string }>(`${this.api}/verify-email`, {
+  //     verificationCode: code,
+  //   });
+  // }
 
-  resendVerification(email: string): Observable<{ message: string }> {
-    return this.http.post<{ message: string }>(`${this.api}/resend-verification`, { email });
-  }
+  // resendVerification(email: string): Observable<{ message: string }> {
+  //   return this.http.post<{ message: string }>(`${this.api}/resend-verification`, { email });
+  // }
 
   private handleAuth(res: AuthResponse): void {
     this.token.setTokens(res.tokens.accessToken, res.tokens.refreshToken);

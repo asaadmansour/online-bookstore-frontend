@@ -62,17 +62,17 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
     this.error = '';
     this.success = '';
 
-    this.auth.verifyEmail(this.form.value.code).subscribe({
-      next: (res) => {
-        this.loading = false;
-        this.success = res.message || 'Email verified! Redirecting…';
-        setTimeout(() => this.router.navigate(['/auth/login']), 2000);
-      },
-      error: (err) => {
-        this.loading = false;
-        this.error = err?.error?.error || err?.message || 'Verification failed';
-      },
-    });
+    // this.auth.verifyEmail(this.form.value.code).subscribe({
+    //   next: (res: any) => {
+    //     this.loading = false;
+    //     this.success = res.message || 'Email verified! Redirecting…';
+    //     setTimeout(() => this.router.navigate(['/auth/login']), 2000);
+    //   },
+    //   error: (err: any) => {
+    //     this.loading = false;
+    //     this.error = err?.error?.error || err?.message || 'Verification failed';
+    //   },
+    // });
   }
 
   resend(): void {
@@ -81,17 +81,17 @@ export class VerifyEmailComponent implements OnInit, OnDestroy {
     this.error = '';
     this.success = '';
 
-    this.auth.resendVerification(this.email).subscribe({
-      next: () => {
-        this.resendLoading = false;
-        this.success = 'New code sent!';
-        this.startCooldown();
-      },
-      error: (err) => {
-        this.resendLoading = false;
-        this.error = err?.error?.error || err?.message || 'Could not resend';
-      },
-    });
+    // this.auth.resendVerification(this.email).subscribe({
+    //   next: () => {
+    //     this.resendLoading = false;
+    //     this.success = 'New code sent!';
+    //     this.startCooldown();
+    //   },
+    //   error: (err: any) => {
+    //     this.resendLoading = false;
+    //     this.error = err?.error?.error || err?.message || 'Could not resend';
+    //   },
+    // });
   }
 
   private startCooldown(): void {
